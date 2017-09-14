@@ -5,9 +5,9 @@ import (
 	"xq.goproject.com/commonTool/logTool"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
-	"mime/multipart"
+	"os"
+	"io"
 )
 
 //Handle webserver服务处理
@@ -26,6 +26,7 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 			data = []byte("")
 		}
 
+		responseWriter.Header().Add("Access-Control-Allow-Origin","*")
 		responseWriter.Write(data)
 		if logInfo != "" {
 			logTool.Log(logTool.Error, logInfo)
@@ -39,22 +40,21 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 		return
 	}
 
-	//获取请求数据
-	requestData, err := ioutil.ReadAll(request.Body)
-	if err != nil {
-		logInfo = fmt.Sprintf("读取数据出错，请求:%s,错误信息为：%s", request, err)
-		responseObj.SetResultStatus(webServerObject.DataError)
+	if "POST" == request.Method {
+		uploadFile, _, err := request.FormFile("userfile")
+		if err != nil {
+			logInfo = fmt.Sprintf("保存文件失败", request, err)
+			responseObj.SetResultStatus(webServerObject.DataError)
+			return
+		}
+		defer uploadFile.Close()
+		saveFile,err:=os.Create("filenametosaveas")
+		defer saveFile.Close()
+		io.Copy(saveFile,uploadFile)
+		//fmt.Println(responseWriter, "上传文件的大小为: %d", uploadFile.(Sizer).Size())
 		return
-	}
-	request.Body.Close()
+    }
 
-	// 解析请求字符串
-	if err := json.Unmarshal(requestData, &requestObj); err != nil {
-		logInfo = fmt.Sprintf("请求对象-反序列化出错，请求:%s错误信息为：%s", request, err)
-		responseObj.SetResultStatus(webServerObject.DataError)
-		return
-	}
-
-	logTool.Log(logTool.Debug, "web服务器接受到请求："+string(requestData))
-	responseObj = callFunction(requestObj.MethodName, &requestObj)
+	logTool.Log(logTool.Debug, "web服务器接受到请求：")
+	//responseObj = callFunction(requestObj.MethodName, &requestObj)
 }
