@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"mime/multipart"
 )
 
 //Handle webserver服务处理
@@ -14,7 +15,6 @@ type handle struct{}
 
 func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *http.Request) {
 	responseObj := webServerObject.NewResponseObject() //返回的数据
-	var requestObj webServerObject.RequestObject       //请求的数据
 	logInfo := ""                                      //最后写的日志
 
 	//返回前，先返回数据，后写日志
@@ -34,8 +34,8 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 		}
 	}()
 
-	// 监控请求地址，必须为api
-	if request.RequestURI != "/API" && request.RequestURI != "/API/" {
+	// 监控请求地址，必须为File
+	if request.RequestURI != "/File" && request.RequestURI != "/File/" {
 		return
 	}
 

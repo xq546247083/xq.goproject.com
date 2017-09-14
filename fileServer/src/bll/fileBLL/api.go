@@ -7,8 +7,8 @@ import (
 
 // 注册需要给客户端访问的模块、方法
 func init() {
-	webServer.RegisterHandler("UploadFile", uploadFile)
-	webServer.RegisterHandler("DownFile", downFile)
+	webServer.RegisterHandler("/API/UploadFile", uploadFile)
+	webServer.RegisterHandler("/API/DownFile", downFile)
 }
 
 // 上传文件

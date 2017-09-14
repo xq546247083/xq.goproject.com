@@ -2,6 +2,7 @@ package main
 
 import (
 	"xq.goproject.com/goServerModel/src/rpcServerObject"
+	"xq.goproject.com/goServerModel/src/webServerObject"
 	"xq.goproject.com/commonTool/intTool"
 	"encoding/binary"
 	"encoding/json"
@@ -58,7 +59,7 @@ func main() {
 }
 
 func testWebServer() {
-	var requestObj rpcServerObject.RequestObject
+	var requestObj webServerObject.RequestObject
 	requestObj.MethodName = "PlayerLogin"
 	requestObj.Parameters = []interface{}{"xx3x"}
 	requestByte, _ := json.Marshal(requestObj)
