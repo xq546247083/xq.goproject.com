@@ -14,9 +14,8 @@ func init() {
 // 上传文件
 func uploadFile(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
+	
 	responseObj.SetResultStatus(webServerObject.Success)
-	responseObj.Data = requestObj.Parameters[0]
-
 	return responseObj
 }
 

@@ -29,6 +29,8 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 		responseWriter.Write(data)
 		if logInfo != "" {
 			logTool.Log(logTool.Error, logInfo)
+		}else{
+			logTool.Log(logTool.Debug, "web服务器返回数据："+string(data))
 		}
 	}()
 
@@ -53,5 +55,6 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 		return
 	}
 
+	logTool.Log(logTool.Debug, "web服务器接受到请求："+string(requestData))
 	responseObj = callFunction(requestObj.MethodName, &requestObj)
 }

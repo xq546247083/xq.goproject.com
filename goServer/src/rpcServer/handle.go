@@ -122,6 +122,7 @@ func handRequest(clientObj *Client, message []byte) {
 		requestObj.Parameters = append(requestObj.Parameters, clientObj)
 	}
 
+	logTool.Log(logTool.Debug, "RPC服务器接受到请求："+string(message))
 	response := callFunction(&requestObj)
 	ResponseResult(clientObj, response, ConHighPriority)
 }

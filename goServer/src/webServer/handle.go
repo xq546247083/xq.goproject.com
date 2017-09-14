@@ -55,5 +55,6 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 		return
 	}
 
+	logTool.Log(logTool.Debug, "web服务器接受到请求："+string(requestData))
 	responseObj = callFunction(requestObj.MethodName, &requestObj)
 }
