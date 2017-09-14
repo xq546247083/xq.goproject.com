@@ -29,6 +29,8 @@ DEBUG
 goClient.exe
 fileServer.exe
 goServer.exe
+Log
+LOG
 LOG/*
 Log/*
 Publish/*
