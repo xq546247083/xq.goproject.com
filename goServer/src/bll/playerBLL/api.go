@@ -1,18 +1,21 @@
 package playerBLL
 
 import (
+	"net/http"
+	"time"
+
+	"xq.goproject.com/commonTool/httpRequestTool"
 	"xq.goproject.com/goServer/src/rpcServer"
 	"xq.goproject.com/goServer/src/webServer"
 	"xq.goproject.com/goServerModel/src/player"
 	"xq.goproject.com/goServerModel/src/rpcServerObject"
 	"xq.goproject.com/goServerModel/src/webServerObject"
-	"time"
 )
 
 // 注册需要给客户端访问的模块、方法
 func init() {
 	rpcServer.RegisterHandler("PlayerLogin", Login)
-	webServer.RegisterHandler("PlayerLogin", WebLogin)
+	webServer.RegisterHandler("/API/PlayerLogin", WebLogin)
 }
 
 //Login 玩家登录
@@ -30,12 +33,12 @@ func Login(requestObj *rpcServerObject.RequestObject) *rpcServerObject.ResponseO
 	player := player.NewEmptyPlayer("1dsad", clientObj.GetID())
 
 	go func() {
-		for{
+		for {
 			time.Sleep(10 * time.Second)
 			clientObj := rpcServer.GetClient(player.ClientID)
 			responseObj.SetResultStatus(rpcServerObject.Success)
 			responseObj.Data = "推送消息"
-	
+
 			rpcServer.ResponseResult(clientObj, responseObj, rpcServer.ConHighPriority)
 		}
 	}()
@@ -44,10 +47,11 @@ func Login(requestObj *rpcServerObject.RequestObject) *rpcServerObject.ResponseO
 }
 
 //WebLogin 玩家登录
-func WebLogin(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
+func WebLogin(requestObj *http.Request) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
 	responseObj.SetResultStatus(webServerObject.Success)
-	responseObj.Data = requestObj.Parameters[0]
+	data, _ := httpRequestTool.GetRequsetByte(requestObj)
+	responseObj.Data = string(data)
 
 	return responseObj
 }

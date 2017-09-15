@@ -1,21 +1,26 @@
 package webServer
 
 import (
-	"xq.goproject.com/goServerModel/src/webServerObject"
-	"xq.goproject.com/commonTool/logTool"
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
-	"io"
+
+	"xq.goproject.com/commonTool/logTool"
+	"xq.goproject.com/goServerModel/src/webServerObject"
 )
 
 //Handle webserver服务处理
 type handle struct{}
 
+//服务监听
 func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *http.Request) {
-	responseObj := webServerObject.NewResponseObject() //返回的数据
-	logInfo := ""                                      //最后写的日志
+	responseObj := webServerObject.NewResponseObject()
+	logInfo := ""
+
+	// 应对NLB的监控
+	if request.RequestURI == "/" || request.RequestURI == "/favicon.ico" {
+		return
+	}
 
 	//返回前，先返回数据，后写日志
 	defer func() {
@@ -26,35 +31,22 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 			data = []byte("")
 		}
 
-		responseWriter.Header().Add("Access-Control-Allow-Origin","*")
+		responseWriter.Header().Add("Access-Control-Allow-Origin", "*")
 		responseWriter.Write(data)
 		if logInfo != "" {
 			logTool.Log(logTool.Error, logInfo)
-		}else{
-			logTool.Log(logTool.Debug, "web服务器返回数据："+string(data))
+		} else {
+			logTool.Log(logTool.Debug, fmt.Sprintf("web服务器接受请求：%s返回数据：%s", request, string(data)))
 		}
 	}()
 
-	// 监控请求地址，必须为File
-	if request.RequestURI != "/File" && request.RequestURI != "/File/" {
+	// 根据路径选择不同的处理方法
+	handlerObj, exists := getHandler(request.RequestURI)
+	if !exists {
+		responseObj.SetResultStatus(webServerObject.DataError)
 		return
 	}
 
-	if "POST" == request.Method {
-		uploadFile, _, err := request.FormFile("userfile")
-		if err != nil {
-			logInfo = fmt.Sprintf("保存文件失败", request, err)
-			responseObj.SetResultStatus(webServerObject.DataError)
-			return
-		}
-		defer uploadFile.Close()
-		saveFile,err:=os.Create("filenametosaveas")
-		defer saveFile.Close()
-		io.Copy(saveFile,uploadFile)
-		//fmt.Println(responseWriter, "上传文件的大小为: %d", uploadFile.(Sizer).Size())
-		return
-    }
-
-	logTool.Log(logTool.Debug, "web服务器接受到请求：")
-	//responseObj = callFunction(requestObj.MethodName, &requestObj)
+	// 调用方法
+	responseObj = handlerObj.handlerFunc(request)
 }

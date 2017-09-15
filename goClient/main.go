@@ -1,9 +1,6 @@
 package main
 
 import (
-	"xq.goproject.com/goServerModel/src/rpcServerObject"
-	"xq.goproject.com/goServerModel/src/webServerObject"
-	"xq.goproject.com/commonTool/intTool"
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
@@ -12,12 +9,15 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"xq.goproject.com/commonTool/intTool"
+	"xq.goproject.com/goServerModel/src/rpcServerObject"
 )
 
 func main() {
 	testWebServer()
 
-	conn, err := net.DialTimeout("tcp", "192.168.0.102:8187", 2*time.Second)
+	conn, err := net.DialTimeout("tcp", "10.255.0.3:8187", 2*time.Second)
 	if err != nil {
 		fmt.Printf("Dial Error: %s", err)
 	} else {
@@ -59,13 +59,12 @@ func main() {
 }
 
 func testWebServer() {
-	var requestObj webServerObject.RequestObject
-	requestObj.MethodName = "PlayerLogin"
-	requestObj.Parameters = []interface{}{"xx3x"}
+	requestObj := make(map[string]string)
+	requestObj["name"] = "xxxx"
 	requestByte, _ := json.Marshal(requestObj)
 	requestStr := string(requestByte)
 
-	response, err := http.Post("http://192.168.0.102:8186/API", "application/x-www-form-urlencoded", strings.NewReader(requestStr))
+	response, err := http.Post("http://10.255.0.3:8186/API/PlayerLogin", "application/x-www-form-urlencoded", strings.NewReader(requestStr))
 	if err != nil {
 		fmt.Println(err)
 	}

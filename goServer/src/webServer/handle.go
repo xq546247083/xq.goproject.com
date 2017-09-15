@@ -1,21 +1,26 @@
 package webServer
 
 import (
-	"xq.goproject.com/goServerModel/src/webServerObject"
-	"xq.goproject.com/commonTool/logTool"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
+
+	"xq.goproject.com/commonTool/logTool"
+	"xq.goproject.com/goServerModel/src/webServerObject"
 )
 
 //Handle webserver服务处理
 type handle struct{}
 
+//服务监听
 func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *http.Request) {
-	responseObj := webServerObject.NewResponseObject() //返回的数据
-	var requestObj webServerObject.RequestObject       //请求的数据
-	logInfo := ""                                      //最后写的日志
+	responseObj := webServerObject.NewResponseObject()
+	logInfo := ""
+
+	// 应对NLB的监控
+	if request.RequestURI == "/" || request.RequestURI == "/favicon.ico" {
+		return
+	}
 
 	//返回前，先返回数据，后写日志
 	defer func() {
@@ -29,32 +34,18 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 		responseWriter.Write(data)
 		if logInfo != "" {
 			logTool.Log(logTool.Error, logInfo)
-		}else{
-			logTool.Log(logTool.Debug, "web服务器返回数据："+string(data))
+		} else {
+			logTool.Log(logTool.Debug, fmt.Sprintf("web服务器接受请求：%s返回数据：%s", request, string(data)))
 		}
 	}()
 
-	// 监控请求地址，必须为api
-	if request.RequestURI != "/API" && request.RequestURI != "/API/" {
-		return
-	}
-
-	//获取请求数据
-	requestData, err := ioutil.ReadAll(request.Body)
-	if err != nil {
-		logInfo = fmt.Sprintf("读取数据出错，请求:%s,错误信息为：%s", request, err)
-		responseObj.SetResultStatus(webServerObject.DataError)
-		return
-	}
-	request.Body.Close()
-
-	// 解析请求字符串
-	if err := json.Unmarshal(requestData, &requestObj); err != nil {
-		logInfo = fmt.Sprintf("请求对象-反序列化出错，请求:%s错误信息为：%s", request, err)
+	// 根据路径选择不同的处理方法
+	handlerObj, exists := getHandler(request.RequestURI)
+	if !exists {
 		responseObj.SetResultStatus(webServerObject.DataError)
 		return
 	}
 
-	logTool.Log(logTool.Debug, "web服务器接受到请求："+string(requestData))
-	responseObj = callFunction(requestObj.MethodName, &requestObj)
+	// 调用方法
+	responseObj = handlerObj.handlerFunc(request)
 }
