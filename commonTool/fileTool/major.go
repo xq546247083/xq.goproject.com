@@ -2,7 +2,6 @@ package fileTool
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
@@ -14,19 +13,6 @@ import (
 var (
 	mutex sync.Mutex
 )
-
-//IsDirExists 文件夹是否存在
-// 文件夹路径
-// 返回值：
-// 是否存在
-func IsDirExists(path string) bool {
-	file, err := os.Stat(path)
-	if err != nil {
-		return os.IsExist(err)
-	}
-
-	return file.IsDir()
-}
 
 //GetCurrentPath 获取当前路径
 // 返回值：
@@ -62,6 +48,35 @@ func GetFileList(path string) ([]string, error) {
 	})
 
 	return files, nil
+}
+
+// 文件夹是否存在
+func IsDirectoryExists(path string) (bool, error) {
+	file, err := os.Stat(path)
+	if err == nil {
+		return file.IsDir(), nil
+	}
+
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+
+	return true, err
+}
+
+
+// 文件是否存在
+func IsFileExists(path string) (bool, error) {
+	file, err := os.Stat(path)
+	if err == nil {
+		return file.IsDir() == false, nil
+	}
+
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+
+	return true, err
 }
 
 //ReadFileLineByLine 按行读取每一个文件的内容
@@ -117,43 +132,6 @@ func ReadFileBytes(filename string) ([]byte, error) {
 	bytes, err := ioutil.ReadFile(filename)
 
 	return bytes, err
-}
-
-//WriteFile 写入文件
-// filePath：文件夹路径
-// fileName：文件名称
-// ifAppend：是否追加内容
-// args：可变参数
-func WriteFile(filePath, fileName string, ifAppend bool, args ...string) {
-	// 得到最终的fileName
-	fileName = filepath.Join(filePath, fileName)
-
-	// 判断文件夹是否存在，如果不存在则创建
-	mutex.Lock()
-	if !IsDirExists(filePath) {
-		os.MkdirAll(filePath, os.ModePerm|os.ModeTemporary)
-	}
-	mutex.Unlock()
-
-	// 打开文件(如果文件存在就以写模式打开，并追加写入；如果文件不存在就创建，然后以写模式打开。)
-	var f *os.File
-	var err error
-	if ifAppend == false {
-		f, err = os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm|os.ModeTemporary)
-	} else {
-		f, err = os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY|os.O_APPEND, os.ModePerm|os.ModeTemporary)
-	}
-
-	if err != nil {
-		fmt.Println("打开文件错误：", err)
-		return
-	}
-	defer f.Close()
-
-	// 写入内容
-	for _, arg := range args {
-		f.WriteString(arg)
-	}
 }
 
 //DeleteFile 删除文件

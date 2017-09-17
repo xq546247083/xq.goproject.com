@@ -67,10 +67,12 @@ func writeLog(logType LogType, content string) {
 	fileName = filepath.Join(filePath, fileName)
 
 	// 判断文件夹是否存在，如果不存在则创建
-	if !fileTool.IsDirExists(filePath) {
+	if flag,err := fileTool.IsDirectoryExists(filePath) ;err==nil && !flag{
 		if err := os.MkdirAll(filePath, os.ModePerm|os.ModeTemporary); err != nil {
 			return
 		}
+	}else if err!=nil{
+		return
 	}
 
 	// 打开文件(如果文件存在就以读写模式打开，并追加写入；如果文件不存在就创建，然后以写模式打开。)
