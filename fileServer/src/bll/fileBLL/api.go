@@ -144,13 +144,20 @@ func appendToFile(fileName string, file multipart.File) error {
 }
 
 func readMultiPartFile(file multipart.File) ([]byte, error) {
-	result := make([]byte, 100*1024, 100*1024)
+	len, errLen := file.Seek(0, os.SEEK_END)
+	if errLen != nil {
+		return nil, errLen
+	}
 
-	buf := make([]byte, 1024)
+	result := make([]byte, len, len)
+
+	buf := make([]byte, 1024, 1024)
 	for {
+		//todo xiaoqiang  这里的字节数全是空
 		nr, err := file.Read(buf)
 		if nr > 0 {
-			buf = append(result, buf...)
+			appendBuf := buf[:nr]
+			buf = append(result, appendBuf...)
 		}
 		if err != nil {
 			if err.Error() != "EOF" {
