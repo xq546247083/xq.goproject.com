@@ -1,10 +1,6 @@
 package logTool
 
 import (
-	"xq.goproject.com/commonTool/configTool"
-	"xq.goproject.com/commonTool/fileTool"
-	"xq.goproject.com/commonTool/stringTool"
-	"xq.goproject.com/commonTool/timeTool"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -14,6 +10,11 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"xq.goproject.com/commonTool/configTool"
+	"xq.goproject.com/commonTool/fileTool"
+	"xq.goproject.com/commonTool/stringTool"
+	"xq.goproject.com/commonTool/timeTool"
 )
 
 var (
@@ -41,7 +42,7 @@ func init() {
 	//获取路径
 	file, _ := exec.LookPath(os.Args[0])
 	path, _ := filepath.Abs(file)
-	LogPath = filepath.Dir(path) + "\\" + configTool.LogPath
+	LogPath = filepath.Join(filepath.Dir(path), configTool.LogPath)
 }
 
 //writeLog 写日志
@@ -67,12 +68,12 @@ func writeLog(logType LogType, content string) {
 	fileName = filepath.Join(filePath, fileName)
 
 	// 判断文件夹是否存在，如果不存在则创建
-	if flag,err := fileTool.IsDirectoryExists(filePath) ;err==nil && !flag{
+	if flag, err := fileTool.IsDirectoryExists(filePath); err == nil && !flag {
 		if err := os.MkdirAll(filePath, os.ModePerm|os.ModeTemporary); err != nil {
-			return
+			panic(err)
 		}
-	}else if err!=nil{
-		return
+	} else if err != nil {
+		panic(err)
 	}
 
 	// 打开文件(如果文件存在就以读写模式打开，并追加写入；如果文件不存在就创建，然后以写模式打开。)
