@@ -26,7 +26,7 @@ const (
 )
 
 var data = [...]string{
-	"info",
+	"Info",
 	"Debug",
 	"Warn",
 	"Error",

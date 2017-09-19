@@ -51,6 +51,22 @@ func writeLog(logType LogType, content string) {
 		LogPath = "Log"
 	}
 
+	//判定是否写日志
+	if logType.ToString() == "Info" && LogInfoFlag == false {
+		return
+	}
+	if logType.ToString() == "Debug" && LogDebugFlag == false {
+		return
+	}
+	if logType.ToString() == "Warn" && LogWarnFlag == false {
+		return
+	}
+	if logType.ToString() == "Error" && LogErrorFlag == false {
+		return
+	}
+	if logType.ToString() == "Fatal" && LogFatalFlag == false {
+		return
+	}
 	// 获取当前时间
 	now := time.Now()
 

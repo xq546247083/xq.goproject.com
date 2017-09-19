@@ -1,10 +1,10 @@
 package configTool
 
 import (
-	"strings"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"strings"
 )
 
 var (
@@ -50,40 +50,51 @@ var (
 
 func init() {
 	config, err = ReadConfig("config.ini")
-	checkError(err,true)
+	checkError(err, true)
 
 	NecessaryField, err = ReadStringJSONValue(config, "NecessaryField")
-	checkError(err,true)
+	checkError(err, true)
 
-	filedList := strings.Split(NecessaryField,",")
+	filedList := strings.Split(NecessaryField, ",")
 
 	//读取路径
 	LogPath, err = ReadStringJSONValue(config, "LogPath")
-	checkError(err,isExist(filedList,"LogPath"))
+	checkError(err, isExist(filedList, "LogPath"))
+	LogPath = "Log"
 
 	RPCListenAddress, err = ReadStringJSONValue(config, "RPCListenAddress")
-	checkError(err,isExist(filedList,"RPCListenAddress"))
+	checkError(err, isExist(filedList, "RPCListenAddress"))
 
 	WebListenAddress, err = ReadStringJSONValue(config, "WebListenAddress")
-	checkError(err,isExist(filedList,"WebListenAddress"))
+	checkError(err, isExist(filedList, "WebListenAddress"))
 
 	DBConnection, err = ReadStringJSONValue(config, "DBConnection")
-	checkError(err,isExist(filedList,"DBConnection"))
+	checkError(err, isExist(filedList, "DBConnection"))
 
 	IsDebug, err = ReadBoolJSONValue(config, "IsDebug")
-	checkError(err,isExist(filedList,"IsDebug"))
+	checkError(err, isExist(filedList, "IsDebug"))
+	IsDebug = false
 
 	//读取是否写日志
 	LogInfoFlag, err = ReadBoolJSONValue(config, "LogInfoFlag")
-	checkError(err,isExist(filedList,"LogInfoFlag"))
+	checkError(err, isExist(filedList, "LogInfoFlag"))
+	LogInfoFlag = false
+
 	LogDebugFlag, err = ReadBoolJSONValue(config, "LogDebugFlag")
-	checkError(err,isExist(filedList,"LogDebugFlag"))
+	checkError(err, isExist(filedList, "LogDebugFlag"))
+	LogDebugFlag = false
+
 	LogWarnFlag, err = ReadBoolJSONValue(config, "LogWarnFlag")
-	checkError(err,isExist(filedList,"LogWarnFlag"))
+	checkError(err, isExist(filedList, "LogWarnFlag"))
+	LogWarnFlag = false
+
 	LogErrorFlag, err = ReadBoolJSONValue(config, "LogErrorFlag")
-	checkError(err,isExist(filedList,"LogErrorFlag"))
+	checkError(err, isExist(filedList, "LogErrorFlag"))
+	LogErrorFlag = false
+
 	LogFatalFlag, err = ReadBoolJSONValue(config, "LogFatalFlag")
-	checkError(err,isExist(filedList,"LogFatalFlag"))
+	checkError(err, isExist(filedList, "LogFatalFlag"))
+	LogFatalFlag = false
 }
 
 //ReadConfig 读取配置文件
@@ -159,9 +170,9 @@ func ReadBoolJSONValue(config map[string]interface{}, configName string) (bool, 
 }
 
 //是否存在
-func isExist(listObj []string,obj string) bool {
-	for _,item:=range listObj{
-		if(item==obj){
+func isExist(listObj []string, obj string) bool {
+	for _, item := range listObj {
+		if item == obj {
 			return true
 		}
 	}
@@ -171,8 +182,8 @@ func isExist(listObj []string,obj string) bool {
 
 //checkError 抛出错误
 //是否抛出错误
-func checkError(err error,ifThrowError bool) {
-	if err != nil && ifThrowError{
+func checkError(err error, ifThrowError bool) {
+	if err != nil && ifThrowError {
 		panic(err)
 	}
 }
