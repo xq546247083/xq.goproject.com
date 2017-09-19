@@ -11,9 +11,6 @@ var (
 	//LogPath 日志路径
 	LogPath = "Log"
 
-	//WebMainPath 网站路径
-	WebMainPath = "WebMain"
-
 	//NecessaryField 服务器启动必要的配置字段
 	NecessaryField string
 
@@ -49,6 +46,18 @@ var (
 
 	//错误
 	err error
+
+	//WebMainPath 网站路径
+	WebMainPath = "WebMain"
+
+	//IndexPage 网站首页
+	IndexPage = "/index.html"
+
+	//Error404Page 404错误页面
+	Error404Page = "/404.html"
+
+	//Error500Page 500错误额亚明
+	Error500Page = "/500.html"
 )
 
 func init() {
@@ -63,9 +72,6 @@ func init() {
 	//读取路径
 	LogPath, err = ReadStringJSONValue(config, "LogPath")
 	checkError(err, isExist(filedList, "LogPath"))
-
-	WebMainPath, err = ReadStringJSONValue(config, "WebMainPath")
-	checkError(err, isExist(filedList, "WebMainPath"))
 
 	RPCListenAddress, err = ReadStringJSONValue(config, "RPCListenAddress")
 	checkError(err, isExist(filedList, "RPCListenAddress"))
@@ -94,6 +100,18 @@ func init() {
 
 	LogFatalFlag, err = ReadBoolJSONValue(config, "LogFatalFlag")
 	checkError(err, isExist(filedList, "LogFatalFlag"))
+
+	WebMainPath, err = ReadStringJSONValue(config, "WebMainPath")
+	checkError(err, isExist(filedList, "WebMainPath"))
+
+	IndexPage, err = ReadStringJSONValue(config, "IndexPage")
+	checkError(err, isExist(filedList, "IndexPage"))
+
+	Error404Page, err = ReadStringJSONValue(config, "Error404Page")
+	checkError(err, isExist(filedList, "Error404Page"))
+
+	Error500Page, err = ReadStringJSONValue(config, "Error500Page")
+	checkError(err, isExist(filedList, "Error500Page"))
 }
 
 //ReadConfig 读取配置文件
