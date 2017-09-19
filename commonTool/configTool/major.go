@@ -27,7 +27,7 @@ var (
 	DBConnection string
 
 	//LogInfoFlag 是否记录消息
-	LogInfoFlag = true
+	LogInfoFlag = false
 
 	//LogDebugFlag 是否记录Debug消息
 	LogDebugFlag = false
@@ -36,10 +36,10 @@ var (
 	LogWarnFlag = false
 
 	//LogErrorFlag 是否记录错误消息
-	LogErrorFlag = true
+	LogErrorFlag = false
 
 	//LogFatalFlag 是否记录致命错误消息消息
-	LogFatalFlag = true
+	LogFatalFlag = false
 
 	//读取的配置
 	config map[string]interface{}
