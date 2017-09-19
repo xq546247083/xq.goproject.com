@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"sync"
 
+	"xq.goproject.com/commonTool/configTool"
+
 	"xq.goproject.com/commonTool/logTool"
 )
 
@@ -18,8 +20,8 @@ func StartServer(wg *sync.WaitGroup, serverAddress string) {
 	logTool.Log(logTool.Info, fmt.Sprintf("Web服务器监听：%s", serverAddress))
 	fmt.Println(fmt.Sprintf("Web服务器监听：%s", serverAddress))
 
-	http.Handle("/", http.FileServer(http.Dir("/WebSite/")))
-	if err := http.ListenAndServe(serverAddress, new(handle)); err != nil {
+	httpHandle := http.FileServer(http.Dir(configTool.WebMainPath))
+	if err := http.ListenAndServe(serverAddress, httpHandle); err != nil {
 		logTool.LogObject(logTool.Error, err)
 	}
 }

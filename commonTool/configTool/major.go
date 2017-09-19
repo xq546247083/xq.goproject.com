@@ -11,6 +11,9 @@ var (
 	//LogPath 日志路径
 	LogPath string
 
+	//WebMainPath 网站路径
+	WebMainPath string
+
 	//NecessaryField 服务器启动必要的配置字段
 	NecessaryField string
 
@@ -61,6 +64,10 @@ func init() {
 	LogPath, err = ReadStringJSONValue(config, "LogPath")
 	checkError(err, isExist(filedList, "LogPath"))
 	LogPath = "Log"
+
+	WebMainPath, err = ReadStringJSONValue(config, "WebMainPath")
+	checkError(err, isExist(filedList, "WebMainPath"))
+	WebMainPath = "WebMain"
 
 	RPCListenAddress, err = ReadStringJSONValue(config, "RPCListenAddress")
 	checkError(err, isExist(filedList, "RPCListenAddress"))
