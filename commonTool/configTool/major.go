@@ -9,10 +9,10 @@ import (
 
 var (
 	//LogPath 日志路径
-	LogPath string
+	LogPath = "Log"
 
 	//WebMainPath 网站路径
-	WebMainPath string
+	WebMainPath = "WebMain"
 
 	//NecessaryField 服务器启动必要的配置字段
 	NecessaryField string
@@ -24,25 +24,25 @@ var (
 	WebListenAddress string
 
 	//IsDebug 是否测试模式
-	IsDebug bool
+	IsDebug = false
 
 	//DBConnection 数据库地址
 	DBConnection string
 
 	//LogInfoFlag 是否记录消息
-	LogInfoFlag bool
+	LogInfoFlag = true
 
 	//LogDebugFlag 是否记录Debug消息
-	LogDebugFlag bool
+	LogDebugFlag = false
 
 	//LogWarnFlag 是否记录警告消息
-	LogWarnFlag bool
+	LogWarnFlag = false
 
 	//LogErrorFlag 是否记录错误消息
-	LogErrorFlag bool
+	LogErrorFlag = true
 
 	//LogFatalFlag 是否记录致命错误消息消息
-	LogFatalFlag bool
+	LogFatalFlag = true
 
 	//读取的配置
 	config map[string]interface{}
@@ -63,11 +63,9 @@ func init() {
 	//读取路径
 	LogPath, err = ReadStringJSONValue(config, "LogPath")
 	checkError(err, isExist(filedList, "LogPath"))
-	LogPath = "Log"
 
 	WebMainPath, err = ReadStringJSONValue(config, "WebMainPath")
 	checkError(err, isExist(filedList, "WebMainPath"))
-	WebMainPath = "WebMain"
 
 	RPCListenAddress, err = ReadStringJSONValue(config, "RPCListenAddress")
 	checkError(err, isExist(filedList, "RPCListenAddress"))
@@ -80,28 +78,22 @@ func init() {
 
 	IsDebug, err = ReadBoolJSONValue(config, "IsDebug")
 	checkError(err, isExist(filedList, "IsDebug"))
-	IsDebug = false
 
 	//读取是否写日志
 	LogInfoFlag, err = ReadBoolJSONValue(config, "LogInfoFlag")
 	checkError(err, isExist(filedList, "LogInfoFlag"))
-	LogInfoFlag = false
 
 	LogDebugFlag, err = ReadBoolJSONValue(config, "LogDebugFlag")
 	checkError(err, isExist(filedList, "LogDebugFlag"))
-	LogDebugFlag = false
 
 	LogWarnFlag, err = ReadBoolJSONValue(config, "LogWarnFlag")
 	checkError(err, isExist(filedList, "LogWarnFlag"))
-	LogWarnFlag = false
 
 	LogErrorFlag, err = ReadBoolJSONValue(config, "LogErrorFlag")
 	checkError(err, isExist(filedList, "LogErrorFlag"))
-	LogErrorFlag = false
 
 	LogFatalFlag, err = ReadBoolJSONValue(config, "LogFatalFlag")
 	checkError(err, isExist(filedList, "LogFatalFlag"))
-	LogFatalFlag = false
 }
 
 //ReadConfig 读取配置文件
