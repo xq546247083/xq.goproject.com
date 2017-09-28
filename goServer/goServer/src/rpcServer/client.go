@@ -1,10 +1,6 @@
 package rpcServer
 
 import (
-	"xq.goproject.com/goServer/goServerModel/src/rpcServerObject"
-	"xq.goproject.com/commonTool/byteTool"
-	"xq.goproject.com/commonTool/intTool"
-	"xq.goproject.com/commonTool/logTool"
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
@@ -13,6 +9,11 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
+
+	"xq.goproject.com/commonTool/byteTool"
+	"xq.goproject.com/commonTool/intTool"
+	"xq.goproject.com/commonTool/logTool"
+	"xq.goproject.com/goServer/goServerModel/src/rpcServerObject"
 )
 
 const (
@@ -184,7 +185,7 @@ func (clientObj *Client) sendMessage(responseObject *rpcServerObject.ResponseObj
 	if _, err = clientObj.conn.Write(message); err != nil {
 		logTool.Log(logTool.Error, fmt.Sprintf("发送消息错误，message:%s,err:%s", message, err))
 		return
-	}else{
+	} else {
 		logTool.Log(logTool.Debug, "RPC服务器发送数据："+string(message))
 	}
 

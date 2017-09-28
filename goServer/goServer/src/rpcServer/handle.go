@@ -1,14 +1,15 @@
 package rpcServer
 
 import (
-	"xq.goproject.com/goServer/goServerModel/src/common"
-	"xq.goproject.com/goServer/goServerModel/src/rpcServerObject"
-	"xq.goproject.com/goServer/goServer/src/goroutineMap"
-	"xq.goproject.com/commonTool/logTool"
 	"encoding/json"
 	"fmt"
 	"net"
 	"time"
+
+	"xq.goproject.com/commonTool/goroutineTool"
+	"xq.goproject.com/commonTool/logTool"
+	"xq.goproject.com/goServer/goServerModel/src/common"
+	"xq.goproject.com/goServer/goServerModel/src/rpcServerObject"
 )
 
 //HandleConn 处理客户端连接
@@ -16,8 +17,8 @@ func HandleConn(conn net.Conn) {
 	clientObj := newClient(conn)
 	registerClient(clientObj)
 
-	goroutineMap.Operate("HandleConn", common.AddOperate)
-
+	goroutineTool.Operate("HandleConn", common.AddOperate)
+	defer goroutineTool.Operate("HandleConn", common.ReduceOperate)
 	//是否发送数据的通道
 	ch := make(chan bool, 1)
 	go handleSendData(clientObj, ch)
@@ -26,7 +27,6 @@ func HandleConn(conn net.Conn) {
 	defer func() {
 		clientObj.Quit()
 		unRegisterClient(clientObj.id)
-		goroutineMap.Operate("HandleConn", common.ReduceOperate)
 
 		//关闭发送数据
 		ch <- true
@@ -68,7 +68,8 @@ func handleReceiveData(clientObj *Client) {
 
 //handSendData 处理发送数据
 func handleSendData(clientObj *Client, ch chan bool) {
-	goroutineMap.Operate("handleSendData", common.AddOperate)
+	goroutineTool.Operate("handleSendData", common.AddOperate)
+	defer goroutineTool.Operate("handleSendData", common.ReduceOperate)
 
 	for {
 		select {

@@ -1,10 +1,11 @@
-package goroutineMap
+package goroutineTool
 
 import (
-	"xq.goproject.com/goServer/goServerModel/src/common"
 	"fmt"
 	"runtime"
 	"sync"
+
+	"xq.goproject.com/goServer/goServerModel/src/common"
 )
 
 var (
