@@ -3,7 +3,7 @@ package main
 import (
 	"sync"
 
-	"xq.goproject.com/commonTool/configTool"
+	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/goServer/httpServer/src/webServer"
 )
 

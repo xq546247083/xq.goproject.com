@@ -2,7 +2,7 @@ package rpcServer
 
 import (
 	"xq.goproject.com/goServer/goServerModel/src/rpcServerObject"
-	"xq.goproject.com/commonTool/logTool"
+	"xq.goproject.com/commonTools/logTool"
 	"fmt"
 )
 

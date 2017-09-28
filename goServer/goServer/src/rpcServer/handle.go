@@ -6,8 +6,8 @@ import (
 	"net"
 	"time"
 
-	"xq.goproject.com/commonTool/goroutineTool"
-	"xq.goproject.com/commonTool/logTool"
+	"xq.goproject.com/commonTools/goroutineTool"
+	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/goServer/goServerModel/src/common"
 	"xq.goproject.com/goServer/goServerModel/src/rpcServerObject"
 )

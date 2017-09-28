@@ -10,9 +10,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"xq.goproject.com/commonTool/byteTool"
-	"xq.goproject.com/commonTool/intTool"
-	"xq.goproject.com/commonTool/logTool"
+	"xq.goproject.com/commonTools/byteTool"
+	"xq.goproject.com/commonTools/intTool"
+	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/goServer/goServerModel/src/rpcServerObject"
 )
 

@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"xq.goproject.com/commonTool/httpRequestTool"
+	"xq.goproject.com/commonTools/httpRequestTool"
 	"xq.goproject.com/goServer/goServer/src/rpcServer"
 	"xq.goproject.com/goServer/goServer/src/webServer"
 	"xq.goproject.com/goServer/goServerModel/src/rpcServerObject"

@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"xq.goproject.com/commonTool/logTool"
+	"xq.goproject.com/commonTools/logTool"
 )
 
 //GetRequsetByte 获取请求的字段

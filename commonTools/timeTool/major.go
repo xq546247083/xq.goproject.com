@@ -1,7 +1,7 @@
 package timeTool
 
 import (
-	"xq.goproject.com/commonTool/stringTool"
+	"xq.goproject.com/commonTools/stringTool"
 	"fmt"
 	"strconv"
 	"strings"

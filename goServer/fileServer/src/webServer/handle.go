@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"xq.goproject.com/commonTool/logTool"
+	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
 

@@ -6,7 +6,7 @@ import (
 	"os"
 	"bytes"
 
-	"xq.goproject.com/commonTool/fileTool"
+	"xq.goproject.com/commonTools/fileTool"
 )
 
 //保存文件

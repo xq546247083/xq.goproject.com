@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"xq.goproject.com/commonTool/configTool"
+	"xq.goproject.com/commonTools/configTool"
 )
 
 //读取配置数据

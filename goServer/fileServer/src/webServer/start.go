@@ -1,7 +1,7 @@
 package webServer
 
 import (
-	"xq.goproject.com/commonTool/logTool"
+	"xq.goproject.com/commonTools/logTool"
 	"fmt"
 	"net/http"
 	"sync"

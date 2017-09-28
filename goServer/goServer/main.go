@@ -4,7 +4,7 @@ import (
 	_ "xq.goproject.com/goServer/goServer/src/bll"
 	"xq.goproject.com/goServer/goServer/src/rpcServer"
 	"xq.goproject.com/goServer/goServer/src/webServer"
-	"xq.goproject.com/commonTool/configTool"
+	"xq.goproject.com/commonTools/configTool"
 	"sync"
 )
 

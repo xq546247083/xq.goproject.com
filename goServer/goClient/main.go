@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"xq.goproject.com/commonTool/intTool"
+	"xq.goproject.com/commonTools/intTool"
 	"xq.goproject.com/goServer/goServerModel/src/rpcServerObject"
 )
 

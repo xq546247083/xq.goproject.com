@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"sync"
 
-	"xq.goproject.com/commonTool/logTool"
+	"xq.goproject.com/commonTools/logTool"
 )
 
 //StartServer 开启服务

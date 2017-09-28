@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"xq.goproject.com/commonTool/httpRequestTool"
+	"xq.goproject.com/commonTools/httpRequestTool"
 	"xq.goproject.com/goServer/fileServer/src/webServer"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )

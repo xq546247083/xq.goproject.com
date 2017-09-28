@@ -11,10 +11,10 @@ import (
 	"strings"
 	"time"
 
-	"xq.goproject.com/commonTool/configTool"
-	"xq.goproject.com/commonTool/fileTool"
-	"xq.goproject.com/commonTool/stringTool"
-	"xq.goproject.com/commonTool/timeTool"
+	"xq.goproject.com/commonTools/configTool"
+	"xq.goproject.com/commonTools/fileTool"
+	"xq.goproject.com/commonTools/stringTool"
+	"xq.goproject.com/commonTools/timeTool"
 )
 
 var (

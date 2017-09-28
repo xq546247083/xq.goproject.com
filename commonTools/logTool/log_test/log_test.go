@@ -1,7 +1,7 @@
 package logToolTest
 
 import (
-	"xq.goproject.com/commonTool/logTool"
+	"xq.goproject.com/commonTools/logTool"
 	"testing"
 )
 

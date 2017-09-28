@@ -1,8 +1,8 @@
 package dal
 
 import "github.com/jinzhu/gorm"
-import "xq.goproject.com/commonTool/configTool"
-import "xq.goproject.com/commonTool/logTool"
+import "xq.goproject.com/commonTools/configTool"
+import "xq.goproject.com/commonTools/logTool"
 import "fmt"
 
 var (
