@@ -7,7 +7,6 @@ import (
 	"xq.goproject.com/commonTool/httpRequestTool"
 	"xq.goproject.com/goServer/goServer/src/rpcServer"
 	"xq.goproject.com/goServer/goServer/src/webServer"
-	"xq.goproject.com/goServer/goServerModel/src/player"
 	"xq.goproject.com/goServer/goServerModel/src/rpcServerObject"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
@@ -29,13 +28,10 @@ func Login(requestObj *rpcServerObject.RequestObject) *rpcServerObject.ResponseO
 		responseObj.Data = "转换client失败"
 	}
 
-	//给玩家注册客户端id
-	player := player.NewEmptyPlayer("1dsad", clientObj.GetID())
-
 	go func() {
 		for {
 			time.Sleep(10 * time.Second)
-			clientObj := rpcServer.GetClient(player.ClientID)
+			clientObj := rpcServer.GetClient(clientObj.GetID())
 			responseObj.SetResultStatus(rpcServerObject.Success)
 			responseObj.Data = "推送消息"
 
@@ -52,13 +48,6 @@ func WebLogin(requestObj *http.Request) *webServerObject.ResponseObject {
 	responseObj.SetResultStatus(webServerObject.Success)
 	data, _ := httpRequestTool.GetRequsetByte(requestObj)
 	responseObj.Data = string(data)
-
-	return responseObj
-}
-
-//Beat 心跳
-func Beat(playerObj *player.Player) *rpcServerObject.ResponseObject {
-	responseObj := rpcServerObject.NewResponseObject()
 
 	return responseObj
 }
