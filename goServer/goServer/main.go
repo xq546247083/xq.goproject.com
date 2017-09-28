@@ -1,11 +1,14 @@
 package main
 
 import (
-	_ "xq.goproject.com/goServer/goServer/src/bll"
+	"sync"
+
+	"xq.goproject.com/commonTools/configTool"
+	"xq.goproject.com/commonTools/initDataTool"
 	"xq.goproject.com/goServer/goServer/src/rpcServer"
 	"xq.goproject.com/goServer/goServer/src/webServer"
-	"xq.goproject.com/commonTools/configTool"
-	"sync"
+
+	_ "xq.goproject.com/goServer/goServer/src/bll"
 )
 
 var (
@@ -17,8 +20,10 @@ func init() {
 }
 
 func main() {
+	initDataTool.InitData()
+
 	//开启rpc服务
-	go rpcServer.StartServer(&wg,  configTool.RPCListenAddress)
+	go rpcServer.StartServer(&wg, configTool.RPCListenAddress)
 
 	//开启web服务
 	go webServer.StartServer(&wg, configTool.WebListenAddress)
