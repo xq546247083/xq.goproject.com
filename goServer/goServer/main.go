@@ -20,6 +20,7 @@ func init() {
 }
 
 func main() {
+	//调用初始化数据
 	initDataTool.InitData()
 
 	//开启rpc服务
