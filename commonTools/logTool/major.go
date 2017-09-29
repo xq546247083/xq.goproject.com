@@ -147,7 +147,6 @@ func Log(logType LogType, contentStr ...string) {
 			}
 			content += stringTool.GetNewLine()
 			content += fmt.Sprintf("skip = %d, file = %s, line = %d", skip, file, line)
-
 		}
 	}
 

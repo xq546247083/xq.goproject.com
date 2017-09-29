@@ -4,7 +4,7 @@ import (
 	"sync"
 
 	"xq.goproject.com/commonTools/configTool"
-	"xq.goproject.com/commonTools/initDataTool"
+	"xq.goproject.com/commonTools/initTool"
 	"xq.goproject.com/goServer/goServer/src/rpcServer"
 	"xq.goproject.com/goServer/goServer/src/webServer"
 
@@ -20,8 +20,8 @@ func init() {
 }
 
 func main() {
-	//调用初始化数据
-	initDataTool.InitData()
+	//调用初始化和检测数据
+	initTool.InitAndCheckData()
 
 	//开启rpc服务
 	go rpcServer.StartServer(&wg, configTool.RPCListenAddress)
