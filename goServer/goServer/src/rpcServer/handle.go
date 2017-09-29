@@ -39,7 +39,7 @@ func HandleConn(conn net.Conn) {
 		//阻塞读取数据
 		len, err := conn.Read(readData)
 		if err != nil {
-			logTool.Log(logTool.Error, fmt.Sprintf("接受消息出错,客户端为：%v\n，错误：%s\n，消息长度：%d\n", clientObj, err, len))
+			//logTool.Log(logTool.Error, fmt.Sprintf("接受消息出错,客户端为：%v\n，错误：%s\n，消息长度：%d\n", clientObj, err, len))
 			break
 		}
 
