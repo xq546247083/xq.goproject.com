@@ -4,20 +4,17 @@ var (
 	//LogPath 日志路径
 	LogPath = "Log"
 
-	//NecessaryField 服务器启动必要的配置字段
-	NecessaryField string
-
 	//RPCListenAddress 监听地址
 	RPCListenAddress string
 
 	//WebListenAddress 监听地址
 	WebListenAddress string
 
-	//IsDebug 是否测试模式
-	IsDebug = false
-
 	//DBConnection 数据库地址
 	DBConnection string
+
+	//IsDebug 是否测试模式
+	IsDebug = false
 
 	//LogInfoFlag 是否记录消息
 	LogInfoFlag = false
@@ -34,12 +31,6 @@ var (
 	//LogFatalFlag 是否记录致命错误消息消息
 	LogFatalFlag = false
 
-	//读取的配置
-	xmlConfig *XmlConfig
-
-	//错误
-	err error
-
 	//WebMainPath 网站路径
 	WebMainPath = "WebMain"
 
@@ -51,6 +42,12 @@ var (
 
 	//Error500Page 500错误额亚明
 	Error500Page = "/500.html"
+
+	//读取的配置
+	xmlConfig *XmlConfig
+
+	//错误
+	err error
 )
 
 func init() {
