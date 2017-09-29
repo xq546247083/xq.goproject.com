@@ -8,8 +8,8 @@ import (
 	"xq.goproject.com/goServer/goServer/src/rpcServer"
 	"xq.goproject.com/goServer/goServer/src/webServer"
 
+	_ "github.com/go-sql-driver/mysql"
 	_ "xq.goproject.com/goServer/goServer/src/bll"
-	_ "xq.goproject.com/goServer/goServer/src/dal"
 )
 
 var (
