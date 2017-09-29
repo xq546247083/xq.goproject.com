@@ -2,7 +2,7 @@
 	<!--基础配置-->
 	<BaseConfig>
 		<!--WebServer监听的地址-->
-		<WebListenAddress>:8881</WebListenAddress>
+		<WebListenAddress>:8882</WebListenAddress>
 	</BaseConfig>
 
 	<!--日志配置-->
