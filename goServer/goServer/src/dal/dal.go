@@ -1,9 +1,12 @@
 package dal
 
-import "github.com/jinzhu/gorm"
-import "xq.goproject.com/commonTools/configTool"
-import "xq.goproject.com/commonTools/logTool"
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/jinzhu/gorm"
+	"xq.goproject.com/commonTools/configTool"
+	"xq.goproject.com/commonTools/logTool"
+)
 
 var (
 	dbObj *gorm.DB
@@ -16,7 +19,6 @@ func init() {
 		logTool.Log(logTool.Error, fmt.Sprintf("连接数据库错误：%s", err))
 		panic(fmt.Errorf("连接数据库错误：%s", err))
 	}
-
 }
 
 //GetDB 获取数据库

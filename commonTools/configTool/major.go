@@ -1,12 +1,5 @@
 package configTool
 
-import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"strings"
-)
-
 var (
 	//LogPath 日志路径
 	LogPath = "Log"
@@ -42,7 +35,7 @@ var (
 	LogFatalFlag = false
 
 	//读取的配置
-	config map[string]interface{}
+	xmlConfig *XmlConfig
 
 	//错误
 	err error
@@ -61,140 +54,56 @@ var (
 )
 
 func init() {
-	config, err = ReadConfig("config.ini")
+	// 读取配置文件
+	xmlConfig = NewXmlConfig()
+	err = xmlConfig.LoadFromFile("config.xml")
 	checkError(err, true)
 
-	NecessaryField, err = ReadStringJSONValue(config, "NecessaryField")
-	checkError(err, true)
+	//读取服务器配置端口
+	RPCListenAddress, err = xmlConfig.String("root/BaseConfig/RPCListenAddress", "")
+	checkError(err, false)
 
-	filedList := strings.Split(NecessaryField, ",")
+	WebListenAddress, err = xmlConfig.String("root/BaseConfig/WebListenAddress", "")
+	checkError(err, false)
 
-	//读取路径
-	LogPath, err = ReadStringJSONValue(config, "LogPath")
-	checkError(err, isExist(filedList, "LogPath"))
+	//读取数据库配置
+	DBConnection, err = xmlConfig.String("root/DBConnection/WebServer", "")
+	checkError(err, false)
 
-	RPCListenAddress, err = ReadStringJSONValue(config, "RPCListenAddress")
-	checkError(err, isExist(filedList, "RPCListenAddress"))
+	//读取日志配置
+	IsDebug, err = xmlConfig.Bool("root/LogConfig/IsDebug", "")
+	checkError(err, false)
 
-	WebListenAddress, err = ReadStringJSONValue(config, "WebListenAddress")
-	checkError(err, isExist(filedList, "WebListenAddress"))
+	LogPath, err = xmlConfig.String("root/LogConfig/LogPath", "")
+	checkError(err, false)
 
-	DBConnection, err = ReadStringJSONValue(config, "DBConnection")
-	checkError(err, isExist(filedList, "DBConnection"))
+	LogInfoFlag, err = xmlConfig.Bool("root/LogConfig/LogInfoFlag", "")
+	checkError(err, false)
 
-	IsDebug, err = ReadBoolJSONValue(config, "IsDebug")
-	checkError(err, isExist(filedList, "IsDebug"))
+	LogDebugFlag, err = xmlConfig.Bool("root/LogConfig/LogDebugFlag", "")
+	checkError(err, false)
 
-	//读取是否写日志
-	LogInfoFlag, err = ReadBoolJSONValue(config, "LogInfoFlag")
-	checkError(err, isExist(filedList, "LogInfoFlag"))
+	LogWarnFlag, err = xmlConfig.Bool("root/LogConfig/LogWarnFlag", "")
+	checkError(err, false)
 
-	LogDebugFlag, err = ReadBoolJSONValue(config, "LogDebugFlag")
-	checkError(err, isExist(filedList, "LogDebugFlag"))
+	LogErrorFlag, err = xmlConfig.Bool("root/LogConfig/LogErrorFlag", "")
+	checkError(err, false)
 
-	LogWarnFlag, err = ReadBoolJSONValue(config, "LogWarnFlag")
-	checkError(err, isExist(filedList, "LogWarnFlag"))
+	LogFatalFlag, err = xmlConfig.Bool("root/LogConfig/LogFatalFlag", "")
+	checkError(err, false)
 
-	LogErrorFlag, err = ReadBoolJSONValue(config, "LogErrorFlag")
-	checkError(err, isExist(filedList, "LogErrorFlag"))
+	//读取网站配置
+	WebMainPath, err = xmlConfig.String("root/WebConfig/WebMainPath", "")
+	checkError(err, false)
 
-	LogFatalFlag, err = ReadBoolJSONValue(config, "LogFatalFlag")
-	checkError(err, isExist(filedList, "LogFatalFlag"))
+	IndexPage, err = xmlConfig.String("root/WebConfig/IndexPage", "")
+	checkError(err, false)
 
-	WebMainPath, err = ReadStringJSONValue(config, "WebMainPath")
-	checkError(err, isExist(filedList, "WebMainPath"))
+	Error404Page, err = xmlConfig.String("root/WebConfig/Error404Page", "")
+	checkError(err, false)
 
-	IndexPage, err = ReadStringJSONValue(config, "IndexPage")
-	checkError(err, isExist(filedList, "IndexPage"))
-
-	Error404Page, err = ReadStringJSONValue(config, "Error404Page")
-	checkError(err, isExist(filedList, "Error404Page"))
-
-	Error500Page, err = ReadStringJSONValue(config, "Error500Page")
-	checkError(err, isExist(filedList, "Error500Page"))
-}
-
-//ReadConfig 读取配置文件
-func ReadConfig(path string) (map[string]interface{}, error) {
-	readByte, error := ioutil.ReadFile(path)
-	if error != nil {
-		return nil, fmt.Errorf("读取配置文件(%s)出错:%s", path, error)
-	}
-
-	config := make(map[string]interface{})
-	if error = json.Unmarshal(readByte, &config); error != nil {
-		return nil, fmt.Errorf("序列化配置文件错:%s", error)
-	}
-
-	return config, nil
-}
-
-//ReadIntJSONValue 从config配置中获取int类型的配置值
-// config：从config文件中反序列化出来的map对象
-// configName：配置名称
-// 返回值：
-// 配置值
-// 错误对象
-func ReadIntJSONValue(config map[string]interface{}, configName string) (int, error) {
-	configValue, ok := config[configName]
-	if !ok {
-		return 0, fmt.Errorf("不存在名为%s的配置或配置为空", configName)
-	}
-	configValueFloat, ok := configValue.(float64)
-	if !ok {
-		return 0, fmt.Errorf("%s必须为int型", configName)
-	}
-
-	return int(configValueFloat), nil
-}
-
-//ReadStringJSONValue 从config配置中获取string类型的配置值
-// config：从config文件中反序列化出来的map对象
-// configName：配置名称
-// 返回值：
-// 配置值
-// 错误对象
-func ReadStringJSONValue(config map[string]interface{}, configName string) (string, error) {
-	configValue, ok := config[configName]
-	if !ok {
-		return "", fmt.Errorf("不存在名为%s的配置或配置为空", configName)
-	}
-	configValueString, ok := configValue.(string)
-	if !ok {
-		return "", fmt.Errorf("%s必须为string型", configName)
-	}
-
-	return configValueString, nil
-}
-
-//ReadBoolJSONValue 从config配置中获取string类型的配置值
-// config：从config文件中反序列化出来的map对象
-// configName：配置名称
-// 返回值：
-// 配置值
-// 错误对象
-func ReadBoolJSONValue(config map[string]interface{}, configName string) (bool, error) {
-	configValue, ok := config[configName]
-	if !ok {
-		return false, fmt.Errorf("不存在名为%s的配置或配置为空", configName)
-	}
-	configValueBool, ok := configValue.(bool)
-	if !ok {
-		return false, fmt.Errorf("%s必须为bool型", configName)
-	}
-
-	return configValueBool, nil
-}
-
-//是否存在
-func isExist(listObj []string, obj string) bool {
-	for _, item := range listObj {
-		if item == obj {
-			return true
-		}
-	}
-
-	return false
+	Error500Page, err = xmlConfig.String("root/WebConfig/Error500Page", "")
+	checkError(err, false)
 }
 
 //checkError 抛出错误

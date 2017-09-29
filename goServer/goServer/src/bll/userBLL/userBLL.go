@@ -1,8 +1,6 @@
 package userBLL
 
 import (
-	"errors"
-
 	"xq.goproject.com/commonTools/initTool"
 )
 
@@ -16,5 +14,5 @@ func initData() error {
 }
 
 func checkData() []error {
-	return []error{errors.New("s"), errors.New("s121")}
+	return nil
 }
