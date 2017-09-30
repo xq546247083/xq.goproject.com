@@ -26,13 +26,13 @@ _testmain.go
 debug
 Debug
 DEBUG
-goClient
+goClient.linux
 goClient.exe
-fileServer
+fileServer.linux
 fileServer.exe
-goServer
+goServer.linux
 goServer.exe
-httpServer
+httpServer.linux
 httpServer.exe
 Log
 LOG
