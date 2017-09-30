@@ -1,8 +1,6 @@
 package webServer
 
 import (
-	"net/http"
-
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
 
@@ -12,13 +10,13 @@ type handler struct {
 	messageType string
 
 	// 方法定义
-	handlerFunc func(*http.Request) *webServerObject.ResponseObject
+	handlerFunc func(*webServerObject.RequestObject) *webServerObject.ResponseObject
 }
 
 // 创建新的请求方法对象
 // _messageType：消息类型
 // _handlerFunc：方法定义
-func newHandler(_messageType string, _handlerFunc func(*http.Request) *webServerObject.ResponseObject) *handler {
+func newHandler(_messageType string, _handlerFunc func(*webServerObject.RequestObject) *webServerObject.ResponseObject) *handler {
 	return &handler{
 		messageType: _messageType,
 		handlerFunc: _handlerFunc,

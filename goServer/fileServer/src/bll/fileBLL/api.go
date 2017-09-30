@@ -2,9 +2,7 @@ package fileBLL
 
 import (
 	"fmt"
-	"net/http"
 
-	"xq.goproject.com/commonTools/httpRequestTool"
 	"xq.goproject.com/goServer/fileServer/src/webServer"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
@@ -20,14 +18,14 @@ func init() {
 }
 
 // 上传文件
-func uploadFile(requestObj *http.Request) *webServerObject.ResponseObject {
+func uploadFile(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
 	responseObj.SetResultStatus(webServerObject.Success)
 
 	//从请求当中判断方法
-	if requestObj.Method == "POST" {
+	if requestObj.HTTPRequest.Method == "POST" {
 		//获取文件内容 要这样获取
-		file, head, err := requestObj.FormFile("file")
+		file, head, err := requestObj.HTTPRequest.FormFile("file")
 		if err != nil {
 			responseObj.SetResultStatus(webServerObject.DataError)
 			return responseObj
@@ -35,15 +33,15 @@ func uploadFile(requestObj *http.Request) *webServerObject.ResponseObject {
 		defer file.Close()
 
 		//获取上传用户和时间
-		userName := requestObj.FormValue("userName")
-		picName := requestObj.FormValue("picName")
-		uploadTime := requestObj.FormValue("uploadTime")
+		userName := requestObj.HTTPRequest.FormValue("userName")
+		picName := requestObj.HTTPRequest.FormValue("picName")
+		uploadTime := requestObj.HTTPRequest.FormValue("uploadTime")
 		if userName == "" || uploadTime == "" {
 			responseObj.SetResultStatus(webServerObject.DataError)
 			return responseObj
 		}
 
-		errTwo := saveFile(fmt.Sprintf("%s_%s_%s_%s", userName,picName, uploadTime, head.Filename), file)
+		errTwo := saveFile(fmt.Sprintf("%s_%s_%s_%s", userName, picName, uploadTime, head.Filename), file)
 		if errTwo != nil {
 			responseObj.SetResultStatus(webServerObject.SaveFileFail)
 			return responseObj
@@ -54,11 +52,8 @@ func uploadFile(requestObj *http.Request) *webServerObject.ResponseObject {
 }
 
 //下载文件
-func downFile(requestObj *http.Request) *webServerObject.ResponseObject {
+func downFile(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
-	responseObj.SetResultStatus(webServerObject.Success)
-	data, _ := httpRequestTool.GetRequsetByte(requestObj)
-	responseObj.Data = string(data)
 
 	return responseObj
 }

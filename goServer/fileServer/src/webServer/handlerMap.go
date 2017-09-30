@@ -2,7 +2,6 @@ package webServer
 
 import (
 	"fmt"
-	"net/http"
 
 	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
@@ -16,7 +15,7 @@ var (
 //RegisterHandler 注册方法
 // methodName:调用方法全名
 // handlerFunc：方法定义
-func RegisterHandler(methodName string, handlerFunc func(*http.Request) *webServerObject.ResponseObject) {
+func RegisterHandler(methodName string, handlerFunc func(*webServerObject.RequestObject) *webServerObject.ResponseObject) {
 	if _, exists := handlerMap[methodName]; exists {
 		panic(fmt.Sprintf("%s已经存在，请重新取名", methodName))
 	}
@@ -26,7 +25,7 @@ func RegisterHandler(methodName string, handlerFunc func(*http.Request) *webServ
 }
 
 //调用方法
-func callFunction(requestURI string, requestObj *http.Request) *webServerObject.ResponseObject {
+func callFunction(requestURI string, requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
 
 	handlerObj, exists := getHandler(requestURI)
