@@ -43,6 +43,18 @@ var (
 	//Error500Page 500错误额亚明
 	Error500Page = "/500.html"
 
+	//PwdExpiredTime 密码过期时间
+	PwdExpiredTime = 1
+
+	//EmailHost 邮箱主机
+	EmailHost = "smtp.qq.com"
+
+	//EmailAddress 邮箱地址
+	EmailAddress = "546247083@qq.com"
+
+	//EmailPass 邮箱密码
+	EmailPass = "fhdwnwhjcieobdja"
+
 	//读取的配置
 	xmlConfig *XmlConfig
 
@@ -100,6 +112,19 @@ func init() {
 	checkError(err, false)
 
 	Error500Page, err = xmlConfig.String("root/WebConfig/Error500Page", "")
+	checkError(err, false)
+
+	//读取网站配置
+	PwdExpiredTime, err = xmlConfig.Int("root/WebSiteConfig/PwdExpiredTime", "")
+	checkError(err, false)
+
+	EmailHost, err = xmlConfig.String("root/WebSiteConfig/EmailHost", "")
+	checkError(err, false)
+
+	EmailAddress, err = xmlConfig.String("root/WebSiteConfig/EmailAddress", "")
+	checkError(err, false)
+
+	EmailPass, err = xmlConfig.String("root/WebSiteConfig/EmailPass", "")
 	checkError(err, false)
 }
 

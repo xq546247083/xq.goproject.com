@@ -1,10 +1,14 @@
 package sysUser
 
 import (
+	"time"
+
+	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/commonTools/initTool"
 	"xq.goproject.com/commonTools/stringTool"
 	"xq.goproject.com/goServer/goServer/src/dal"
 	"xq.goproject.com/goServer/goServer/src/model"
+	"xq.goproject.com/goServer/goServerModel/src/consts"
 )
 
 var (
@@ -52,4 +56,46 @@ func GetItemByUserNameOrEmail(userNameOrEmail string) (sysUser *model.SysUser) {
 	}
 
 	return nil
+}
+
+//UpdatePwdExpiredTime 更新过期时间
+func UpdatePwdExpiredTime(userNameOrEmail string) {
+	sysUser := GetItemByUserNameOrEmail(userNameOrEmail)
+	if sysUser != nil {
+		//修改密码过期时间
+		duration := time.Duration(int(time.Hour) * configTool.PwdExpiredTime)
+		sysUser.PwdExpiredTime = sysUser.PwdExpiredTime.Add(duration)
+
+		//保存数据
+		dal.SysUserDALObj.SaveInfo(sysUser)
+	}
+}
+
+//CheckPwdExpiredTime 检测密码过期时间
+func CheckPwdExpiredTime(userNameOrEmail string) bool {
+	sysUser := GetItemByUserNameOrEmail(userNameOrEmail)
+	if sysUser != nil {
+		return sysUser.PwdExpiredTime.Unix() < time.Now().Unix()
+	}
+
+	return false
+}
+
+// 组装数据返回
+func assembleToClient(sysUser *model.SysUser) map[string]interface{} {
+	clientInfo := make(map[string]interface{})
+
+	clientInfo[consts.UserName] = sysUser.UserName
+	clientInfo[consts.FullName] = sysUser.FullName
+	clientInfo[consts.Sex] = sysUser.Sex
+	clientInfo[consts.Phone] = sysUser.Phone
+	clientInfo[consts.Email] = sysUser.Email
+	clientInfo[consts.LastLoginTime] = sysUser.LastLoginTime
+	clientInfo[consts.LastLoginIP] = sysUser.LastLoginIP
+	clientInfo[consts.LoginCount] = sysUser.LoginCount
+	clientInfo[consts.Status] = sysUser.Status
+	clientInfo[consts.CreateTime] = sysUser.CreateTime
+	clientInfo[consts.PwdExpiredTime] = sysUser.PwdExpiredTime.Unix()
+
+	return clientInfo
 }

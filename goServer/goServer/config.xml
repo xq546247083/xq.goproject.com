@@ -25,6 +25,18 @@
 		<LogFatalFlag>true</LogFatalFlag>
 	</LogConfig>
 
+	<!--网站配置-->
+	<WebSiteConfig>
+		<!--密码过期时间-->
+		<PwdExpiredTime>1</PwdExpiredTime>
+		<!--邮箱主机-->
+		<EmailHost>smtp.qq.com</EmailHost>
+		<!--邮箱地址-->
+		<EmailAddress>546247083@qq.com</EmailAddress>
+		<!--邮箱密码-->
+		<EmailPass>fhdwnwhjcieobdja</EmailPass>
+	</WebSiteConfig>
+
 	<!--数据库连接字符串-->
 	<DBConnection>
 		<WebServer MaxOpenConns="10" MaxIdleConns="5">
