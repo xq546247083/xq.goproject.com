@@ -21,12 +21,15 @@ func main() {
 }
 
 func testWebServer() {
-	requestObj := make(map[string]string)
+	requestObj := make(map[string]interface{})
 	requestObj["UserName"] = "xiaoqiang"
+	requestObj["BlogType"] = 2
+	requestObj["Status"] = 1
+	requestObj["TagInfo"] = ""
 	requestByte, _ := json.Marshal(requestObj)
 	requestStr := string(requestByte)
 
-	response, err := http.Post("http://10.255.0.3:8883/API/SysMenu/GetInfo", "application/x-www-form-urlencoded", strings.NewReader(requestStr))
+	response, err := http.Post("http://10.255.0.3:8883/API/UBlog/GetBlogList", "application/x-www-form-urlencoded", strings.NewReader(requestStr))
 	if err != nil {
 		fmt.Println(err)
 	}
