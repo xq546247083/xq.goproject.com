@@ -108,6 +108,7 @@ func assembleToClient(sysUser *model.SysUser, blogTypeID int32, status int32, ta
 		resultList = append(resultList, tempList...)
 	}
 
+	//组装数据
 	for _, uBlog := range resultList {
 		clientInfo := make(map[string]interface{})
 

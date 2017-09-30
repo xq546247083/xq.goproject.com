@@ -8,7 +8,12 @@ import (
 )
 
 var (
+	//用户数据缓存
 	sysUserMap = make(map[string]*model.SysUser)
+
+	//用户发送邮箱缓存
+	//key:邮箱
+	sysUserEmailMap = make(map[string]*model.SysUserEmail)
 )
 
 func init() {
