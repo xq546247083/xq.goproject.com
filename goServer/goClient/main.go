@@ -16,7 +16,31 @@ import (
 
 func main() {
 	testWebServer()
+	return
+	testRPCServer()
+}
 
+func testWebServer() {
+	requestObj := make(map[string]string)
+	requestObj["UserName"] = "xiaoqiang"
+	requestByte, _ := json.Marshal(requestObj)
+	requestStr := string(requestByte)
+
+	response, err := http.Post("http://10.255.0.3:8883/API/SysMenu/GetInfo", "application/x-www-form-urlencoded", strings.NewReader(requestStr))
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	defer response.Body.Close()
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		// handle error
+	}
+
+	fmt.Println(string(body))
+}
+
+func testRPCServer() {
 	conn, err := net.DialTimeout("tcp", "10.255.0.3:8884", 2*time.Second)
 	if err != nil {
 		fmt.Printf("Dial Error: %s", err)
@@ -56,24 +80,4 @@ func main() {
 
 		fmt.Println(string(readData[:len]))
 	}
-}
-
-func testWebServer() {
-	requestObj := make(map[string]string)
-	requestObj["name"] = "xxxx"
-	requestByte, _ := json.Marshal(requestObj)
-	requestStr := string(requestByte)
-
-	response, err := http.Post("http://10.255.0.3:8883/API/PlayerLogin", "application/x-www-form-urlencoded", strings.NewReader(requestStr))
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		// handle error
-	}
-
-	fmt.Println(string(body))
 }

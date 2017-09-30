@@ -108,6 +108,63 @@ const (
 
 	//保存文件失败
 	SaveFileFail
+
+	// 密码已过期
+	LoginIsOver
+
+	// 密码错误
+	PwdError
+
+	// 用户不存在
+	UserIsNotExist
+
+	// 用户名已被注册
+	UserNameIsExist
+
+	// 用户名必须以字母开头
+	UserNameMustBeginWithLetter
+
+	// 用户名只能由字母和数字构成
+	UserNameMustBeLetterOrNum
+
+	// 密码不能为空
+	UserPasswordCanBeNotEmpty
+
+	// 邮箱不能为空
+	EmailCanBeNotEmpty
+
+	// 邮箱格式错误
+	EmailStyleIsError
+
+	// 邮箱已被注册
+	EmailAlreadyExist
+
+	// 用户名不能为空
+	UserNameCantBeEmpty
+
+	// 电话号码格式错误
+	PhoneStyleIsError
+
+	// 请输入密码
+	PlsEnterPassword
+
+	// 请输入验证码
+	PlsEnterIdentifyCode
+
+	// 该邮箱还未发送验证码
+	IdentifyCodeNoThisEmail
+
+	// 验证码错误
+	IdentifyCodeIsError
+
+	// 发送邮件失败，请检查邮箱
+	SendEmailFail
+
+	// 发送邮件过快，请稍后重试
+	SendEmailIsFast
+
+	// 该邮箱未注册
+	EmailIsNotRegister
 )
 
 // 定义所有的响应结果的状态值所对应的字符串描述信息，如果要增加状态枚举，则此处也要相应地增加
@@ -129,7 +186,7 @@ var status = []string{
 	"APINotDefined",
 	"LoginOnAnotherDevice",
 	"NameError",
-	"UnionIdError",
+	"UnionIDError",
 	"ContainForbiddenWord",
 	"ParamIsEmpty",
 	"ParamNotMatch",
@@ -144,4 +201,24 @@ var status = []string{
 	"ParamInValid",
 	"NoTargetMethod",
 	"ReturnValueIsValid",
+	"SaveFileFail",
+	"LoginIsOver",
+	"PwdError",
+	"UserIsNotExist",
+	"UserNameIsExist",
+	"UserNameMustBeginWithLetter",
+	"UserNameMustBeLetterOrNum",
+	"UserPasswordCanBeNotEmpty",
+	"EmailCanBeNotEmpty",
+	"EmailStyleIsError",
+	"EmailAlreadyExist",
+	"UserNameCantBeEmpty",
+	"PhoneStyleIsError",
+	"PlsEnterPassword",
+	"PlsEnterIdentifyCode",
+	"IdentifyCodeNoThisEmail",
+	"IdentifyCodeIsError",
+	"SendEmailFail",
+	"SendEmailIsFast",
+	"EmailIsNotRegister",
 }

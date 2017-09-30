@@ -8,6 +8,7 @@ import (
 	"xq.goproject.com/commonTools/stringTool"
 	"xq.goproject.com/goServer/goServer/src/dal"
 	"xq.goproject.com/goServer/goServer/src/model"
+	"xq.goproject.com/goServer/goServerModel/src/consts"
 )
 
 var (
@@ -70,7 +71,6 @@ func getMenuByUser(sysUser *model.SysUser) []*model.SysMenu {
 			}
 		}
 	}
-
 	return resultList
 }
 
@@ -133,4 +133,12 @@ func menuScript(sysMenus []*model.SysMenu, allSysMenus []*model.SysMenu) string 
 	}
 
 	return result
+}
+
+// 组装数据返回
+func assembleToClient(sysUser *model.SysUser) map[string]interface{} {
+	clientInfo := make(map[string]interface{})
+	clientInfo[consts.MenuScript] = getMenuScript(sysUser)
+
+	return clientInfo
 }

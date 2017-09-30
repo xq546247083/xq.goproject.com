@@ -58,7 +58,7 @@ func StringToInt32(str string) int32 {
 
 // SplitToInt32List 切割字符串为int32数组
 func SplitToInt32List(str string) []int32 {
-	stringArray := strings.Split("", "")
+	stringArray := strings.Split(str, ",")
 
 	result := make([]int32, 0, len(stringArray))
 	for _, item := range stringArray {
