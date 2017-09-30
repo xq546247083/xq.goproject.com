@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="js  js">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>接口文档</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!-- 响应式布局引入-->
+    <link href="../ReferenceFiles/CSS/styles.css" rel="stylesheet" />
+    <script src="../ReferenceFiles/JS/ga.js"></script>
+    <script src="../ReferenceFiles/JS/responsive-nav.js"></script>
+    <!-- jquery引入-->
+    <script src="../ReferenceFiles/jquery-3.2.1.js"></script>
+    <script type="text/javascript">
+        var classData;
+        $(document).ready(function () {
+            GetDescribe();
+        });
+
+        //获取接口文档
+        function GetDescribe() {
+            alert(1);
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "../API/GetMethodDescribe.ashx",
+                data: "Operation=GetInvokeClassDescribe",
+                success: function (data) {
+                    classData = data;
+                    LoadClass();
+                },
+                error: function (request, textStatus, errorThrown) {
+
+                }
+            });
+        }
+
+        //处理数据
+        function LoadClass() {
+            var classUlContent = "";
+            for (var i = 0; i < classData.length; i++) {
+                classUlContent += '<li><a onclick="LiClick(this)" href="#" >' + classData[i].Name + '</a></li>';
+            }
+
+            $("#classUl").html(classUlContent);
+            GetClassContent(classData[0].Name);
+        }
+
+        //li点击
+        function LiClick(obj) {
+            GetClassContent($(obj).html());
+        }
+
+        function GetClassContent(className) {
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "../API/GetMethodDescribe.ashx",
+                data: "Operation=GetInvokeMethodDescribe&ClassName=" + className,
+                success: function (data) {
+                    LoadClassContent(className, data);
+                },
+                error: function (request, textStatus, errorThrown) {
+                    alert(request.status + "-" + textStatus);
+                }
+            });
+        }
+
+        function LoadClassContent(className, data) {
+            for (var i = 0; i < classData.length; i++) {
+                if (classData[i].Name == className) {
+                    $("#methodName").html(className);
+                    $("#creatorDecsribe").html("创建信息：" + classData[i].Creator + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + classData[i].CreateDate);
+                    $("#decsribe").html("说明：" + classData[i].Describe);
+                }
+            }
+            var methoContentStr = "";
+            for (var j = 0; j < data.length; j++) {
+                methoContentStr +=
+                    '<tr><td rowspan="3" style="border-top: black solid 1px;">' + data[j].Name + '</td>' +
+                    '<td  colspan="2" style="border-top: black solid 1px;">' + "功能说明：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[j].Describe + '</td>' +
+                    '<td rowspan="3" style="border-top: black solid 1px;">' + data[j].Creator + '<br\>' + data[j].CreateDate + '</td></tr>' +
+                    '<tr><td style="border-top: black solid 1px;width: 7%">参数说明:</td><td style="border-top: black solid 1px;width: 73%"><pre>' + data[j].ParameterDescribe + '</pre></td></tr>' +
+                    '<tr><td style="border-top: black solid 1px;width: 7%">返回值说明:</td><td style="border-top: black solid 1px;width: 73%"><pre>' + data[j].ReturnDescribe + '</pre></td></tr>';
+            }
+            $("#methoContent").html(methoContentStr);
+        }
+
+        var doc = document, docEl = doc.documentElement;
+        docEl.className = docEl.className.replace(/(^|\s)no-js(\s|$)/, " js ");
+    </script>
+</head>
+<body>
+    <div role="navigation" id="nav" class="closed" aria-hidden="false" style="position: relative;">
+        <ul id="classUl"></ul>
+    </div>
+
+    <div role="main" class="main">
+        <a href="http://www.bootcss.com/p/responsive-nav.js/demo/#nav" id="toggle" aria-hidden="true">Menu</a>
+        <h2 id="methodName"></h2>
+        <label class="intro" id="creatorDecsribe"></label><br />
+        <label class="intro" id="decsribe"></label><br /><br /><br />
+        <table style="border-bottom: black solid 1px; width: 98%">
+            <thead>
+                <tr>
+                    <th style="width: 8%">方法名称</th>
+                    <th colspan="2" style="width: 80%">方法说明</th>
+                    <th style="width: 12%">创建信息</th>
+                </tr>
+            </thead>
+            <tbody id="methoContent"></tbody>
+        </table>
+    </div>
+
+    <script>
+        var navigation = responsiveNav("#nav", { customToggle: "#toggle" });
+    </script>
+
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-39967427-1']);
+        _gaq.push(['_trackPageview']);
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+</body>
+</html>

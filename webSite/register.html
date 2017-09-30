@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="小荷个人网站">
+    <meta name="description" content="小荷个人网站">
+    <title>注册</title>
+
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/webMain.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.min.css" rel="stylesheet">
+    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+    <br /><br /><br />
+    <div>
+        <h2 class="customlogo-name">荷</h2>
+    </div>
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <h3>创建一个新账户</h3>
+            <form class="m-t" role="form" id="registerForm">
+                <div class="form-group">
+                    <input id="userName" name="userName" type="text" class="form-control" placeholder="请输入登录账号" required="" aria-required="true">
+                </div>
+                <div class="form-group">
+                    <input id="email" name="email" type="email" class="form-control" placeholder="请输入邮箱" required="" aria-required="true">
+                </div>
+                <div class="form-group">
+                    <input id="identifyCode" name="identifyCode" type="text" class="customform-control" placeholder="请输入邮箱验证码" required="" aria-required="true">
+                    <button id="identifyBtn" type="button" onclick="Identify()" class="btn btn-primary  customfull-width">发送验证码</button>
+                </div>
+                <div class="form-group">
+                    <input id="userPassword1" name="userPassword1" type="password" class="form-control" placeholder="请输入密码" required="" aria-required="true">
+                </div>
+                <div class="form-group">
+                    <input id="userPassword2" name="userPassword2" type="password" class="form-control" placeholder="请再次输入密码" required="" aria-required="true">
+                </div>
+                <div class="form-group text-left">
+                    <div class="checkbox i-checks">
+                        <label class="no-padding">
+                            <input id="protocolCb" class="i-checks" type="checkbox" checked><i></i> 我同意注册协议
+                        </label>
+                    </div>
+                </div>
+                <button type="button" onclick="Register()" class="btn btn-primary block full-width m-b">注 册</button>
+                <p class="text-muted text-center">
+                    <small>已经有账户了？</small><a href="login.html">点此登录</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/content.min.js"></script>
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
+    <script src="js/plugins/layer/layer.min.js"></script>
+    <script src="js/plugins/toastr/toastr.min.js"></script>
+    <script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="js/webMain.js"></script>
+    <script src="js/md5.js"></script>
+    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+    <script src="js/plugins/validate/messages_zh.min.js"></script>
+    <script src="js/webMain/register.js"></script>
+    <script>if (window.top !== window.self) { window.top.location = window.location; }</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- jquery引入-->
+    <script src="../ReferenceFiles/jquery-3.2.1.js"></script>
+    <script src="../ReferenceFiles/JS/json2.js"></script>
+    <script type="text/javascript">
+
+        //获取接口文档
+        function ClientCall() {
+
+            //方法参数
+            var data = new Array();
+            data[0] = '10001';
+            data[1] = 'xq1';
+            data[2] = '123456';
+            data[3] = '123456';
+            data[4] = '123456';
+
+            //调用参数
+            var params = {
+                ClassName: 'Player',
+                MethodName: 'Login',
+                Data: data
+            };
+
+            var paramStr = JSON.stringify(params);;
+            
+            $.ajax({
+                dataType: "text",
+                type: "POST",
+                url: "../API/ClientHandler.ashx",
+                data: paramStr,
+                success: function (returnData) {
+                    $("#resultContent").html(returnData);
+                },
+                error: function (request, textStatus, errorThrown) {
+
+                }
+            });
+        }
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+</head>
+<body>
+<div>
+    <button onclick="ClientCall()">调用</button>
+</div>
+<div id="resultContent"></div>
+</body>
+</html>

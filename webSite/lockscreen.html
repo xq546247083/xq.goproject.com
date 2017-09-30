@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="小荷个人网站">
+    <meta name="description" content="小荷个人网站">
+    <title>锁屏</title>
+
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.min.css" rel="stylesheet">
+    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+    <div class="lock-word animated fadeInDown">
+    </div>
+    <div class="middle-box text-center lockscreen animated fadeInDown">
+        <div>
+            <div class="m-b-md">
+                <img alt="image" class="img-circle circle-border" src="img/a1.jpg">
+            </div>
+            <h3 id="UserName"></h3>
+            <div>请输入密码</div>
+            <div class="m-t">
+                <div class="form-group">
+                    <input id="userPassword" type="password" class="form-control" placeholder="******" required="">
+                </div>
+                <button id="ReLoginBtn" type="button" onclick="ReLogin()" class="btn btn-primary block full-width">登录</button>
+            </div>
+            <a href="login.html" style="float:right;" class="btn m-t">跳转到登录页面...</a>
+        </div>
+    </div>
+    
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/layer/layer.min.js"></script>
+    <script src="js/plugins/toastr/toastr.min.js"></script>
+    <script src="js/md5.js"></script>
+    <script src="js/webMain.js"></script>
+    <script src="js/webMain/lockscreen.js"></script>
+    <script>if (window.top !== window.self) { window.top.location = window.location; }</script>
+</body>
+</html>

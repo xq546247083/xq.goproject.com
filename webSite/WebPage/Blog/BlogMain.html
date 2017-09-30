@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../img/favicon.ico">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="../../css/animate.min.css" rel="stylesheet">
+    <link href="../../css/style.min.css" rel="stylesheet">
+    <link href="../../css/plugins/toastr/toastr.min.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content">
+        <div class="row"> 
+            <div class="col-sm-1">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content mailbox-content">
+                        <div class="file-manager">
+                            <a class="btn btn-block btn-primary compose-mail" href="#">新增</a>
+                            <div class="space-25"></div>
+                            <h5>文件夹</h5>
+                            <ul class="folder-list m-b-md" style="padding: 0">
+                                <li>
+                                    <a href="#" class="blogQueryBtn" name="note">
+                                        <i class="fa fa-inbox "></i> 笔记
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"  class="blogQueryBtn" name="blog"> <i class="fa fa-envelope-o"></i> 博客</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="blogQueryBtn" name="draft">
+                                        <i class="fa fa-file-text-o"></i> 草稿
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="blogQueryBtn" name="dustbin"> <i class="fa fa-trash-o"></i> 垃圾箱</a>
+                                </li>
+                            </ul>
+                            <h5 class="tag-title">标签</h5>
+                            <ul class="tag-list" style="padding: 0">
+                                <li>
+                                    <a href="#"><i class="fa fa-tag"></i> 朋友</a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-11 animated fadeInRight">
+                <div class="mail-box-header">
+                    <form method="get" action="index.html" class="pull-right mail-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control input-sm" name="search" placeholder="搜索博客标题，正文等">
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    搜索
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <h2>
+                        列表
+                    </h2>
+                    <div class="mail-tools tooltip-demo m-t-md">
+                        <div class="btn-group pull-right">
+                            <button class="btn btn-white btn-sm">
+                                <i class="fa fa-arrow-left"></i>
+                            </button>
+                            <button class="btn btn-white btn-sm">
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </div>
+                        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="刷新"><i class="fa fa-refresh"></i> 刷新</button>
+                        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="删除">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="mail-box">
+                    <table class="table table-hover table-mail">
+                        <tbody id="bloglistTD">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/jquery.cookie.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/content.min.js"></script>
+    <script src="../../js/plugins/iCheck/icheck.min.js"></script>
+    <script src="../../js/plugins/layer/layer.min.js"></script>
+    <script src="../../js/plugins/toastr/toastr.min.js"></script>
+    <script src="../../js/webMain.js"></script>
+    <script src="../../js/webMain/webPage/Blog/BlogMain.js"></script>
+</body>
+</html>

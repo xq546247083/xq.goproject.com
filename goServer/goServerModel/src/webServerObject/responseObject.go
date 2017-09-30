@@ -21,7 +21,7 @@ type ResponseObject struct {
 func NewResponseObject() *ResponseObject {
 	return &ResponseObject{
 		Status:         Success,
-		StatusValue:    Success.ToString(),
+		StatusValue:    Success.ToDescription(),
 		PwdExpiredTime: time.Now().Unix(),
 		Data:           nil,
 	}
@@ -30,7 +30,7 @@ func NewResponseObject() *ResponseObject {
 //SetResultStatus 设置状态
 func (responseObject *ResponseObject) SetResultStatus(rs ResultStatus) *ResponseObject {
 	responseObject.Status = rs
-	responseObject.StatusValue = rs.ToString()
+	responseObject.StatusValue = rs.ToDescription()
 
 	return responseObject
 }

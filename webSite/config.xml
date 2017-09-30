@@ -1,0 +1,37 @@
+﻿<root>
+	<!--基础配置-->
+	<BaseConfig>
+		<!--WebServer监听的地址-->
+		<WebListenAddress>:8881</WebListenAddress>
+	</BaseConfig>
+
+	<!--日志配置-->
+	<LogConfig>
+		<!--是否Debug模式-->
+		<IsDebug>true</IsDebug>
+		<!--日志文件夹-->
+		<LogPath>Log</LogPath>
+		<!--是否记录info日志-->
+		<LogInfoFlag>true</LogInfoFlag>
+		<!--是否记录Debug日志-->
+		<LogDebugFlag>true</LogDebugFlag>
+		<!--是否记录Warn日志-->
+		<LogWarnFlag>true</LogWarnFlag>
+		<!--是否记录Error日志-->
+		<LogErrorFlag>true</LogErrorFlag>
+		<!--是否记录Fatal日志-->
+		<LogFatalFlag>true</LogFatalFlag>
+	</LogConfig>
+
+	<!--网站配置-->
+	<WebConfig>
+		<!--网站首页-->
+		<WebMainPath>E:/Work/Code/Projects/CommonWebSite/WebSite</WebMainPath>
+		<!--首页-->
+		<IndexPage>/index.html</IndexPage>
+		<!--404页面-->
+		<Error404Page>/404.html</Error404Page>
+		<!--500错误页面-->
+		<Error500Page>/500.html</Error500Page>
+	</WebConfig>
+</root>
