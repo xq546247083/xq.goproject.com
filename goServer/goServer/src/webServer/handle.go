@@ -16,8 +16,8 @@ type handle struct{}
 
 //服务监听
 func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *http.Request) {
-	responseObj := webServerObject.NewResponseObject()
 	requestObject := webServerObject.NewRequestObject(request)
+	responseObj := webServerObject.NewResponseObject()
 	logInfo := ""
 
 	// 应对NLB的监控
@@ -35,11 +35,15 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 		}
 
 		responseWriter.Write(data)
+		//记录请求和返回数据
 		if logInfo != "" {
 			logTool.Log(logTool.Error, logInfo)
 		} else {
-			requestData, _ := requestObject.GetData()
-			logTool.Log(logTool.Debug, fmt.Sprintf("web服务器接受请求：%s %sweb服务器返回数据：%s", requestData, stringTool.GetNewLine(), string(data)))
+			if requestData, err := requestObject.GetData(); err != nil {
+				logTool.LogError(fmt.Sprintf("web服务器获取请求数据失败,请求：%s%serr:%s", requestObject.HTTPRequest, stringTool.GetNewLine(), err))
+			} else {
+				logTool.LogDebug(fmt.Sprintf("web服务器接受请求,请求地址：%s %s请求数据：%s %s返回数据：%s", requestObject.HTTPRequest.RequestURI, stringTool.GetNewLine(), requestData, stringTool.GetNewLine(), string(data)))
+			}
 		}
 	}()
 

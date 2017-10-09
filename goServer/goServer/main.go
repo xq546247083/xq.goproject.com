@@ -18,21 +18,22 @@ var (
 )
 
 func init() {
-	logTool.LogInfo("开始启动服务器！！！")
 	wg.Add(1)
 }
 
 func main() {
+	logTool.LogInfo("开始启动服务器！！！")
+
 	//调用初始化和检测数据
 	initTool.InitAndCheckData()
+
+	logTool.LogInfo("成功启动服务器！！！")
 
 	//开启rpc服务
 	go rpcServer.StartServer(&wg, configTool.RPCListenAddress)
 
 	//开启web服务
 	go webServer.StartServer(&wg, configTool.WebListenAddress)
-
-	logTool.LogInfo("服务器成功启动！！！")
 
 	wg.Wait()
 }

@@ -14,7 +14,7 @@ func init() {
 //getBlogList 获取博客信息
 func getBlogList(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
-	userName, err := requestObj.GetInt32Data(1)
+	userName, err := requestObj.GetStringData(1)
 	blogType, err2 := requestObj.GetInt32Data(2)
 	status, err3 := requestObj.GetInt32Data(3)
 	tagInfo, err4 := requestObj.GetStringData(4)
@@ -25,7 +25,7 @@ func getBlogList(requestObj *webServerObject.RequestObject) *webServerObject.Res
 	}
 
 	//获取用户
-	sysUser := sysUser.GetItemByUserNameOrEmail(string(userName))
+	sysUser := sysUser.GetItemByUserNameOrEmail(userName)
 	if sysUser == nil {
 		responseObj.SetResultStatus(webServerObject.UserIsNotExist)
 		return responseObj
