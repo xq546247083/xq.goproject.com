@@ -5,7 +5,7 @@ import (
 	"encoding/base64"
 	"io"
 
-	"moqikaka.com/goutil/securityUtil"
+	"xq.goproject.com/commonTools/EncrpytTool"
 )
 
 // GetNewGUID 获取新的GUID字符串
@@ -17,7 +17,7 @@ func GetNewGUID() string {
 		return ""
 	}
 
-	return securityUtil.Md5String(base64.URLEncoding.EncodeToString(b), true)
+	return EncrpytTool.Md5String(base64.URLEncoding.EncodeToString(b))
 }
 
 // IsGUIDEmpty 判断GUID是否为空
