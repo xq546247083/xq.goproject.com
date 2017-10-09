@@ -50,7 +50,7 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 	// 根据路径选择不同的处理方法
 	handlerObj, exists := getHandler(request.RequestURI)
 	if !exists {
-		responseObj.SetResultStatus(webServerObject.DataError)
+		responseObj.SetResultStatus(webServerObject.APINotDefined)
 		return
 	}
 
