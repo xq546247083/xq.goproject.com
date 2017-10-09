@@ -1,22 +1,23 @@
 package sysUser
 
 import (
-	"encoding/json"
 	"time"
 
+	"xq.goproject.com/commonTools/EncrpytTool"
 	"xq.goproject.com/goServer/goServer/src/rpcServer"
+	"xq.goproject.com/goServer/goServer/src/webServer"
 	"xq.goproject.com/goServer/goServerModel/src/rpcServerObject"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
 
 // 注册需要给客户端访问的模块、方法
 func init() {
-	//rpcServer.RegisterHandler("PlayerLogin", Login)
-	//webServer.RegisterHandler("/API/PlayerLogin", WebLogin)
+	webServer.RegisterHandler("/API/SysUser/Login", login)
+	rpcServer.RegisterHandler("RpcTest", rpcTest)
 }
 
-//Login 玩家登录
-func Login(requestObj *rpcServerObject.RequestObject) *rpcServerObject.ResponseObject {
+//rpcTest rpcTest方法
+func rpcTest(requestObj *rpcServerObject.RequestObject) *rpcServerObject.ResponseObject {
 	responseObj := rpcServerObject.NewResponseObject()
 	responseObj.SetResultStatus(rpcServerObject.Success)
 	responseObj.Data = requestObj.Parameters[0]
@@ -40,13 +41,35 @@ func Login(requestObj *rpcServerObject.RequestObject) *rpcServerObject.ResponseO
 	return responseObj
 }
 
-//WebLogin 玩家登录
-func WebLogin(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
+//login 获取菜单信息
+func login(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
-	//data, _ := httpRequestTool.GetRequsetByte(requestObj)
-	str, _ := json.Marshal(sysUserMap)
+	userName, err := requestObj.GetStringData(1)
+	userPwd, err2 := requestObj.GetStringData(1)
+	if err != nil || err2 != nil {
+		responseObj.SetResultStatus(webServerObject.APIDataError)
+		return responseObj
+	}
 
-	responseObj.Data = string(str)
+	//获取用户
+	sysUser := GetItemByUserNameOrEmail(userName)
+	if sysUser == nil {
+		responseObj.SetResultStatus(webServerObject.UserIsNotExist)
+		return responseObj
+	}
+
+	if userPwd == "6fda14112d9151ebefc40a96c9b85be3" {
+		responseObj.SetResultStatus(webServerObject.PlsEnterPassword)
+		return responseObj
+	}
+
+	if sysUser.Password != EncrpytTool.Encrypt(userPwd) {
+		responseObj.SetResultStatus(webServerObject.PlsEnterPassword)
+		return responseObj
+	}
+
+	//返回用户菜单信息
+	responseObj.Data = assembleToClient(sysUser)
 
 	return responseObj
 }
