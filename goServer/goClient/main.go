@@ -27,7 +27,7 @@ func testWebServer() {
 	requestByte, _ := json.Marshal(requestObj)
 	requestStr := string(requestByte)
 
-	response, err := http.Post("http://10.255.0.3:8883/API/SysUser/Identify", "application/x-www-form-urlencoded", strings.NewReader(requestStr))
+	response, err := http.Post("http://localhost:8883/API/SysUser/Identify", "application/x-www-form-urlencoded", strings.NewReader(requestStr))
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -42,7 +42,7 @@ func testWebServer() {
 }
 
 func testRPCServer() {
-	conn, err := net.DialTimeout("tcp", "10.255.0.3:8884", 2*time.Second)
+	conn, err := net.DialTimeout("tcp", "localhost:8884", 2*time.Second)
 	if err != nil {
 		fmt.Printf("Dial Error: %s", err)
 	} else {
