@@ -49,7 +49,27 @@ type SysUser struct {
 	CreateTime time.Time `gorm:"column:CreateTime"`
 }
 
-//TableName 玩家表
+// TableName 玩家表
 func (thisObj *SysUser) TableName() string {
 	return "sys_user"
+}
+
+// NewSysUser 新建用户
+func NewSysUser(userID string, userName string, password string, fullName string, sex bool, phone string, email string, status int32,
+	loginCount int32, roleIDs string, createTime time.Time, pwdExpiredTime time.Time) *SysUser {
+	return &SysUser{
+		UserID:         userID,
+		UserName:       userName,
+		Password:       password,
+		FullName:       fullName,
+		Sex:            sex,
+		Phone:          phone,
+		Email:          email,
+		Status:         status,
+		LoginCount:     loginCount,
+		RoleIDs:        roleIDs,
+		CreateTime:     createTime,
+		PwdExpiredTime: pwdExpiredTime,
+	}
+
 }

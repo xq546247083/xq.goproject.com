@@ -83,6 +83,21 @@ func (thisObj *XmlConfig) Int(xpath string, attrName string) (int, error) {
 // xpath:xpath路径
 // attrName:属性名，如果为空，则返回节点的内部文本
 //　返回值：
+// int:结果
+// error:错误信息
+func (thisObj *XmlConfig) Int32(xpath string, attrName string) (int32, error) {
+	val, errMsg := thisObj.getVal(xpath, attrName)
+	if errMsg != nil {
+		return 0, errMsg
+	}
+
+	return typeTool.Int32(val)
+}
+
+// 获取指定xpath路径下的值
+// xpath:xpath路径
+// attrName:属性名，如果为空，则返回节点的内部文本
+//　返回值：
 // int64:结果
 // error:错误信息
 func (thisObj *XmlConfig) Int64(xpath string, attrName string) (int64, error) {

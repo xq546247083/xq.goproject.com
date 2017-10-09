@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"xq.goproject.com/commonTools/configTool"
+	"xq.goproject.com/commonTools/emailTool"
 	"xq.goproject.com/commonTools/initTool"
 	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/goServer/goServer/src/rpcServer"
@@ -23,6 +24,9 @@ func init() {
 }
 
 func main() {
+	//设置邮箱
+	emailTool.SetSenderInfo(configTool.EmailHost, configTool.EmailPort, configTool.EmailName, configTool.EmailAddress, configTool.EmailPass)
+
 	//调用初始化和检测数据
 	initTool.InitAndCheckData()
 

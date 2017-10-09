@@ -3,6 +3,7 @@ package dal
 import (
 	"fmt"
 
+	"github.com/jinzhu/gorm"
 	"xq.goproject.com/goServer/goServer/src/model"
 )
 
@@ -28,8 +29,12 @@ func (thisObj *sysMenuDAL) GetAllList() (sysMenuList []*model.SysMenu, err error
 }
 
 // SaveInfo 保存数据
-func (thisObj *sysMenuDAL) SaveInfo(sysMenu *model.SysMenu) (err error) {
-	if err = DB.Save(sysMenu).Error; err != nil {
+func (thisObj *sysMenuDAL) SaveInfo(sysMenu *model.SysMenu, tempDB *gorm.DB) (err error) {
+	if tempDB == nil {
+		tempDB = DB
+	}
+
+	if err = tempDB.Save(sysMenu).Error; err != nil {
 		writeErrorLog(err, fmt.Sprintf("%s.SaveInfo", sysMenuDALName))
 		return
 	}

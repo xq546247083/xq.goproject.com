@@ -49,8 +49,14 @@ var (
 	//EmailHost 邮箱主机
 	EmailHost = "smtp.qq.com"
 
+	//EmailPort 邮箱端口
+	EmailPort = int32(465)
+
 	//EmailAddress 邮箱地址
 	EmailAddress = "546247083@qq.com"
+
+	//EmailName 邮箱名称
+	EmailName = "546247083@qq.com"
 
 	//EmailPass 邮箱密码
 	EmailPass = "fhdwnwhjcieobdja"
@@ -121,7 +127,13 @@ func init() {
 	EmailHost, err = xmlConfig.String("root/WebSiteConfig/EmailHost", "")
 	checkError(err, false)
 
+	EmailPort, err = xmlConfig.Int32("root/WebSiteConfig/EmailPort", "")
+	checkError(err, false)
+
 	EmailAddress, err = xmlConfig.String("root/WebSiteConfig/EmailAddress", "")
+	checkError(err, false)
+
+	EmailName, err = xmlConfig.String("root/WebSiteConfig/EmailName", "")
 	checkError(err, false)
 
 	EmailPass, err = xmlConfig.String("root/WebSiteConfig/EmailPass", "")

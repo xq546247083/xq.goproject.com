@@ -50,7 +50,7 @@ func testRPCServer() {
 	}
 
 	var requestObj rpcServerObject.RequestObject
-	requestObj.MethodName = "PlayerLogin"
+	requestObj.MethodName = "RpcTest"
 	requestObj.Parameters = []interface{}{"xxx"}
 
 	message, _ := json.Marshal(&requestObj)

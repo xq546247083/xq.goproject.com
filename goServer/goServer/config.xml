@@ -31,6 +31,10 @@
 		<PwdExpiredTime>1</PwdExpiredTime>
 		<!--邮箱主机-->
 		<EmailHost>smtp.qq.com</EmailHost>
+		<!--邮箱端口-->
+		<EmailPort>465</EmailPort>
+		<!--邮箱名称-->
+		<EmailName>小荷官网</EmailName>
 		<!--邮箱地址-->
 		<EmailAddress>546247083@qq.com</EmailAddress>
 		<!--邮箱密码-->

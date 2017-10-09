@@ -3,6 +3,7 @@ package dal
 import (
 	"fmt"
 
+	"github.com/jinzhu/gorm"
 	"xq.goproject.com/goServer/goServer/src/model"
 )
 
@@ -28,8 +29,12 @@ func (thisObj *uBlogTypeDAL) GetAllList() (uBlogTypeList []*model.UBlogType, err
 }
 
 // SaveInfo 保存数据
-func (thisObj *uBlogTypeDAL) SaveInfo(uBlogType *model.UBlogType) (err error) {
-	if err = DB.Save(uBlogType).Error; err != nil {
+func (thisObj *uBlogTypeDAL) SaveInfo(uBlogType *model.UBlogType, tempDB *gorm.DB) (err error) {
+	if tempDB == nil {
+		tempDB = DB
+	}
+
+	if err = tempDB.Save(uBlogType).Error; err != nil {
 		writeErrorLog(err, fmt.Sprintf("%s.SaveInfo", uBlogTypeDALName))
 		return
 	}

@@ -3,6 +3,7 @@ package dal
 import (
 	"fmt"
 
+	"github.com/jinzhu/gorm"
 	"xq.goproject.com/goServer/goServer/src/model"
 )
 
@@ -28,8 +29,12 @@ func (thisObj *sysUserDAL) GetAllList() (sysUserList []*model.SysUser, err error
 }
 
 // SaveInfo 保存数据
-func (thisObj *sysUserDAL) SaveInfo(sysUser *model.SysUser) (err error) {
-	if err = DB.Save(sysUser).Error; err != nil {
+func (thisObj *sysUserDAL) SaveInfo(sysUser *model.SysUser, tempDB *gorm.DB) (err error) {
+	if tempDB == nil {
+		tempDB = DB
+	}
+
+	if err = tempDB.Save(sysUser).Error; err != nil {
 		writeErrorLog(err, fmt.Sprintf("%s.SaveInfo", sysUserDALName))
 		return
 	}

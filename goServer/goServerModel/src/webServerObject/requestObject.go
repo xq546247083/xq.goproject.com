@@ -283,3 +283,21 @@ func (thisObj *RequestObject) GetFloat64Data(num int32) (float64, error) {
 
 	return float64CVal, nil
 }
+
+// GetBoolData 获取请求的值(Data：请求参数值数据)
+//参数值：num（从1开始）
+func (thisObj *RequestObject) GetBoolData(num int32) (bool, error) {
+	obj, err := thisObj.getObjectData(num)
+	if err != nil {
+		logTool.LogError(fmt.Sprintf("请求地址：%s %s请求数据：%s %s获取第%d个参数失败", thisObj.HTTPRequest.RequestURI, stringTool.GetNewLine(), thisObj.data, stringTool.GetNewLine(), num), err.Error())
+		return false, err
+	}
+
+	boolVal, err := typeTool.Bool(obj)
+	if err != nil {
+		logTool.LogError(fmt.Sprintf("请求地址：%s %s请求数据：%s %s获取第%d个参数失败", thisObj.HTTPRequest.RequestURI, stringTool.GetNewLine(), thisObj.data, stringTool.GetNewLine(), num), err.Error())
+		return false, err
+	}
+
+	return boolVal, nil
+}

@@ -67,7 +67,7 @@ func UpdatePwdExpiredTime(userNameOrEmail string) {
 		sysUser.PwdExpiredTime = sysUser.PwdExpiredTime.Add(duration)
 
 		//保存数据
-		dal.SysUserDALObj.SaveInfo(sysUser)
+		dal.SysUserDALObj.SaveInfo(sysUser, nil)
 	}
 }
 
