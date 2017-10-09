@@ -23,6 +23,11 @@ import (
 // 注册需要给客户端访问的模块、方法
 func init() {
 	webServer.RegisterHandler("/API/SysUser/Login", login)
+	webServer.RegisterHandler("/API/SysUser/LoginOut", loginOut)
+	webServer.RegisterHandler("/API/SysUser/Register", register)
+	webServer.RegisterHandler("/API/SysUser/Retrieve", retrieve)
+	webServer.RegisterHandler("/API/SysUser/Identify", identify)
+
 	rpcServer.RegisterHandler("RpcTest", rpcTest)
 }
 
@@ -98,8 +103,8 @@ func login(requestObj *webServerObject.RequestObject) *webServerObject.ResponseO
 	return responseObj
 }
 
-//LoginOut 退出
-func LoginOut(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
+//loginOut 退出
+func loginOut(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
 	userName, err := requestObj.GetStringData(1)
 	if err != nil {
@@ -132,8 +137,8 @@ func LoginOut(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 	return responseObj
 }
 
-//Register 注册
-func Register(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
+//register 注册
+func register(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
 	userName, err := requestObj.GetStringData(1)
 	userPwd, err2 := requestObj.GetStringData(2)
@@ -244,8 +249,8 @@ func Register(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 	return responseObj
 }
 
-// Retrieve 找回密码
-func Retrieve(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
+// retrieve 找回密码
+func retrieve(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
 	userPwd, err := requestObj.GetStringData(1)
 	email, err2 := requestObj.GetStringData(2)
@@ -315,8 +320,8 @@ func Retrieve(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 	return responseObj
 }
 
-// Identify 验证邮箱
-func Identify(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
+// identify 验证邮箱
+func identify(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
 	email, err := requestObj.GetStringData(1)
 	// style:验证方式，0是登录页面，1是找回密码页面
