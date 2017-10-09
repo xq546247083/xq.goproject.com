@@ -666,7 +666,7 @@ func String(val interface{}) (string, error) {
 	return "", fmt.Errorf("val is not base type")
 }
 
-// 转换为Int列表(转换过程不是类型安全的)
+// StringArray 转换为string列表(转换过程不是类型安全的)
 // val:待转换的数据列表
 // 返回值:
 // []string:结果
@@ -687,7 +687,33 @@ func StringArray(val []interface{}) ([]string, error) {
 		array = append(array, tmpResult)
 	}
 
-	return array, fmt.Errorf("val is not base type")
+	return array, nil
+}
+
+// ObjectToArray 转换为string列表(转换过程不是类型安全的)
+// val:待转换的数据列表
+// 返回值:
+// []string:结果
+// error:错误数据
+func ObjectToArray(val interface{}) ([]string, error) {
+	varArray := val.([]interface{})
+
+	array := make([]string, 0, len(varArray))
+	if varArray == nil {
+		return array, fmt.Errorf("val is nil")
+	}
+
+	// 转换成数组
+	for _, item := range varArray {
+		tmpResult, errMsg := String(item)
+		if errMsg != nil {
+			return nil, errMsg
+		}
+
+		array = append(array, tmpResult)
+	}
+
+	return array, nil
 }
 
 // 转换成时间格式

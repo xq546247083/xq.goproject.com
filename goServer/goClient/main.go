@@ -22,10 +22,8 @@ func main() {
 
 func testWebServer() {
 	requestObj := make(map[string]interface{})
-	requestObj["UserName"] = "xiaoqiang"
-	requestObj["BlogType"] = 2
-	requestObj["Status"] = 1
-	requestObj["TagInfo"] = ""
+	data := []interface{}{"xiaoqiang", 2, 1, ""}
+	requestObj["Data"] = data
 	requestByte, _ := json.Marshal(requestObj)
 	requestStr := string(requestByte)
 

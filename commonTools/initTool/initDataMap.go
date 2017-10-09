@@ -1,11 +1,5 @@
 package initTool
 
-import (
-	"fmt"
-
-	"xq.goproject.com/commonTools/logTool"
-)
-
 var (
 	// 初始化数据Func字典
 	initDataFuncMap = make(map[InitDataType][]func() error)
@@ -26,5 +20,4 @@ func RegisterInitFunc(registerFunc func() error, initDataType InitDataType) {
 	}
 
 	initDataFuncMap[initDataType] = append(initDataFuncMap[initDataType], registerFunc)
-	logTool.Log(logTool.Info, fmt.Sprintf("初始化数据方法中，注册类型:%s，当前共有%d个注册", initDataType.ToString(), len(initDataFuncMap[initDataType])))
 }

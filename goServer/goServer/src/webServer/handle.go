@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"xq.goproject.com/commonTools/stringTool"
+
 	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
@@ -15,6 +17,7 @@ type handle struct{}
 //服务监听
 func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *http.Request) {
 	responseObj := webServerObject.NewResponseObject()
+	requestObject := webServerObject.NewRequestObject(request)
 	logInfo := ""
 
 	// 应对NLB的监控
@@ -35,7 +38,8 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 		if logInfo != "" {
 			logTool.Log(logTool.Error, logInfo)
 		} else {
-			logTool.Log(logTool.Debug, fmt.Sprintf("web服务器接受请求：%s返回数据：%s", request, string(data)))
+			requestData, _ := requestObject.GetData()
+			logTool.Log(logTool.Debug, fmt.Sprintf("web服务器接受请求：%s %sweb服务器返回数据：%s", requestData, stringTool.GetNewLine(), string(data)))
 		}
 	}()
 
@@ -47,6 +51,5 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 	}
 
 	// 调用方法
-	requestObject := webServerObject.NewRequestObject(request)
 	responseObj = handlerObj.handlerFunc(requestObject)
 }

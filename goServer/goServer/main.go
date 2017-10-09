@@ -5,6 +5,7 @@ import (
 
 	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/commonTools/initTool"
+	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/goServer/goServer/src/rpcServer"
 	"xq.goproject.com/goServer/goServer/src/webServer"
 
@@ -17,6 +18,7 @@ var (
 )
 
 func init() {
+	logTool.LogInfo("开始启动服务器！！！")
 	wg.Add(1)
 }
 
@@ -29,6 +31,8 @@ func main() {
 
 	//开启web服务
 	go webServer.StartServer(&wg, configTool.WebListenAddress)
+
+	logTool.LogInfo("服务器成功启动！！！")
 
 	wg.Wait()
 }

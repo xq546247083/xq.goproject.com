@@ -21,20 +21,20 @@ var (
 	//LogPath 日志地址
 	LogPath string
 
-	//LogInfoFlag 是否写info日志
-	LogInfoFlag = configTool.LogInfoFlag
+	//logInfoFlag 是否写info日志
+	logInfoFlag = configTool.LogInfoFlag
 
-	//LogDebugFlag 是否写Debug日志
-	LogDebugFlag = configTool.LogDebugFlag
+	//logDebugFlag 是否写Debug日志
+	logDebugFlag = configTool.LogDebugFlag
 
-	//LogWarnFlag 是否写Warn日志
-	LogWarnFlag = configTool.LogWarnFlag
+	//logWarnFlag 是否写Warn日志
+	logWarnFlag = configTool.LogWarnFlag
 
-	//LogErrorFlag 是否写Error日志
-	LogErrorFlag = configTool.LogErrorFlag
+	//logErrorFlag 是否写Error日志
+	logErrorFlag = configTool.LogErrorFlag
 
-	//LogFatalFlag 是否写Fatal日志
-	LogFatalFlag = configTool.LogFatalFlag
+	//logFatalFlag 是否写Fatal日志
+	logFatalFlag = configTool.LogFatalFlag
 )
 
 //init 开始写日志
@@ -52,19 +52,19 @@ func writeLog(logType LogType, content string) {
 	}
 
 	//判定是否写日志
-	if logType.ToString() == "Info" && LogInfoFlag == false {
+	if logType.ToString() == "Info" && logInfoFlag == false {
 		return
 	}
-	if logType.ToString() == "Debug" && LogDebugFlag == false {
+	if logType.ToString() == "Debug" && logDebugFlag == false {
 		return
 	}
-	if logType.ToString() == "Warn" && LogWarnFlag == false {
+	if logType.ToString() == "Warn" && logWarnFlag == false {
 		return
 	}
-	if logType.ToString() == "Error" && LogErrorFlag == false {
+	if logType.ToString() == "Error" && logErrorFlag == false {
 		return
 	}
-	if logType.ToString() == "Fatal" && LogFatalFlag == false {
+	if logType.ToString() == "Fatal" && logFatalFlag == false {
 		return
 	}
 	// 获取当前时间
@@ -153,6 +153,31 @@ func Log(logType LogType, contentStr ...string) {
 	content += stringTool.GetNewLine() + stringTool.Separator
 
 	writeLog(logType, content)
+}
+
+//LogInfo 记录消息日志
+func LogInfo(contentStr ...string) {
+	Log(Info, contentStr...)
+}
+
+//LogDebug 记录调试日志
+func LogDebug(contentStr ...string) {
+	Log(Debug, contentStr...)
+}
+
+//LogWarn 记录警告日志
+func LogWarn(contentStr ...string) {
+	Log(Warn, contentStr...)
+}
+
+//LogError 记录错误日志
+func LogError(contentStr ...string) {
+	Log(Error, contentStr...)
+}
+
+//LogFatal 记录致命错误日志
+func LogFatal(contentStr ...string) {
+	Log(Fatal, contentStr...)
 }
 
 //记录未知错误日志（不需要的方式，暂时保留）

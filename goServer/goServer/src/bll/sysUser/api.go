@@ -5,15 +5,14 @@ import (
 	"time"
 
 	"xq.goproject.com/goServer/goServer/src/rpcServer"
-	"xq.goproject.com/goServer/goServer/src/webServer"
 	"xq.goproject.com/goServer/goServerModel/src/rpcServerObject"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
 
 // 注册需要给客户端访问的模块、方法
 func init() {
-	rpcServer.RegisterHandler("PlayerLogin", Login)
-	webServer.RegisterHandler("/API/PlayerLogin", WebLogin)
+	//rpcServer.RegisterHandler("PlayerLogin", Login)
+	//webServer.RegisterHandler("/API/PlayerLogin", WebLogin)
 }
 
 //Login 玩家登录

@@ -14,7 +14,7 @@ func init() {
 //getInfo 获取菜单信息
 func getInfo(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
-	userName, err := requestObj.GetStringVal("UserName")
+	userName, err := requestObj.GetStringData(1)
 	if err != nil {
 		responseObj.SetResultStatus(webServerObject.APIDataError)
 		return responseObj
