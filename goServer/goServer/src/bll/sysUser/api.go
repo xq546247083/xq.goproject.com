@@ -27,6 +27,7 @@ func init() {
 	webServer.RegisterHandler("/API/SysUser/Register", register)
 	webServer.RegisterHandler("/API/SysUser/Retrieve", retrieve)
 	webServer.RegisterHandler("/API/SysUser/Identify", identify)
+	webServer.RegisterHandler("UpdatePwdExpiredTime", updatePwdExpiredTime)
 
 	rpcServer.RegisterHandler("RpcTest", rpcTest)
 }
@@ -381,6 +382,39 @@ func identify(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 
 	//处理数据
 	sysUserEmailMap[email] = model.NewSysUserEmail(email, randomStr, time.Now())
+
+	return responseObj
+}
+
+// updatePwdExpiredTime 更新密码过期时间
+func updatePwdExpiredTime(requestObject *webServerObject.RequestObject) *webServerObject.ResponseObject {
+	responseObj := webServerObject.NewResponseObject()
+
+	//根据用户名字判断过期时间
+	userName, err := requestObject.GetStringVal("UserName")
+	if err != nil {
+		responseObj.SetResultStatus(webServerObject.APIDataError)
+		return responseObj
+	}
+
+	//处理密码过期时间
+	if !stringTool.IsEmpty(userName) && userName != "null" {
+		if requestObject.HTTPRequest.RequestURI != "/API/SysUser/Login" && requestObject.HTTPRequest.RequestURI != "/API/SysUser/Register" &&
+			requestObject.HTTPRequest.RequestURI != "/API/SysUser/Identify" && requestObject.HTTPRequest.RequestURI != "/API/SysUser/Retrieve" {
+			//如果过期，返回过期提示
+			if CheckPwdExpiredTime(userName) {
+				responseObj.SetResultStatus(webServerObject.LoginIsOverTime)
+				return responseObj
+			} else {
+				//如果没过期，返回新的过期时间
+				UpdatePwdExpiredTime(userName)
+				sysUserObj := GetItemByUserNameOrEmail(userName)
+				if sysUserObj != nil {
+					responseObj.PwdExpiredTime = sysUserObj.PwdExpiredTime.Unix()
+				}
+			}
+		}
+	}
 
 	return responseObj
 }

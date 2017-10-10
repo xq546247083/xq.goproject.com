@@ -5,9 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"xq.goproject.com/commonTools/stringTool"
-
 	"xq.goproject.com/commonTools/logTool"
+	"xq.goproject.com/commonTools/stringTool"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
 
@@ -29,23 +28,34 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 	defer func() {
 		data, err := json.Marshal(responseObj)
 		if err != nil {
-			logInfo = fmt.Sprintf("返回对象-反序列化出错，请求:%s错误信息为：%s", request, err)
+			logInfo = fmt.Sprintf("返回对象-反序列化出错，请求:%s%s错误信息为：%s", request, stringTool.GetNewLine(), err)
 			//返回对象反序列化失败，只能返回空数据
 			data = []byte("")
 		}
 
+		//返回数据
+		responseWriter.Header().Add("Access-Control-Allow-Origin", "*")
 		responseWriter.Write(data)
+
 		//记录请求和返回数据
 		if logInfo != "" {
 			logTool.Log(logTool.Error, logInfo)
 		} else {
 			if requestData, err := requestObject.GetData(); err != nil {
-				logTool.LogError(fmt.Sprintf("web服务器获取请求数据失败,请求：%s%serr:%s", requestObject.HTTPRequest, stringTool.GetNewLine(), err))
+				logTool.LogError(fmt.Sprintf("web服务器获取请求数据失败,请求：%s%serr:%s", request, stringTool.GetNewLine(), err))
 			} else {
 				logTool.LogDebug(fmt.Sprintf("web服务器接受请求,请求地址：%s %s请求数据：%s %s返回数据：%s", requestObject.HTTPRequest.RequestURI, stringTool.GetNewLine(), requestData, stringTool.GetNewLine(), string(data)))
 			}
 		}
 	}()
+
+	//先判断用户密码是否过期
+	handlerObj, _ := getHandler("UpdatePwdExpiredTime")
+	updatePwdExpiredTimeResponseObj := handlerObj.handlerFunc(requestObject)
+	if updatePwdExpiredTimeResponseObj.Status != webServerObject.Success {
+		responseObj = updatePwdExpiredTimeResponseObj
+		return
+	}
 
 	// 根据路径选择不同的处理方法
 	handlerObj, exists := getHandler(request.RequestURI)
