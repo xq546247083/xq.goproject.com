@@ -22,7 +22,7 @@ func NewResponseObject() *ResponseObject {
 	return &ResponseObject{
 		Status:         Success,
 		StatusValue:    Success.ToDescription(),
-		PwdExpiredTime: time.Now().Unix(),
+		PwdExpiredTime: time.Now().UnixNano() / 1e6,
 		Data:           nil,
 	}
 }

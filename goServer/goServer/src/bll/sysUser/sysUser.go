@@ -95,7 +95,7 @@ func assembleToClient(sysUser *model.SysUser) map[string]interface{} {
 	clientInfo[consts.LoginCount] = sysUser.LoginCount
 	clientInfo[consts.Status] = sysUser.Status
 	clientInfo[consts.CreateTime] = sysUser.CreateTime
-	clientInfo[consts.PwdExpiredTime] = sysUser.PwdExpiredTime.Unix()
+	clientInfo[consts.PwdExpiredTime] = sysUser.PwdExpiredTime.UnixNano() / 1e6
 
 	return clientInfo
 }

@@ -4,12 +4,11 @@ import (
 	"fmt"
 	"time"
 
-	"xq.goproject.com/commonTools/emailTool"
-	"xq.goproject.com/commonTools/randomTool"
-
 	"github.com/jinzhu/gorm"
 	"xq.goproject.com/commonTools/EncrpytTool"
 	"xq.goproject.com/commonTools/configTool"
+	"xq.goproject.com/commonTools/emailTool"
+	"xq.goproject.com/commonTools/randomTool"
 	"xq.goproject.com/commonTools/stringTool"
 	"xq.goproject.com/goServer/goServer/src/bll/transaction"
 	"xq.goproject.com/goServer/goServer/src/dal"
@@ -61,7 +60,7 @@ func rpcTest(requestObj *rpcServerObject.RequestObject) *rpcServerObject.Respons
 func login(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
 	userName, err := requestObj.GetStringData(1)
-	userPwd, err2 := requestObj.GetStringData(1)
+	userPwd, err2 := requestObj.GetStringData(2)
 	if err != nil || err2 != nil {
 		responseObj.SetResultStatus(webServerObject.APIDataError)
 		return responseObj
@@ -80,7 +79,7 @@ func login(requestObj *webServerObject.RequestObject) *webServerObject.ResponseO
 	}
 
 	if sysUser.Password != EncrpytTool.Encrypt(userPwd) {
-		responseObj.SetResultStatus(webServerObject.PlsEnterPassword)
+		responseObj.SetResultStatus(webServerObject.PwdError)
 		return responseObj
 	}
 
@@ -292,7 +291,7 @@ func retrieve(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 		return responseObj
 	}
 
-	if sysUserEmail.IdentifyCode != stringTool.ToUpper(identifyCode) {
+	if stringTool.ToUpper(sysUserEmail.IdentifyCode) != stringTool.ToUpper(identifyCode) {
 		responseObj.SetResultStatus(webServerObject.IdentifyCodeIsError)
 		return responseObj
 	}
@@ -393,7 +392,6 @@ func updatePwdExpiredTime(requestObject *webServerObject.RequestObject) *webServ
 	//根据用户名字判断过期时间
 	userName, err := requestObject.GetStringVal("UserName")
 	if err != nil {
-		responseObj.SetResultStatus(webServerObject.APIDataError)
 		return responseObj
 	}
 
@@ -410,7 +408,7 @@ func updatePwdExpiredTime(requestObject *webServerObject.RequestObject) *webServ
 				UpdatePwdExpiredTime(userName)
 				sysUserObj := GetItemByUserNameOrEmail(userName)
 				if sysUserObj != nil {
-					responseObj.PwdExpiredTime = sysUserObj.PwdExpiredTime.Unix()
+					responseObj.PwdExpiredTime = sysUserObj.PwdExpiredTime.UnixNano() / 1e6
 				}
 			}
 		}

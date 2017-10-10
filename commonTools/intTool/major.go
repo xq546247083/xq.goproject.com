@@ -36,6 +36,11 @@ func IntToString(n int) string {
 }
 
 //Int32ToString  转型
-func Int32ToString(n int) string {
-	return strconv.Itoa(n)
+func Int32ToString(n int32) string {
+	return strconv.Itoa(int(n))
+}
+
+//Int64ToString  转型
+func Int64ToString(n int64) string {
+	return strconv.FormatInt(n, 10)
 }

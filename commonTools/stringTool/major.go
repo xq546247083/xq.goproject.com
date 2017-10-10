@@ -1,7 +1,6 @@
 package stringTool
 
 import (
-	"fmt"
 	"runtime"
 	"strconv"
 	"strings"
@@ -25,18 +24,18 @@ func GetNewLine() string {
 
 // ToUpper 转换为大写
 func ToUpper(content string) string {
-	return fmt.Sprintf("%X", content)
+	return strings.ToUpper(content)
 }
 
 // ToLower 转换为小写
 func ToLower(content string) string {
-	return fmt.Sprintf("%x", content)
+	return strings.ToLower(content)
 }
 
 // IsEmpty 检查一个字符串是否是空字符串
 //  content:上下文字符串
-//  返回值：
 //  bool:true：空字符串 false：非空字符串
+//  返回值：
 func IsEmpty(content string) bool {
 	if len(content) <= 0 {
 		return true

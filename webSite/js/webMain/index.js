@@ -24,7 +24,7 @@ function GetMenu(){
         if (returnData == {}) return;
 
         if (returnData.Status == 0) {
-            $("#side-menu").append(returnData.Value.MenuScript);
+            $("#side-menu").append(returnData.Data.MenuScript);
         } else {
             toastr.error("提示", returnData.StatusValue);
         }

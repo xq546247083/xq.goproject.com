@@ -1,7 +1,7 @@
 ﻿var WebMain = {
     //----------------------------------------------一些配置----------------------------------------------
     //业务服务器配置
-    WebServerConfig:"http://xiaohe.nat123.cc:48014/",
+    WebServerConfig:"http://localhost:8883/",
 
     //文件服务器配置
     FileServerConfig:"http://107.151.172.51:8882/",

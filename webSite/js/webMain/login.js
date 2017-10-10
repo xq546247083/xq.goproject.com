@@ -30,14 +30,14 @@ function Login() {
 
         if (returnData.Status == 0) {
             WebMain.Cookie(
-                returnData.Value.UserName,
-                returnData.Value.PwdExpiredTime,
-                returnData.Value.FullName,
-                returnData.Value.Email,
-                returnData.Value.Sex,
-                returnData.Value.LoginCount,
-                returnData.Value.LastLoginTime,
-                returnData.Value.LastLoginIP
+                returnData.Data.UserName,
+                returnData.Data.PwdExpiredTime,
+                returnData.Data.FullName,
+                returnData.Data.Email,
+                returnData.Data.Sex,
+                returnData.Data.LoginCount,
+                returnData.Data.LastLoginTime,
+                returnData.Data.LastLoginIP
             );
             window.location.href ='index.html';
         } else {

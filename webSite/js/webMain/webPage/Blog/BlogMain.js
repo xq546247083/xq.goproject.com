@@ -25,7 +25,7 @@ function GetBlogList(blogType, status) {
 
             //构造元素
             var htmlContent = "";
-            $.each(returnData.Value, function (index, item) {
+            $.each(returnData.Data, function (index, item) {
                 htmlContent += e1 + item.Title + e2 + item.Content + e3 + item.ReDate + e4;
             });
 
