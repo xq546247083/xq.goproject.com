@@ -534,8 +534,20 @@ func serveFile(w http.ResponseWriter, r *http.Request, fs http.FileSystem, name 
 	}
 
 	if d.IsDir() {
-		localRedirect(w, r, "../")
-		return
+		index := strings.TrimSuffix(name, "/") + indexPage
+		ff, err := fs.Open(index)
+		if err == nil {
+			defer ff.Close()
+			dd, err := ff.Stat()
+			if err == nil {
+				name = index
+				d = dd
+				f = ff
+			}
+		} else {
+			localRedirect(w, r, "../")
+			return
+		}
 	}
 
 	// serveContent will check modification time
