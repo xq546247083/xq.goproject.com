@@ -512,20 +512,60 @@ func serveFile(w http.ResponseWriter, r *http.Request, fs http.FileSystem, name 
 	// can't use Redirect() because that would make the path absolute,
 	// which would be a problem running under StripPrefix
 	if strings.HasSuffix(r.URL.Path, indexPage) {
-		localRedirect(w, r, "./")
+		localRedirect(w, r, "../")
 		return
 	}
 
 	f, err := fs.Open(name)
 	if err != nil {
-		toHTTPErrorPage(w, r, err)
+		_, err404 := fs.Open("../" + path.Base(error404Page))
+
+		toHTTPErrorPage(w, r, err, err404)
 		return
 	}
 	defer f.Close()
 
 	d, err := f.Stat()
 	if err != nil {
-		toHTTPErrorPage(w, r, err)
+		_, err404 := fs.Open("../" + path.Base(error404Page))
+
+		toHTTPErrorPage(w, r, err, err404)
+		return
+	}
+
+	if d.IsDir() {
+		localRedirect(w, r, "../")
+		return
+	}
+
+	// serveContent will check modification time
+	sizeFunc := func() (int64, error) { return d.Size(), nil }
+	serveContent(w, r, d.Name(), d.ModTime(), sizeFunc, f)
+}
+
+// name is '/'-separated, not filepath.Separator.
+func serveFileBak(w http.ResponseWriter, r *http.Request, fs http.FileSystem, name string, redirect bool) {
+	// redirect .../index.html to .../
+	// can't use Redirect() because that would make the path absolute,
+	// which would be a problem running under StripPrefix
+	if strings.HasSuffix(r.URL.Path, indexPage) {
+		localRedirect(w, r, "../")
+		return
+	}
+
+	_, err404 := fs.Open("../" + path.Base(error404Page))
+
+	f, err := fs.Open(name)
+	if err != nil {
+
+		toHTTPErrorPage(w, r, err, err404)
+		return
+	}
+	defer f.Close()
+
+	d, err := f.Stat()
+	if err != nil {
+		toHTTPErrorPage(w, r, err, err404)
 		return
 	}
 
@@ -593,16 +633,23 @@ func serveFile(w http.ResponseWriter, r *http.Request, fs http.FileSystem, name 
 // all errors. We don't want to start leaking information in error messages.
 func toHTTPError(err error) (msg string, httpStatus int) {
 	if os.IsNotExist(err) {
-		return "404 page not found", StatusNotFound
+		return "<h1 align=\"center\">404 page not found</h1>", StatusNotFound
 	}
 	if os.IsPermission(err) {
-		return "403 Forbidden", StatusForbidden
+		return "<h1 align=\"center\">403 Forbidden</h1>", StatusForbidden
 	}
 	// Default:
-	return "500 Internal Server Error", StatusInternalServerError
+	return "<h1 align=\"center\">500 Internal Server Error</h1>", StatusInternalServerError
 }
 
-func toHTTPErrorPage(w http.ResponseWriter, r *http.Request, err error) {
+func toHTTPErrorPage(w http.ResponseWriter, r *http.Request, err error, err2 error) {
+	//如果要返回的页面找不到，则根据错误，返回错误字段
+	if err2 != nil {
+		msg, code := toHTTPError(err)
+		Error(w, msg, code)
+		return
+	}
+
 	if os.IsNotExist(err) {
 		localRedirect(w, r, "../"+path.Base(error404Page))
 	}
@@ -611,6 +658,17 @@ func toHTTPErrorPage(w http.ResponseWriter, r *http.Request, err error) {
 	}
 	// Default:
 	localRedirect(w, r, "../"+path.Base(error500Page))
+}
+
+// Error replies to the request with the specified error message and HTTP code.
+// It does not otherwise end the request; the caller should ensure no further
+// writes are done to w.
+// The error message should be plain text.
+func Error(w http.ResponseWriter, error string, code int) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	w.WriteHeader(code)
+	fmt.Fprintln(w, error)
 }
 
 // localRedirect gives a Moved Permanently response.

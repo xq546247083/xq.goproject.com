@@ -7,10 +7,6 @@ import (
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
 
-var (
-	uploadPath = "./upload/"
-)
-
 // 注册需要给客户端访问的模块、方法
 func init() {
 	webServer.RegisterHandler("/API/UploadFile", uploadFile)

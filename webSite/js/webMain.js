@@ -103,12 +103,11 @@ function ajax(className, methodName, data, type, callback,floorCount) {
 
     var userName = $.cookie("UserName");
     var asyncFlag = !callback ? false : true;
-    var rootPath = GetRootPath(floorCount)
+    var rootPath = GetRootPath(floorCount);
+    var urlStr=WebMain.WebServerConfig+"API/"+className+"/"+methodName;
 
     //调用参数
     var params = {
-        ClassName: className,
-        MethodName: methodName,
         UserName: userName,
         Data: data
     };
@@ -119,7 +118,7 @@ function ajax(className, methodName, data, type, callback,floorCount) {
         dataType: "text",
         type: type,
         async: asyncFlag,
-        url: WebMain.WebServerConfig+"API/ClientHandler.ashx",
+        url: urlStr,
         data: paramStr,
         success: function (returnData) {
             layer.close(layerIndex);

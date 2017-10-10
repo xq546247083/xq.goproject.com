@@ -5,6 +5,12 @@
 		<WebListenAddress>:8882</WebListenAddress>
 	</BaseConfig>
 
+	<!--文件配置-->
+	<FileConfig>
+		<!--上传保存路径-->
+		<UploadPath>./upload/</UploadPath>
+	</FileConfig>
+
 	<!--日志配置-->
 	<LogConfig>
 		<!--是否Debug模式-->

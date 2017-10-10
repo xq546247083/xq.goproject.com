@@ -1,12 +1,17 @@
 package fileBLL
 
 import (
+	"bytes"
 	"io"
 	"mime/multipart"
 	"os"
-	"bytes"
 
+	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/commonTools/fileTool"
+)
+
+var (
+	uploadPath = configTool.UploadPath
 )
 
 //保存文件
@@ -91,6 +96,6 @@ func appendToFile(fileName string, file multipart.File) error {
 func readMultiPartFile(file multipart.File) ([]byte, error) {
 	//从分片文件中读取字节,最大为1mb的分片数据
 	buf := bytes.NewBuffer(make([]byte, 0, 1024*1024))
-	n,err := buf.ReadFrom(file)
+	n, err := buf.ReadFrom(file)
 	return buf.Bytes()[:n], err
 }

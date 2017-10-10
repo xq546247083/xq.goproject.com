@@ -26,7 +26,7 @@
 	<!--网站配置-->
 	<WebConfig>
 		<!--网站首页-->
-		<WebMainPath>E:/Work/Code/Projects/CommonWebSite/WebSite</WebMainPath>
+		<WebMainPath>./</WebMainPath>
 		<!--首页-->
 		<IndexPage>/index.html</IndexPage>
 		<!--404页面-->
