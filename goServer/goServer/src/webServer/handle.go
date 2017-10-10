@@ -64,6 +64,7 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 		return
 	}
 
-	// 调用方法
+	// 调用方法,并赋值更新后的密码过期时间
 	responseObj = handlerObj.handlerFunc(requestObject)
+	responseObj.PwdExpiredTime = updatePwdExpiredTimeResponseObj.PwdExpiredTime
 }
