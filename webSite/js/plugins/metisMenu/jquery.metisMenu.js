@@ -6,7 +6,8 @@
  * Made by Osman Nuri Okumus
  * Under MIT License
  */
-;(function($, window, document, undefined) {
+;
+(function($, window, document, undefined) {
 
     var pluginName = "metisMenu",
         defaults = {
@@ -42,7 +43,7 @@
                 $this.find("li.active").has("ul").children("a").addClass("doubleTapToGo");
             }
 
-            $(document).on("click" + "." + pluginName, ":has(ul)li>a", function (e) {
+            $this.on("click" + "." + pluginName, "li:has(ul)>a", function(e) {
                 e.preventDefault();
 
                 //Do we need to enable the double tap
@@ -62,28 +63,6 @@
                     $(this).parent("li").siblings().removeClass("active").children("ul.in").collapse("hide");
                 }
             });
-
-            //$this.find("li").has("ul").children("a").on("click" + "." + pluginName, function(e) {
-            //    e.preventDefault();
-
-            //    //Do we need to enable the double tap
-            //    if (obj.settings.doubleTapToGo) {
-
-            //        //if we hit a second time on the link and the href is valid, navigate to that url
-            //        if (obj.doubleTapToGo($(this)) && $(this).attr("href") !== "#" && $(this).attr("href") !== "") {
-            //            e.stopPropagation();
-            //            document.location = $(this).attr("href");
-            //            return;
-            //        }
-            //    }
-
-            //    $(this).parent("li").toggleClass("active").children("ul").collapse("toggle");
-
-            //    if ($toggle) {
-            //        $(this).parent("li").siblings().removeClass("active").children("ul.in").collapse("hide");
-            //    }
-
-            //});
         },
 
         isIE: function() { //https://gist.github.com/padolsey/527683
@@ -94,8 +73,8 @@
 
             while (
                 div.innerHTML = "<!--[if gt IE " + (++v) + "]><i></i><![endif]-->",
-                    all[0]
-                ) {
+                all[0]
+            ) {
                 return v > 4 ? v : undef;
             }
         },
@@ -128,7 +107,7 @@
     };
 
     $.fn[pluginName] = function(options) {
-        this.each(function () {
+        this.each(function() {
             var el = $(this);
             if (el.data(pluginName)) {
                 el.data(pluginName).remove();
