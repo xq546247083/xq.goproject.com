@@ -14,10 +14,10 @@ function GetBlogList(blogType, status) {
     data[2] = status;
     data[3] = "";
 
-    WebMain.Post("UBlog", "GetBlogList", data, function (returnData) {
-        if (returnData == {}) return;
+    WebMain.Post("UBlog", "GetBlogList", data, function (returnInfo) {
+        if (returnInfo == {}) return;
 
-        if (returnData.Status == 0) {
+        if (returnInfo.Status == 0) {
             var e1 = "<tr class='read'><td class='check-mail'><input type='checkbox' class='i-checks'></td><td class='mail- ontact'><a href='#'>";
             var e2 = "</a></td><td class='mail-subject'><a href='BlogView.html'>";
             var e3 = "</a></td><td class=''><i class='fa fa- paperclip'></i></td><td class='text- right mail- date'>";
@@ -25,7 +25,7 @@ function GetBlogList(blogType, status) {
 
             //构造元素
             var htmlContent = "";
-            $.each(returnData.Data, function (index, item) {
+            $.each(returnInfo.Data, function (index, item) {
                 htmlContent += e1 + item.Title + e2 + item.Content + e3 + item.ReDate + e4;
             });
 
@@ -36,7 +36,7 @@ function GetBlogList(blogType, status) {
                 checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green",
             })
         } else {
-            toastr.error("提示", returnData.StatusValue);
+            toastr.error("提示", returnInfo.StatusValue);
         }
     },2);
 }

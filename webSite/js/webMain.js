@@ -120,11 +120,11 @@ function ajax(className, methodName, data, type, callback,floorCount) {
         async: asyncFlag,
         url: urlStr,
         data: paramStr,
-        success: function (returnData) {
+        success: function (returnInfo) {
             layer.close(layerIndex);
             
             //如果有回调函数，则调用回调函数来处理数据
-            result = returnData;
+            result = returnInfo;
             if (callback) {
                 callbackHandle(result, callback,floorCount);
             }
@@ -146,16 +146,16 @@ function ajax(className, methodName, data, type, callback,floorCount) {
 }
 
 //处理回调函数的数据
-function callbackHandle(returnData, callback,floorCount) {
-    var data = handle(returnData,floorCount);
+function callbackHandle(returnInfo, callback,floorCount) {
+    var data = handle(returnInfo,floorCount);
 
     if (callback)
         callback(data);
 }
 
 //处理返回值
-function handle(returnData,floorCount) {
-    var data = JSON.parse(returnData);
+function handle(returnInfo,floorCount) {
+    var data = JSON.parse(returnInfo);
 
     //如果登录超时，直接跳转
     if (data.Status == 7) {

@@ -18,10 +18,10 @@ function Identify() {
     data[0] = email;
     data[1] = 1;
 
-    WebMain.Post("SysUser", "Identify", data, function (returnData) {
-        if (returnData == {}) return;
+    WebMain.Post("SysUser", "Identify", data, function (returnInfo) {
+        if (returnInfo == {}) return;
 
-        if (returnData.Status == 0) {
+        if (returnInfo.Status == 0) {
             toastr.success("提示", "邮件已发送");
 
             //一分钟可点击一次发送邮件
@@ -30,7 +30,7 @@ function Identify() {
                 $("#identifyBtn").attr('disabled', false);
             }, 60000);
         } else {
-            toastr.error("提示", returnData.StatusValue);
+            toastr.error("提示", returnInfo.StatusValue);
         }
     });
 }
@@ -55,15 +55,15 @@ function Retrieve() {
     data[1] = email;
     data[2] = identifyCode;
 
-    WebMain.Post("SysUser", "Retrieve", data, function (returnData) {
-        if (returnData == {}) return;
+    WebMain.Post("SysUser", "Retrieve", data, function (returnInfo) {
+        if (returnInfo == {}) return;
 
-        if (returnData.Status == 0) {
+        if (returnInfo.Status == 0) {
             WebMain.Alert("成功找回密码", "点击OK跳转登录页面，%s后自动跳转登录页面..", "timer", "OK", function () {
                 window.location.href = 'login.html';
             });
         } else {
-            toastr.error("提示", returnData.StatusValue);
+            toastr.error("提示", returnInfo.StatusValue);
         }
     });
 }

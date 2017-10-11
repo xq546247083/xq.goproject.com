@@ -31,8 +31,8 @@
                 type: "POST",
                 url: "../API/ClientHandler.ashx",
                 data: paramStr,
-                success: function (returnData) {
-                    $("#resultContent").html(returnData);
+                success: function (returnInfo) {
+                    $("#resultContent").html(returnInfo);
                 },
                 error: function (request, textStatus, errorThrown) {
 

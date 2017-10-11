@@ -20,13 +20,13 @@ function GetMenu(){
     var data = new Array();
     data[0] = userName;
 
-    WebMain.Post("SysMenu", "GetInfo", data, function (returnData) {
-        if (returnData == {}) return;
+    WebMain.Post("SysMenu", "GetInfo", data, function (returnInfo) {
+        if (returnInfo == {}) return;
 
-        if (returnData.Status == 0) {
-            $("#side-menu").append(returnData.Data.MenuScript);
+        if (returnInfo.Status == 0) {
+            $("#side-menu").append(returnInfo.Data.MenuScript);
         } else {
-            toastr.error("提示", returnData.StatusValue);
+            toastr.error("提示", returnInfo.StatusValue);
         }
     });
 }
@@ -42,7 +42,7 @@ function LoginOut() {
     var data = new Array();
     data[0] = userName;
 
-    WebMain.Post("SysUser", "LoginOut", data, function (returnData) {
+    WebMain.Post("SysUser", "LoginOut", data, function (returnInfo) {
         WebMain.Cookie(null, null, null, null, null, null, null, null
         );
         window.location.href = 'login.html';

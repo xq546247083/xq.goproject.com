@@ -66,10 +66,10 @@ function Identify() {
     data[0] = email;
     data[1] = 0;
 
-    WebMain.Post("SysUser", "Identify", data, function (returnData) {
-        if (returnData == {}) return;
+    WebMain.Post("SysUser", "Identify", data, function (returnInfo) {
+        if (returnInfo == {}) return;
 
-        if (returnData.Status == 0) {
+        if (returnInfo.Status == 0) {
             toastr.success("提示", "邮件已发送");
 
             //一分钟可点击一次发送邮件
@@ -78,7 +78,7 @@ function Identify() {
                 $("#identifyBtn").attr('disabled', false);
             }, 60000);
         } else {
-            toastr.error("提示", returnData.StatusValue);
+            toastr.error("提示", returnInfo.StatusValue);
         }
     });
 }
@@ -113,15 +113,15 @@ function Register() {
     data[4] = email;
     data[5] = identifyCode;
 
-    WebMain.Post("SysUser", "Register", data, function (returnData) {
-        if (returnData == {}) return;
+    WebMain.Post("SysUser", "Register", data, function (returnInfo) {
+        if (returnInfo == {}) return;
 
-        if (returnData.Status == 0) {
+        if (returnInfo.Status == 0) {
             WebMain.Alert("注册成功", "点击OK跳转登录页面，%s后自动跳转登录页面..", "timer", "OK", function () {
                 window.location.href = 'login.html';
             });
         } else {
-            toastr.error("提示", returnData.StatusValue);
+            toastr.error("提示", returnInfo.StatusValue);
         }
     });
 }

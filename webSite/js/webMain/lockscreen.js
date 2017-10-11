@@ -29,23 +29,23 @@ function ReLogin() {
     data[0] = userName;
     data[1] = pwd;
 
-    WebMain.Post("SysUser", "Login", data, function (returnData) {
-        if (returnData == {}) return;
+    WebMain.Post("SysUser", "Login", data, function (returnInfo) {
+        if (returnInfo == {}) return;
 
-        if (returnData.Status == 0) {
+        if (returnInfo.Status == 0) {
             WebMain.Cookie(
-                returnData.Data.UserName,
-                returnData.Data.PwdExpiredTime,
-                returnData.Data.FullName,
-                returnData.Data.Email,
-                returnData.Data.Sex,
-                returnData.Data.LoginCount,
-                returnData.Data.LastLoginTime,
-                returnData.Data.LastLoginIP
+                returnInfo.Data.UserName,
+                returnInfo.Data.PwdExpiredTime,
+                returnInfo.Data.FullName,
+                returnInfo.Data.Email,
+                returnInfo.Data.Sex,
+                returnInfo.Data.LoginCount,
+                returnInfo.Data.LastLoginTime,
+                returnInfo.Data.LastLoginIP
             );
             window.location.href = 'index.html';
         } else {
-            toastr.error("提示", returnData.StatusValue);
+            toastr.error("提示", returnInfo.StatusValue);
         }
     });
 }
