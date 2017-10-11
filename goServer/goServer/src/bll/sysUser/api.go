@@ -408,7 +408,7 @@ func updatePwdExpiredTime(requestObject *webServerObject.RequestObject) *webServ
 				UpdatePwdExpiredTime(userName)
 				sysUserObj := GetItemByUserNameOrEmail(userName)
 				if sysUserObj != nil {
-					responseObj.PwdExpiredTime = sysUserObj.PwdExpiredTime.UnixNano() / 1e6
+					responseObj.AttachData["PwdExpiredTime"] = sysUserObj.PwdExpiredTime.UnixNano() / 1e6
 				}
 			}
 		}

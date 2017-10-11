@@ -173,8 +173,8 @@ function handle(returnData,floorCount) {
     }
 
     //如果返回了过期时间
-    if (data.PwdExpiredTime != null && data.PwdExpiredTime != 0) {
-        $.cookie("PwdExpiredTime", data.PwdExpiredTime, { expires: 30, path: '/' });
+    if (data.AttachData.PwdExpiredTime != null && data.AttachData.PwdExpiredTime != 0) {
+        $.cookie("PwdExpiredTime", data.AttachData.PwdExpiredTime, { expires: 30, path: '/' });
     }
 
     return data;

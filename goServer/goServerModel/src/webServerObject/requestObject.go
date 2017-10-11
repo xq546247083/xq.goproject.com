@@ -7,9 +7,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"xq.goproject.com/commonTools/stringTool"
-
 	"xq.goproject.com/commonTools/logTool"
+	"xq.goproject.com/commonTools/stringTool"
 	"xq.goproject.com/commonTools/typeTool"
 )
 

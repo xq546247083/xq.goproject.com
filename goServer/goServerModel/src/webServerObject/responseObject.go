@@ -10,8 +10,8 @@ type ResponseObject struct {
 	// 响应结果的状态值所对应的描述信息
 	StatusValue string
 
-	// 过期时间
-	PwdExpiredTime int64
+	// 附加数据
+	AttachData map[string]interface{}
 
 	// 响应结果的数据
 	Data interface{}
@@ -19,11 +19,16 @@ type ResponseObject struct {
 
 //NewResponseObject 创建一个新的服务器返回object
 func NewResponseObject() *ResponseObject {
+	//附加数据，必有密码过期时间
+	attachDataDic := map[string]interface{}{
+		"PwdExpiredTime": time.Now().UnixNano() / 1e6,
+	}
+
 	return &ResponseObject{
-		Status:         Success,
-		StatusValue:    Success.ToDescription(),
-		PwdExpiredTime: time.Now().UnixNano() / 1e6,
-		Data:           nil,
+		Status:      Success,
+		StatusValue: Success.ToDescription(),
+		AttachData:  attachDataDic,
+		Data:        nil,
 	}
 }
 
