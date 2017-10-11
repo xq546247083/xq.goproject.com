@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@
     <link href="../../css/plugins/toastr/toastr.min.css" rel="stylesheet">
     <link href="../../css/webMain.css" rel="stylesheet">
 </head>
+
 <body class="gray-bg">
     <div class="wrapper wrapper-content">
         <div class="row">
@@ -156,8 +158,26 @@
     <script src="../../js/plugins/toastr/toastr.min.js"></script>
     <script src="../../js/webMain.js"></script>
     <script>
-        $(document).ready(function () { $(".i-checks").iCheck({ checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green", }); $(".summernote").summernote({ lang: "zh-CN" }) }); var edit = function () { $(".click2edit").summernote({ focus: true }) }; var save = function () { var aHTML = $(".click2edit").code(); $(".click2edit").destroy() };
+        $(document).ready(function() {
+            $(".i-checks").iCheck({
+                checkboxClass: "icheckbox_square-green",
+                radioClass: "iradio_square-green",
+            });
+            $(".summernote").summernote({
+                lang: "zh-CN"
+            })
+        });
+        var edit = function() {
+            $(".click2edit").summernote({
+                focus: true
+            })
+        };
+        var save = function() {
+            var aHTML = $(".click2edit").code();
+            $(".click2edit").destroy()
+        };
     </script>
 
 </body>
+
 </html>

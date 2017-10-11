@@ -1,5 +1,5 @@
-﻿$(document).ready(function () {
-    WebMain.Init(1,2);
+﻿$(document).ready(function() {
+    WebMain.Init(1, 2);
     GetBlogList(2, 1)
 });
 
@@ -14,7 +14,7 @@ function GetBlogList(blogType, status) {
     data[2] = status;
     data[3] = "";
 
-    WebMain.Post("UBlog", "GetBlogList", data, function (returnInfo) {
+    WebMain.Post("UBlog", "GetBlogList", data, function(returnInfo) {
         if (returnInfo == {}) return;
 
         if (returnInfo.Status == 0) {
@@ -25,7 +25,7 @@ function GetBlogList(blogType, status) {
 
             //构造元素
             var htmlContent = "";
-            $.each(returnInfo.Data, function (index, item) {
+            $.each(returnInfo.Data, function(index, item) {
                 htmlContent += e1 + item.Title + e2 + item.Content + e3 + item.ReDate + e4;
             });
 
@@ -33,16 +33,17 @@ function GetBlogList(blogType, status) {
 
             //构造复选框样式
             $(".i-checks").iCheck({
-                checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green",
+                checkboxClass: "icheckbox_square-green",
+                radioClass: "iradio_square-green",
             })
         } else {
             toastr.error("提示", returnInfo.StatusValue);
         }
-    },2);
+    }, 2);
 }
 
 
-$(document).on("click", "#blogQueryBtn", function (e) {
+$(document).on("click", "#blogQueryBtn", function(e) {
     var name = $(e).attr("name");
     if (name == "note") {
         GetBlogList(1, 1);

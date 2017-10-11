@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿$(document).ready(function() {
     WebMain.Init(2);
 
     //进入这个页面，直接判定为过期
@@ -7,7 +7,7 @@
     WebMain.Cookie(userName, null);
 
     //回车提交
-    $(document).keydown(function (e) {
+    $(document).keydown(function(e) {
         if (e.keyCode == '13') {
             ReLogin();
         }
@@ -29,7 +29,7 @@ function ReLogin() {
     data[0] = userName;
     data[1] = pwd;
 
-    WebMain.Post("SysUser", "Login", data, function (returnInfo) {
+    WebMain.Post("SysUser", "Login", data, function(returnInfo) {
         if (returnInfo == {}) return;
 
         if (returnInfo.Status == 0) {

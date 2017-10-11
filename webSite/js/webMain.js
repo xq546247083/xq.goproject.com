@@ -1,26 +1,26 @@
 ﻿var WebMain = {
     //----------------------------------------------一些配置----------------------------------------------
     //业务服务器配置
-    WebServerConfig:"http://localhost:8883/",
+    WebServerConfig: "http://localhost:8883/",
 
     //文件服务器配置
-    FileServerConfig:"http://107.151.172.51:8882/",
+    FileServerConfig: "http://107.151.172.51:8882/",
 
     //----------------------------------------------一些通用方法----------------------------------------------
     //初始化,检测数据
     //flag: 0：登录页面，1：检测数据,一般界面，2：重新登录,3:注册页面
     //floorCount:涉及到跳转，需要知道路径层数
-    Init: function (flag,floorCount) {
-        return init.call(this, flag,floorCount);
+    Init: function(flag, floorCount) {
+        return init.call(this, flag, floorCount);
     },
     //ajax请求，如果有回调函数，则采用异步的方式，如果没有，则采用非异步的方式返回
-    Get: function (className, methodName, data, callback,floorCount) {
-        return ajax.call(this, className, methodName, data, 'Get', callback,floorCount);
+    Get: function(className, methodName, data, callback, floorCount) {
+        return ajax.call(this, className, methodName, data, 'Get', callback, floorCount);
     },
-    Post: function (className, methodName, data, callback,floorCount) {
-        return ajax.call(this, className, methodName, data, 'Post', callback,floorCount);
+    Post: function(className, methodName, data, callback, floorCount) {
+        return ajax.call(this, className, methodName, data, 'Post', callback, floorCount);
     },
-    Cookie: function (userName, pwdExpiredTime, fullName, email, sex, loginCount, lastLoginTime, lastLoginIP) {
+    Cookie: function(userName, pwdExpiredTime, fullName, email, sex, loginCount, lastLoginTime, lastLoginIP) {
         return cookie.call(this, userName, pwdExpiredTime, fullName, email, sex, loginCount, lastLoginTime, lastLoginIP);
     },
     //封装sweetalert,
@@ -32,19 +32,19 @@
     //callbackb：按钮b的回调函数
     //btncText：按钮c的文本
     //callbackc：按钮c的回调函数
-    Alert: function (title, content, type, btnaText, callbacka, btnbText, callbackb, btncText, callbackc) {
+    Alert: function(title, content, type, btnaText, callbacka, btnbText, callbackb, btncText, callbackc) {
         return alertFunc.call(this, title, content, type, btnaText, callbacka, btnbText, callbackb, btncText, callbackc);
     },
     //获取层级对应的路径
-    GetPath: function(floorCount){
+    GetPath: function(floorCount) {
         GetRootPath(floorCount);
     },
 }
 
 //初始化,检测数据
-function init(flag,floorCount) {
+function init(flag, floorCount) {
     var result = {}
-    checkdata(flag,floorCount);
+    checkdata(flag, floorCount);
 
     //设置默认的提示框
     toastr.options = {
@@ -76,10 +76,10 @@ function checkdata(flag, floorCount) {
     //如果检测数据，那么如果没有用户名，则登录
     if (flag == 1) {
         if (userName == null || userName == "") {
-            window.location.href =rootPath+'login.html';
+            window.location.href = rootPath + 'login.html';
         } else if (pwdExpiredTime < curDate || pwdExpiredTime == null) {
             //如果有用户名，但是过期了，则重登录
-            window.location.href =rootPath+'lockscreen.html';
+            window.location.href = rootPath + 'lockscreen.html';
         }
     } else if (flag == 0) {
         //如果为登录页面，且密码过期，则重登录
@@ -87,24 +87,24 @@ function checkdata(flag, floorCount) {
             if (pwdExpiredTime < curDate || pwdExpiredTime == null) {
                 //window.location.href = rootPath+'lockscreen.html';
             } else {
-                window.location.href = rootPath+'index.html';
+                window.location.href = rootPath + 'index.html';
             }
         }
     } else if (flag == 2) {
         if (userName == null || userName == "") {
-            window.location.href = rootPath+'login.html';
+            window.location.href = rootPath + 'login.html';
         }
     }
 }
 
 //ajax请求
-function ajax(className, methodName, data, type, callback,floorCount) {
+function ajax(className, methodName, data, type, callback, floorCount) {
     var result = {}
 
     var userName = $.cookie("UserName");
     var asyncFlag = !callback ? false : true;
     var rootPath = GetRootPath(floorCount);
-    var urlStr=WebMain.WebServerConfig+"API/"+className+"/"+methodName;
+    var urlStr = WebMain.WebServerConfig + "API/" + className + "/" + methodName;
 
     //调用参数
     var params = {
@@ -113,48 +113,48 @@ function ajax(className, methodName, data, type, callback,floorCount) {
     };
 
     var paramStr = JSON.stringify(params);
-    var layerIndex=layer.load();
+    var layerIndex = layer.load();
     $.ajax({
         dataType: "text",
         type: type,
         async: asyncFlag,
         url: urlStr,
         data: paramStr,
-        success: function (returnInfo) {
+        success: function(returnInfo) {
             layer.close(layerIndex);
-            
+
             //如果有回调函数，则调用回调函数来处理数据
             result = returnInfo;
             if (callback) {
-                callbackHandle(result, callback,floorCount);
+                callbackHandle(result, callback, floorCount);
             }
         },
-        error: function (request) {
+        error: function(request) {
             layer.close(layerIndex);
 
             if (request.status == 404) {
-                window.location.href = rootPath+'404.html';
+                window.location.href = rootPath + '404.html';
             } else {
-                window.location.href = rootPath+'500.html';
+                window.location.href = rootPath + '500.html';
             }
         }
     });
 
     //如果没有回调函数，则处理数据
     if (!callback)
-        return handle(result,floorCount);
+        return handle(result, floorCount);
 }
 
 //处理回调函数的数据
-function callbackHandle(returnInfo, callback,floorCount) {
-    var data = handle(returnInfo,floorCount);
+function callbackHandle(returnInfo, callback, floorCount) {
+    var data = handle(returnInfo, floorCount);
 
     if (callback)
         callback(data);
 }
 
 //处理返回值
-function handle(returnInfo,floorCount) {
+function handle(returnInfo, floorCount) {
     var data = JSON.parse(returnInfo);
 
     //如果登录超时，直接跳转
@@ -163,9 +163,9 @@ function handle(returnInfo,floorCount) {
 
         var userName = $.cookie("UserName");
         if (userName == null || userName == "") {
-            window.location.href = rootPath+'login.html';
+            window.location.href = rootPath + 'login.html';
         } else {
-            window.location.href = rootPath+'lockscreen.html';
+            window.location.href = rootPath + 'lockscreen.html';
         }
         data = {}
     } else {
@@ -207,7 +207,7 @@ function alertFunc(title, content, type, btnaText, callbacka, btnbText, callback
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: btnaText,
                 closeOnConfirm: false
-            }, function () {
+            }, function() {
                 if (callbacka)
                     callbacka();
             });
@@ -223,7 +223,7 @@ function alertFunc(title, content, type, btnaText, callbacka, btnbText, callback
                 confirmButtonText: btnaText,
                 closeOnConfirm: false,
                 closeOnCancel: false
-            }, function (isConfirm) {
+            }, function(isConfirm) {
                 if (isConfirm) {
                     if (callbacka)
                         callbacka();
@@ -245,7 +245,7 @@ function alertFunc(title, content, type, btnaText, callbacka, btnbText, callback
 }
 
 //递归函数用来显示时间提示框
-function swalTimerFunc(title, content,  btnaText, callbacka, i) {
+function swalTimerFunc(title, content, btnaText, callbacka, i) {
     var currentContent = content.replace("%s", i / 1000 + "s");
 
     swal({
@@ -255,7 +255,7 @@ function swalTimerFunc(title, content,  btnaText, callbacka, i) {
         type: "success",
         showConfirmButton: true,
         confirmButtonText: btnaText
-    }, function (isConfirm) {
+    }, function(isConfirm) {
         //如果点击了确认，则直接返回
         if (isConfirm) {
             if (callbacka)
@@ -265,7 +265,7 @@ function swalTimerFunc(title, content,  btnaText, callbacka, i) {
         //继续循环
         i = i - 1000;
         if (i >= 1000) {
-            swalTimerFunc(title, content,  btnaText, callbacka, i);
+            swalTimerFunc(title, content, btnaText, callbacka, i);
         } else {
             if (callbacka)
                 callbacka();
@@ -275,7 +275,7 @@ function swalTimerFunc(title, content,  btnaText, callbacka, i) {
 
 //设置cookie
 function cookie(userName, pwdExpiredTime, fullName, email, sex, loginCount, lastLoginTime, lastLoginIP) {
-    if (typeof (userName) != "undefined") {
+    if (typeof(userName) != "undefined") {
         if (userName == null) {
             $.cookie('UserName', '', { expires: -1, path: '/' });
         } else {
@@ -283,7 +283,7 @@ function cookie(userName, pwdExpiredTime, fullName, email, sex, loginCount, last
         }
     }
 
-    if (typeof (pwdExpiredTime) != "undefined") {
+    if (typeof(pwdExpiredTime) != "undefined") {
         if (pwdExpiredTime == null) {
             $.cookie('PwdExpiredTime', '', { expires: -1, path: '/' });
         } else {
@@ -291,7 +291,7 @@ function cookie(userName, pwdExpiredTime, fullName, email, sex, loginCount, last
         }
     }
 
-    if (typeof (fullName) != "undefined") {
+    if (typeof(fullName) != "undefined") {
         if (fullName == null) {
             $.cookie('FullName', '', { expires: -1, path: '/' });
         } else {
@@ -299,7 +299,7 @@ function cookie(userName, pwdExpiredTime, fullName, email, sex, loginCount, last
         }
     }
 
-    if (typeof (email) != "undefined") {
+    if (typeof(email) != "undefined") {
         if (email == null) {
             $.cookie('Email', '', { expires: -1, path: '/' });
         } else {
@@ -307,7 +307,7 @@ function cookie(userName, pwdExpiredTime, fullName, email, sex, loginCount, last
         }
     }
 
-    if (typeof (sex) != "undefined") {
+    if (typeof(sex) != "undefined") {
         if (sex == null) {
             $.cookie('Sex', '', { expires: -1, path: '/' });
         } else {
@@ -315,7 +315,7 @@ function cookie(userName, pwdExpiredTime, fullName, email, sex, loginCount, last
         }
     }
 
-    if (typeof (loginCount) != "undefined") {
+    if (typeof(loginCount) != "undefined") {
         if (loginCount == null) {
             $.cookie('LoginCount', '', { expires: -1, path: '/' });
         } else {
@@ -323,14 +323,14 @@ function cookie(userName, pwdExpiredTime, fullName, email, sex, loginCount, last
         }
     }
 
-    if (typeof (lastLoginTime) != "undefined") {
+    if (typeof(lastLoginTime) != "undefined") {
         if (lastLoginTime == null) {
             $.cookie('LastLoginTime', '', { expires: -1, path: '/' });
         } else {
             $.cookie("LastLoginTime", lastLoginTime, { expires: 30, path: '/' });
         }
     }
-    if (typeof (lastLoginIP) != "undefined") {
+    if (typeof(lastLoginIP) != "undefined") {
         if (pwdExpiredTime == null) {
             $.cookie('LastLoginIP', '', { expires: -1, path: '/' });
         } else {
@@ -340,16 +340,15 @@ function cookie(userName, pwdExpiredTime, fullName, email, sex, loginCount, last
 }
 
 //获得根路径
-function GetRootPath(floorCount){
-    var rootPath="";
+function GetRootPath(floorCount) {
+    var rootPath = "";
 
-    if(floorCount==null||floorCount=="undefined"||floorCount==0){
+    if (floorCount == null || floorCount == "undefined" || floorCount == 0) {
         return rootPath;
-    }else {
-        var tempPath="../";
-        for (var i=0;i<floorCount;i++)
-        {
-            rootPath+=tempPath;
+    } else {
+        var tempPath = "../";
+        for (var i = 0; i < floorCount; i++) {
+            rootPath += tempPath;
         }
     }
 

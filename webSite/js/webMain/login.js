@@ -1,11 +1,11 @@
-﻿$(document).ready(function () {
+﻿$(document).ready(function() {
     WebMain.Init(0);
 });
 
 //回车提交
-$(function () {
-    $(document).keydown(function (e) {
-        if (e.keyCode == "13" ) {
+$(function() {
+    $(document).keydown(function(e) {
+        if (e.keyCode == "13") {
             Login()
         }
     })
@@ -25,7 +25,7 @@ function Login() {
     data[0] = userName;
     data[1] = pwd;
 
-    WebMain.Post("SysUser", "Login", data, function (returnInfo) {
+    WebMain.Post("SysUser", "Login", data, function(returnInfo) {
         if (returnInfo == {}) return;
 
         if (returnInfo.Status == 0) {
@@ -39,7 +39,7 @@ function Login() {
                 returnInfo.Data.LastLoginTime,
                 returnInfo.Data.LastLoginIP
             );
-            window.location.href ='index.html';
+            window.location.href = 'index.html';
         } else {
             toastr.error("提示", returnInfo.StatusValue);
         }

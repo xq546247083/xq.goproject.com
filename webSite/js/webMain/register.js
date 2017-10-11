@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿$(document).ready(function() {
     WebMain.Init(3);
 
     $(".i-checks").iCheck({
@@ -9,42 +9,48 @@
 
 //验证
 $.validator.setDefaults({
-    highlight: function (e) {
+    highlight: function(e) {
         $(e).closest(".form-group").removeClass("has-success").addClass("has-error")
     },
-    success: function (e) {
+    success: function(e) {
         e.closest(".form-group").removeClass("has-error").addClass("has-success")
     },
-    errorElement: "span", errorPlacement: function (e, r) {
+    errorElement: "span",
+    errorPlacement: function(e, r) {
         e.appendTo(r.is(":radio") || r.is(":checkbox") ? r.parent().parent().parent() : r.parent())
     },
-    errorClass: "help-block m-b-none", validClass: "help-block m-b-none"
-}), $().ready(function () {
+    errorClass: "help-block m-b-none",
+    validClass: "help-block m-b-none"
+}), $().ready(function() {
     var e = "<i class='fa fa-times-circle'></i> ";
     $("#registerForm").validate({
         rules: {
             userName: {
-                required: !0, minlength: 4
+                required: !0,
+                minlength: 4
             },
             userPassword1: {
-                required: !0, minlength: 8
+                required: !0,
+                minlength: 8
             },
             userPassword2: {
-                required: !0, minlength: 8, equalTo: "#userPassword1"
+                required: !0,
+                minlength: 8,
+                equalTo: "#userPassword1"
             },
             email: {
-                required: !0, email: true
+                required: !0,
+                email: true
             },
             identifyCode: {
-                rangelength: [6,6]
+                rangelength: [6, 6]
             },
         },
-        messages:
-        {
+        messages: {
             userName: { required: e + "请输入您的用户名", minlength: e + "用户名必须四个字符以上" },
             userPassword1: { required: e + "请输入您的密码", minlength: e + "密码必须八个字符以上" },
             userPassword2: { required: e + "请再次输入密码", minlength: e + "密码必须八个字符以上", equalTo: e + "两次输入的密码不一致" },
-            email: { required: e + "请输入您的E-mail", email: e +"请输入正确的邮箱" },
+            email: { required: e + "请输入您的E-mail", email: e + "请输入正确的邮箱" },
             identifyCode: { rangelength: e + "验证码长度为六位" }
         }
     })
@@ -52,8 +58,8 @@ $.validator.setDefaults({
 
 
 //回车提交
-$(function () {
-    $(document).keydown(function (e) {
+$(function() {
+    $(document).keydown(function(e) {
         if (e.keyCode == "13") {
             Register()
         }
@@ -66,7 +72,7 @@ function Identify() {
     data[0] = email;
     data[1] = 0;
 
-    WebMain.Post("SysUser", "Identify", data, function (returnInfo) {
+    WebMain.Post("SysUser", "Identify", data, function(returnInfo) {
         if (returnInfo == {}) return;
 
         if (returnInfo.Status == 0) {
@@ -74,7 +80,7 @@ function Identify() {
 
             //一分钟可点击一次发送邮件
             $("#identifyBtn").attr('disabled', true);
-            setTimeout(function () {
+            setTimeout(function() {
                 $("#identifyBtn").attr('disabled', false);
             }, 60000);
         } else {
@@ -113,11 +119,11 @@ function Register() {
     data[4] = email;
     data[5] = identifyCode;
 
-    WebMain.Post("SysUser", "Register", data, function (returnInfo) {
+    WebMain.Post("SysUser", "Register", data, function(returnInfo) {
         if (returnInfo == {}) return;
 
         if (returnInfo.Status == 0) {
-            WebMain.Alert("注册成功", "点击OK跳转登录页面，%s后自动跳转登录页面..", "timer", "OK", function () {
+            WebMain.Alert("注册成功", "点击OK跳转登录页面，%s后自动跳转登录页面..", "timer", "OK", function() {
                 window.location.href = 'login.html';
             });
         } else {

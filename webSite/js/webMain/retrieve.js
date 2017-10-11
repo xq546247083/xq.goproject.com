@@ -1,10 +1,10 @@
-﻿$(document).ready(function () {
+﻿$(document).ready(function() {
     WebMain.Init(3);
 });
 
 //回车提交
-$(function () {
-    $(document).keydown(function (e) {
+$(function() {
+    $(document).keydown(function(e) {
         if (e.keyCode == "13") {
             Retrieve()
         }
@@ -18,7 +18,7 @@ function Identify() {
     data[0] = email;
     data[1] = 1;
 
-    WebMain.Post("SysUser", "Identify", data, function (returnInfo) {
+    WebMain.Post("SysUser", "Identify", data, function(returnInfo) {
         if (returnInfo == {}) return;
 
         if (returnInfo.Status == 0) {
@@ -26,7 +26,7 @@ function Identify() {
 
             //一分钟可点击一次发送邮件
             $("#identifyBtn").attr('disabled', true);
-            setTimeout(function () {
+            setTimeout(function() {
                 $("#identifyBtn").attr('disabled', false);
             }, 60000);
         } else {
@@ -55,11 +55,11 @@ function Retrieve() {
     data[1] = email;
     data[2] = identifyCode;
 
-    WebMain.Post("SysUser", "Retrieve", data, function (returnInfo) {
+    WebMain.Post("SysUser", "Retrieve", data, function(returnInfo) {
         if (returnInfo == {}) return;
 
         if (returnInfo.Status == 0) {
-            WebMain.Alert("成功找回密码", "点击OK跳转登录页面，%s后自动跳转登录页面..", "timer", "OK", function () {
+            WebMain.Alert("成功找回密码", "点击OK跳转登录页面，%s后自动跳转登录页面..", "timer", "OK", function() {
                 window.location.href = 'login.html';
             });
         } else {

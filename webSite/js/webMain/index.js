@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿$(document).ready(function() {
     WebMain.Init(1);
 
     var fullName = $.cookie("FullName");
@@ -13,14 +13,14 @@
 });
 
 //获取菜单信息
-function GetMenu(){
+function GetMenu() {
     var userName = $.cookie("UserName");
 
     //方法参数
     var data = new Array();
     data[0] = userName;
 
-    WebMain.Post("SysMenu", "GetInfo", data, function (returnInfo) {
+    WebMain.Post("SysMenu", "GetInfo", data, function(returnInfo) {
         if (returnInfo == {}) return;
 
         if (returnInfo.Status == 0) {
@@ -42,9 +42,8 @@ function LoginOut() {
     var data = new Array();
     data[0] = userName;
 
-    WebMain.Post("SysUser", "LoginOut", data, function (returnInfo) {
-        WebMain.Cookie(null, null, null, null, null, null, null, null
-        );
+    WebMain.Post("SysUser", "LoginOut", data, function(returnInfo) {
+        WebMain.Cookie(null, null, null, null, null, null, null, null);
         window.location.href = 'login.html';
     });
 }

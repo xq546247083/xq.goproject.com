@@ -1,4 +1,3 @@
-﻿$(document).ready(function () {
-    WebMain.Init(1,2);
+﻿$(document).ready(function() {
+    WebMain.Init(1, 2);
 });
-
