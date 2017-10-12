@@ -2,6 +2,8 @@ package sysUser
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -15,6 +17,7 @@ import (
 	"xq.goproject.com/goServer/goServer/src/model"
 	"xq.goproject.com/goServer/goServer/src/rpcServer"
 	"xq.goproject.com/goServer/goServer/src/webServer"
+	"xq.goproject.com/goServer/goServerModel/src/consts"
 	"xq.goproject.com/goServer/goServerModel/src/rpcServerObject"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
@@ -26,7 +29,7 @@ func init() {
 	webServer.RegisterHandler("/API/SysUser/Register", register)
 	webServer.RegisterHandler("/API/SysUser/Retrieve", retrieve)
 	webServer.RegisterHandler("/API/SysUser/Identify", identify)
-	webServer.RegisterHandler("UpdatePwdExpiredTime", updatePwdExpiredTime)
+	webServer.RegisterHandler("/Func/SysUser/CheckRequest", checkRequest)
 
 	rpcServer.RegisterHandler("RpcTest", rpcTest)
 }
@@ -83,11 +86,18 @@ func login(requestObj *webServerObject.RequestObject) *webServerObject.ResponseO
 		return responseObj
 	}
 
+	dtNow := time.Now()
+	token, err2 := EncrpytTool.RsaEncrypt([]byte(fmt.Sprintf("%s,%d", sysUser.UserName, dtNow.UnixNano()/1e6)))
+	if err2 != nil {
+		responseObj.SetResultStatus(webServerObject.DataError)
+		return responseObj
+	}
+
 	//事务处理数据
 	transaction.Handle(func(tempDB *gorm.DB) error {
 		duration := time.Duration(int(time.Hour) * configTool.PwdExpiredTime)
 		sysUser.PwdExpiredTime = time.Now().Add(duration)
-		sysUser.LastLoginTime = time.Now()
+		sysUser.LastLoginTime = dtNow
 		sysUser.LoginCount++
 
 		if err := dal.SysUserDALObj.SaveInfo(sysUser, tempDB); err != nil {
@@ -98,7 +108,22 @@ func login(requestObj *webServerObject.RequestObject) *webServerObject.ResponseO
 	})
 
 	//返回用户信息
-	responseObj.Data = assembleToClient(sysUser)
+	clientInfo := make(map[string]interface{})
+
+	clientInfo[consts.UserName] = sysUser.UserName
+	clientInfo[consts.FullName] = sysUser.FullName
+	clientInfo[consts.Sex] = sysUser.Sex
+	clientInfo[consts.Phone] = sysUser.Phone
+	clientInfo[consts.Email] = sysUser.Email
+	clientInfo[consts.LastLoginTime] = sysUser.LastLoginTime
+	clientInfo[consts.LastLoginIP] = sysUser.LastLoginIP
+	clientInfo[consts.LoginCount] = sysUser.LoginCount
+	clientInfo[consts.Status] = sysUser.Status
+	clientInfo[consts.CreateTime] = sysUser.CreateTime
+	clientInfo[consts.PwdExpiredTime] = sysUser.PwdExpiredTime.UnixNano() / 1e6
+	clientInfo[consts.Token] = string(token)
+
+	responseObj.Data = clientInfo
 
 	return responseObj
 }
@@ -385,31 +410,57 @@ func identify(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 	return responseObj
 }
 
-// updatePwdExpiredTime 更新密码过期时间
-func updatePwdExpiredTime(requestObject *webServerObject.RequestObject) *webServerObject.ResponseObject {
+// checkRequest 检测请求
+func checkRequest(requestObject *webServerObject.RequestObject) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
 
-	//根据用户名字判断过期时间
-	userName, err := requestObject.GetStringVal("UserName")
-	if err != nil {
-		return responseObj
-	}
+	//如果不是这几个方法，则要检测用户数据
+	if requestObject.HTTPRequest.RequestURI != "/API/SysUser/Login" && requestObject.HTTPRequest.RequestURI != "/API/SysUser/Register" &&
+		requestObject.HTTPRequest.RequestURI != "/API/SysUser/Identify" && requestObject.HTTPRequest.RequestURI != "/API/SysUser/Retrieve" {
+		//根据用户名字判断过期时间
+		userName, err := requestObject.GetStringVal("UserName")
+		key, err2 := requestObject.GetStringVal("Token")
+		if err != nil || err2 != nil {
+			responseObj.SetResultStatus(webServerObject.DataError)
+			return responseObj
+		}
 
-	//处理密码过期时间
-	if !stringTool.IsEmpty(userName) && userName != "null" {
-		if requestObject.HTTPRequest.RequestURI != "/API/SysUser/Login" && requestObject.HTTPRequest.RequestURI != "/API/SysUser/Register" &&
-			requestObject.HTTPRequest.RequestURI != "/API/SysUser/Identify" && requestObject.HTTPRequest.RequestURI != "/API/SysUser/Retrieve" {
-			//如果过期，返回过期提示
-			if CheckPwdExpiredTime(userName) {
-				responseObj.SetResultStatus(webServerObject.LoginIsOverTime)
-				return responseObj
-			} else {
-				//如果没过期，返回新的过期时间
-				UpdatePwdExpiredTime(userName)
-				sysUserObj := GetItemByUserNameOrEmail(userName)
-				if sysUserObj != nil {
-					responseObj.AttachData["PwdExpiredTime"] = sysUserObj.PwdExpiredTime.UnixNano() / 1e6
-				}
+		//先检测key
+		keyByte, err := EncrpytTool.RsaEncrypt([]byte(key))
+		if err != nil {
+			responseObj.SetResultStatus(webServerObject.SignError)
+			return responseObj
+		}
+
+		//检测用户名是否是登录的
+		stringArray := strings.Split(string(keyByte), ",")
+		if stringArray[0] != userName {
+			responseObj.SetResultStatus(webServerObject.SignError)
+			return responseObj
+		}
+
+		//检测时间是否是用户上次登录时间
+		timeStamp, err3 := strconv.ParseInt(stringArray[1], 10, 64)
+		if err3 != nil {
+			responseObj.SetResultStatus(webServerObject.SignError)
+			return responseObj
+		}
+
+		if !CheckLoginTime(userName, timeStamp) {
+			responseObj.SetResultStatus(webServerObject.SignError)
+			return responseObj
+		}
+
+		//如果过期，返回过期提示
+		if CheckPwdExpiredTime(userName) {
+			responseObj.SetResultStatus(webServerObject.LoginIsOverTime)
+			return responseObj
+		} else {
+			//如果没过期，返回新的过期时间
+			UpdatePwdExpiredTime(userName)
+			sysUserObj := GetItemByUserNameOrEmail(userName)
+			if sysUserObj != nil {
+				responseObj.AttachData["PwdExpiredTime"] = sysUserObj.PwdExpiredTime.UnixNano() / 1e6
 			}
 		}
 	}

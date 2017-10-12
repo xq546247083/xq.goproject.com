@@ -41,16 +41,20 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 		if logInfo != "" {
 			logTool.Log(logTool.Error, logInfo)
 		} else {
-			if requestData, err := requestObject.GetData(); err != nil {
+			if valStr, err := requestObject.GetValStr(); err != nil {
 				logTool.LogError(fmt.Sprintf("web服务器获取请求数据失败,请求：%s%serr:%s", request, stringTool.GetNewLine(), err))
 			} else {
-				logTool.LogDebug(fmt.Sprintf("web服务器接受请求,请求地址：%s %s请求数据：%s %s返回数据：%s", requestObject.HTTPRequest.RequestURI, stringTool.GetNewLine(), requestData, stringTool.GetNewLine(), string(data)))
+				if responseObj.Status == webServerObject.Success {
+					logTool.LogDebug(fmt.Sprintf("web服务器接受请求,请求地址：%s %s请求数据：%s %s返回数据：%s", requestObject.HTTPRequest.RequestURI, stringTool.GetNewLine(), valStr, stringTool.GetNewLine(), string(data)))
+				} else {
+					logTool.LogError(fmt.Sprintf("web服务器接受请求,请求地址：%s %s请求数据：%s %s返回数据：%s", requestObject.HTTPRequest.RequestURI, stringTool.GetNewLine(), valStr, stringTool.GetNewLine(), string(data)))
+				}
 			}
 		}
 	}()
 
-	//先判断用户密码是否过期
-	handlerObj, _ := getHandler("UpdatePwdExpiredTime")
+	//先判断用户请求
+	handlerObj, _ := getHandler("/Func/SysUser/CheckRequest")
 	updatePwdExpiredTimeResponseObj := handlerObj.handlerFunc(requestObject)
 	if updatePwdExpiredTimeResponseObj.Status != webServerObject.Success {
 		responseObj = updatePwdExpiredTimeResponseObj

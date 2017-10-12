@@ -22,12 +22,16 @@ type RequestObject struct {
 
 	// data 请求数据
 	data []interface{}
+
+	// isRead 是否读取
+	isRead bool
 }
 
 // NewRequestObject 新建http请求
 func NewRequestObject(_request *http.Request) *RequestObject {
 	return &RequestObject{
 		HTTPRequest: _request,
+		isRead:      false,
 	}
 }
 
@@ -47,10 +51,38 @@ func getRequsetByte(requestObj *RequestObject) ([]byte, error) {
 
 //--------------------------------------下面获取val数据------------------------------------------------------
 
+// GetValStr 获取请求的数据
+func (thisObj *RequestObject) GetValStr() (string, error) {
+	// 如果没有序列化过请求，则序列化请求
+	if !thisObj.isRead {
+		thisObj.isRead = true
+
+		dataTemp, err := getRequsetByte(thisObj)
+		if dataTemp == nil || err != nil {
+			return "", errors.New("RequestBytes为空")
+		}
+
+		// 反序列化
+		if err := json.Unmarshal(dataTemp, &thisObj.requestInfo); err != nil {
+			logTool.Log(logTool.Error, fmt.Sprintf("反序列化失败，字符串为：%s.err:%s", string(dataTemp), err))
+			return "", err
+		}
+	}
+
+	dataByte, err := json.Marshal(thisObj.requestInfo)
+	if err != nil {
+		return "", err
+	}
+
+	return string(dataByte), nil
+}
+
 // getObjVal 获取对象
 func (thisObj *RequestObject) getObjVal(name string) (interface{}, error) {
 	// 如果没有序列化过请求，则序列化请求
-	if len(thisObj.requestInfo) <= 0 {
+	if !thisObj.isRead {
+		thisObj.isRead = true
+
 		data, err := getRequsetByte(thisObj)
 		if data == nil || err != nil {
 			return nil, errors.New("RequestBytes为空")

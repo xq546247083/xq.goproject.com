@@ -23,6 +23,9 @@
     Cookie: function(userName, pwdExpiredTime, fullName, email, sex, loginCount, lastLoginTime, lastLoginIP) {
         return cookie.call(this, userName, pwdExpiredTime, fullName, email, sex, loginCount, lastLoginTime, lastLoginIP);
     },
+    CookieOneKey: function(cookName, cookValue) {
+        return cookieOneKey.call(this, cookName, cookValue);
+    },
     //封装sweetalert,
     //title：标题
     //type：类型
@@ -105,10 +108,12 @@ function ajax(className, methodName, data, type, callback, floorCount) {
     var asyncFlag = !callback ? false : true;
     var rootPath = GetRootPath(floorCount);
     var urlStr = WebMain.WebServerConfig + "API/" + className + "/" + methodName;
+    var token = $.cookie("Token");
 
     //调用参数
     var params = {
         UserName: userName,
+        Token: token,
         Data: data
     };
 
@@ -158,7 +163,7 @@ function handle(returnInfo, floorCount) {
     var data = JSON.parse(returnInfo);
 
     //如果登录超时，直接跳转
-    if (data.Status == 7) {
+    if (data.Status == -8) {
         var rootPath = GetRootPath(floorCount)
 
         var userName = $.cookie("UserName");
@@ -271,6 +276,17 @@ function swalTimerFunc(title, content, btnaText, callbacka, i) {
                 callbacka();
         }
     });
+}
+
+//设置cookie
+function cookieOneKey(cookName, cookValue) {
+    if (typeof(cookValue) != "undefined") {
+        if (cookValue == null) {
+            $.cookie(cookName, '', { expires: -1, path: '/' });
+        } else {
+            $.cookie(cookName, cookValue, { expires: 30, path: '/' });
+        }
+    }
 }
 
 //设置cookie

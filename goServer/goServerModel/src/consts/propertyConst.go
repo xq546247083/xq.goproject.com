@@ -26,4 +26,5 @@ const (
 	BlogType       = "BlogType"
 	CrDate         = "CrDate"
 	ReDate         = "ReDate"
+	Token          = "Token"
 )

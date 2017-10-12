@@ -39,6 +39,7 @@ function Login() {
                 returnInfo.Data.LastLoginTime,
                 returnInfo.Data.LastLoginIP
             );
+            WebMain.CookieOneKey("Token", returnInfo.Data.Token);
             window.location.href = 'index.html';
         } else {
             toastr.error("提示", returnInfo.StatusValue);

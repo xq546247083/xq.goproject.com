@@ -36,6 +36,9 @@ const (
 	// 尚未登陆
 	NoLogin
 
+	// 密码已过期
+	LoginIsOverTime
+
 	// 不在公会中
 	NotInUnion
 
@@ -170,9 +173,6 @@ const (
 
 	// 该邮箱未注册
 	EmailIsNotRegister
-
-	// 密码已过期
-	LoginIsOverTime
 )
 
 // 定义所有的响应结果的状态值所对应的字符串描述信息，如果要增加状态枚举，则此处也要相应地增加
@@ -184,6 +184,7 @@ var status = []string{
 	"CommandTypeNotDefined",
 	"SignError",
 	"NoLogin",
+	"LoginIsOverTime",
 	"NotInUnion",
 	"NotFoundTarget",
 	"CantSendMessageToSelf",
@@ -229,7 +230,6 @@ var status = []string{
 	"SendEmailFail",
 	"SendEmailIsFast",
 	"EmailIsNotRegister",
-	"LoginIsOverTime",
 }
 
 // 定义所有的响应结果的状态值所对应的字符串描述信息，如果要增加状态枚举，则此处也要相应地增加
@@ -241,6 +241,7 @@ var description = []string{
 	"命令类型未定义",
 	"签名错误",
 	"尚未登陆",
+	"密码已过期",
 	"不在公会中",
 	"未找到目标",
 	"不能给自己发消息",
@@ -286,5 +287,4 @@ var description = []string{
 	"发送邮件失败，请检查邮箱",
 	"发送邮件过快，请稍后重试",
 	"该邮箱未注册",
-	"密码已过期",
 }
