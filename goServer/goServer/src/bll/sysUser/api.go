@@ -2,8 +2,6 @@ package sysUser
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -86,18 +84,11 @@ func login(requestObj *webServerObject.RequestObject) *webServerObject.ResponseO
 		return responseObj
 	}
 
-	dtNow := time.Now()
-	token, err2 := EncrpytTool.RsaEncrypt([]byte(fmt.Sprintf("%s,%d", sysUser.UserName, dtNow.UnixNano()/1e6)))
-	if err2 != nil {
-		responseObj.SetResultStatus(webServerObject.DataError)
-		return responseObj
-	}
-
 	//事务处理数据
 	transaction.Handle(func(tempDB *gorm.DB) error {
 		duration := time.Duration(int(time.Hour) * configTool.PwdExpiredTime)
 		sysUser.PwdExpiredTime = time.Now().Add(duration)
-		sysUser.LastLoginTime = dtNow
+		sysUser.LastLoginTime = time.Now()
 		sysUser.LoginCount++
 
 		if err := dal.SysUserDALObj.SaveInfo(sysUser, tempDB); err != nil {
@@ -121,7 +112,7 @@ func login(requestObj *webServerObject.RequestObject) *webServerObject.ResponseO
 	clientInfo[consts.Status] = sysUser.Status
 	clientInfo[consts.CreateTime] = sysUser.CreateTime
 	clientInfo[consts.PwdExpiredTime] = sysUser.PwdExpiredTime.UnixNano() / 1e6
-	clientInfo[consts.Token] = string(token)
+	clientInfo[consts.Token] = GetUserToken(userName)
 
 	responseObj.Data = clientInfo
 
@@ -419,34 +410,13 @@ func checkRequest(requestObject *webServerObject.RequestObject) *webServerObject
 		requestObject.HTTPRequest.RequestURI != "/API/SysUser/Identify" && requestObject.HTTPRequest.RequestURI != "/API/SysUser/Retrieve" {
 		//根据用户名字判断过期时间
 		userName, err := requestObject.GetStringVal("UserName")
-		key, err2 := requestObject.GetStringVal("Token")
+		token, err2 := requestObject.GetStringVal("Token")
 		if err != nil || err2 != nil {
 			responseObj.SetResultStatus(webServerObject.DataError)
 			return responseObj
 		}
 
-		//先检测key
-		keyByte, err := EncrpytTool.RsaEncrypt([]byte(key))
-		if err != nil {
-			responseObj.SetResultStatus(webServerObject.SignError)
-			return responseObj
-		}
-
-		//检测用户名是否是登录的
-		stringArray := strings.Split(string(keyByte), ",")
-		if stringArray[0] != userName {
-			responseObj.SetResultStatus(webServerObject.SignError)
-			return responseObj
-		}
-
-		//检测时间是否是用户上次登录时间
-		timeStamp, err3 := strconv.ParseInt(stringArray[1], 10, 64)
-		if err3 != nil {
-			responseObj.SetResultStatus(webServerObject.SignError)
-			return responseObj
-		}
-
-		if !CheckLoginTime(userName, timeStamp) {
+		if GetUserToken(userName) != token {
 			responseObj.SetResultStatus(webServerObject.SignError)
 			return responseObj
 		}

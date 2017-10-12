@@ -1,7 +1,10 @@
 package sysUser
 
 import (
+	"strconv"
 	"time"
+
+	"xq.goproject.com/commonTools/EncrpytTool"
 
 	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/commonTools/initTool"
@@ -79,6 +82,17 @@ func CheckPwdExpiredTime(userNameOrEmail string) bool {
 	}
 
 	return false
+}
+
+//GetUserToken 获取用户token
+func GetUserToken(userNameOrEmail string) string {
+	sysUser := GetItemByUserNameOrEmail(userNameOrEmail)
+	if sysUser != nil {
+		timeStamp := sysUser.LastLoginTime.UnixNano()
+		return EncrpytTool.Encrypt(sysUser.UserName + "!A%HS*I^" + strconv.FormatInt(timeStamp, 10))
+	}
+
+	return ""
 }
 
 // 组装数据返回
