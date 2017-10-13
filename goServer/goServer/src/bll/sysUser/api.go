@@ -371,7 +371,7 @@ func identify(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 	//找回密码，判断邮箱是否已注册
 	count := 0
 	for _, sysUserTemp := range sysUserMap {
-		if sysUserTemp.Email == email && style == 1 {
+		if sysUserTemp.Email == email {
 			count++
 		}
 	}
