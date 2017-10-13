@@ -376,7 +376,7 @@ func identify(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 		}
 	}
 
-	if count == 0 {
+	if count == 0 && style == 1 {
 		responseObj.SetResultStatus(webServerObject.EmailIsNotRegister)
 		return responseObj
 	}
