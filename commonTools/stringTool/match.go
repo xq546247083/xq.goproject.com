@@ -14,7 +14,7 @@ func IsEmail(val string) bool {
 	return result
 }
 
-// IsLetter 单个字符是否字母
+// IsLetter 单个字符是否字母(val必须为单个字符)
 func IsLetter(val string) bool {
 	pattern := "[a-zA-Z]"
 
@@ -28,7 +28,7 @@ func IsLetter(val string) bool {
 
 // IsLetterOrDigit 是否字母或者数字构成的字符串
 func IsLetterOrDigit(val string) bool {
-	pattern := "/^[0-9a-zA-Z]*$/g"
+	pattern := "^[A-Za-z0-9]+$"
 
 	result, err := regexp.MatchString(pattern, val)
 	if err != nil {
