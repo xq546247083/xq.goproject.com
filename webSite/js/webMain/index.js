@@ -31,7 +31,25 @@ function GetMenu() {
     });
 }
 
-//获取接口文档
+//锁屏
+function LockScreen() {
+    var userName = $.cookie("UserName");
+    if (userName == null || userName == "") {
+        window.location.href = 'lockscreen.html';
+    }
+
+    //方法参数
+    var data = new Array();
+    data[0] = userName;
+
+    WebMain.Post("SysUser", "LoginOut", data, function(returnInfo) {
+        WebMain.Cookie(userName, null, null, null, null, null, null, null);
+        window.location.href = 'lockscreen.html';
+    });
+}
+
+
+//退出
 function LoginOut() {
     var userName = $.cookie("UserName");
     if (userName == null || userName == "") {
@@ -46,11 +64,4 @@ function LoginOut() {
         WebMain.Cookie(null, null, null, null, null, null, null, null);
         window.location.href = 'login.html';
     });
-}
-
-//获取接口文档
-function LockScreen() {
-    var userName = $.cookie("UserName");
-    WebMain.Cookie(userName, null);
-    window.location.href = 'lockscreen.html';
 }

@@ -139,6 +139,7 @@ func loginOut(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 	transaction.Handle(func(tempDB *gorm.DB) error {
 		duration := time.Duration(int(time.Hour) * configTool.PwdExpiredTime)
 		sysUser.PwdExpiredTime = time.Now().Add(duration)
+		sysUser.LastLoginTime = sysUser.LastLoginTime.Add(1 * time.Second)
 
 		if err := dal.SysUserDALObj.SaveInfo(sysUser, tempDB); err != nil {
 			return err

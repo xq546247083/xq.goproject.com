@@ -22,12 +22,15 @@ func main() {
 
 func testWebServer() {
 	requestObj := make(map[string]interface{})
-	data := []interface{}{"295787943@qq.com", 1}
+	data := []interface{}{"xiaoqiang"}
 	requestObj["Data"] = data
+	requestObj["UserName"] = "xiaoqiang"
+	requestObj["Token"] = "5b72ba0ec39982a4d45e11d0236903a3"
+
 	requestByte, _ := json.Marshal(requestObj)
 	requestStr := string(requestByte)
 
-	response, err := http.Post("http://localhost:8883/API/SysUser/Identify", "application/x-www-form-urlencoded", strings.NewReader(requestStr))
+	response, err := http.Post("http://localhost:8883/API/SysMenu/GetInfo", "application/x-www-form-urlencoded", strings.NewReader(requestStr))
 	if err != nil {
 		fmt.Println(err)
 	}
