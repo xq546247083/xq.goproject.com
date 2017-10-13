@@ -342,7 +342,7 @@ func retrieve(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 func identify(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
 	email, err := requestObj.GetStringData(1)
-	// style:验证方式，0是登录页面，1是找回密码页面
+	// style:验证方式，0是注册页面，1是找回密码页面
 	style, err2 := requestObj.GetInt32Data(2)
 	if err != nil || err2 != nil {
 		responseObj.SetResultStatus(webServerObject.APIDataError)
