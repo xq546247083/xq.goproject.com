@@ -1,7 +1,6 @@
 package sysUser
 
 import (
-	"strconv"
 	"time"
 
 	"xq.goproject.com/commonTools/EncrpytTool"
@@ -88,8 +87,9 @@ func CheckPwdExpiredTime(userNameOrEmail string) bool {
 func GetUserToken(userNameOrEmail string) string {
 	sysUser := GetItemByUserNameOrEmail(userNameOrEmail)
 	if sysUser != nil {
-		timeStamp := sysUser.LastLoginTime.UnixNano()
-		return EncrpytTool.Encrypt(sysUser.UserName + "!A%HS*I^" + strconv.FormatInt(timeStamp, 10))
+		timeStamp := sysUser.LastLoginTime.Format("2006-01-02 03:04:05 PM")
+		result := EncrpytTool.Encrypt(sysUser.UserName + "!A%HS*I^" + timeStamp)
+		return result
 	}
 
 	return ""

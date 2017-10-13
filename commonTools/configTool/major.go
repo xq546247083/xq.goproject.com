@@ -34,6 +34,9 @@ var (
 	// WebMainPath 网站路径
 	WebMainPath = "WebMain"
 
+	// WebSiteReferer 网站标识
+	WebSiteReferer = "xiaohe.info"
+
 	// IndexPage 网站首页
 	IndexPage = "/index.html"
 
@@ -123,7 +126,10 @@ func init() {
 	Error500Page, err = xmlConfig.String("root/WebConfig/Error500Page", "")
 	checkError(err, false)
 
-	// 读取网站配置
+	// 读取服务器的网站配置
+	WebSiteReferer, err = xmlConfig.String("root/WebSiteConfig/WebSiteReferer", "")
+	checkError(err, false)
+
 	PwdExpiredTime, err = xmlConfig.Int("root/WebSiteConfig/PwdExpiredTime", "")
 	checkError(err, false)
 

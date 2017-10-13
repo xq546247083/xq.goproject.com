@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
+	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/commonTools/stringTool"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
@@ -52,6 +54,13 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 			}
 		}
 	}()
+
+	//检测refrer
+	httpReferer := request.Referer()
+	if strings.Index(httpReferer, configTool.WebSiteReferer) != 0 {
+		responseObj.SetResultStatus(webServerObject.DataError)
+		return
+	}
 
 	//先判断用户请求
 	handlerObj, _ := getHandler("/Func/SysUser/CheckRequest")
