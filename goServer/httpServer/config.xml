@@ -8,10 +8,9 @@
 	<!--服务器配置-->
 	<ServerConfig>
 		<!--FileServerAddress的地址-->
-		<FileServerAddress>:8881</FileServerAddress>
-
+		<FileServerAddress>http://107.151.172.51:8882/</FileServerAddress>
 		<!--GoServerAddress的地址-->
-		<GoServerAddress>:8881</GoServerAddress>
+		<GoServerAddress>http://107.151.172.51:8883/</GoServerAddress>
 	</ServerConfig>
 
 	<!--日志配置-->

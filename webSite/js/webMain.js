@@ -1,10 +1,10 @@
 ﻿var WebMain = {
-    //----------------------------------------------一些配置----------------------------------------------
+    //----------------------------------------------一些配置数据----------------------------------------------
     //业务服务器配置
-    WebServerConfig: "http://localhost:8883/",
+    WebServerConfig: "",
 
     //文件服务器配置
-    FileServerConfig: "http://107.151.172.51:8882/",
+    FileServerConfig: "",
 
     //----------------------------------------------一些通用方法----------------------------------------------
     //初始化,检测数据
@@ -373,3 +373,26 @@ function GetRootPath(floorCount) {
 
     return rootPath;
 }
+
+//获取服务器配置
+$(function() {
+    $.ajax({
+        dataType: "text",
+        type: "Post",
+        async: false,
+        url: "/GetConfig",
+        success: function(returnInfo) {
+            try {
+                var returnData = JSON.parse(returnInfo);
+                WebMain.FileServerConfig = returnData.Data.FileServerAddress;
+                WebMain.WebServerConfig = returnData.Data.GoServerAddress;
+            } catch (e) {
+                toastr.error("提示", "获取服务器失败！");
+                return
+            }
+        },
+        error: function(request) {
+            toastr.error("提示", "获取服务器失败！");
+        }
+    });
+});

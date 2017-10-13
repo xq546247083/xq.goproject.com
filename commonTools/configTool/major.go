@@ -67,6 +67,12 @@ var (
 	// UploadPath 上传路径
 	UploadPath = "./upload/"
 
+	// GoServerAddress GoServerAddress的地址
+	GoServerAddress = "http://107.151.172.51:8883/"
+
+	// FileServerAddress FileServerAddress的地址
+	FileServerAddress = "http://107.151.172.51:8882/"
+
 	// 读取的配置
 	xmlConfig *XmlConfig
 
@@ -146,6 +152,13 @@ func init() {
 	checkError(err, false)
 
 	EmailPass, err = xmlConfig.String("root/WebSiteConfig/EmailPass", "")
+	checkError(err, false)
+
+	//读取服务器配置
+	FileServerAddress, err = xmlConfig.String("root/ServerConfig/FileServerAddress", "")
+	checkError(err, false)
+
+	GoServerAddress, err = xmlConfig.String("root/ServerConfig/GoServerAddress", "")
 	checkError(err, false)
 
 	//读取文件配置

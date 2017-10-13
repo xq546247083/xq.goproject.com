@@ -5,6 +5,14 @@
 		<WebListenAddress>:8881</WebListenAddress>
 	</BaseConfig>
 
+	<!--服务器配置-->
+	<ServerConfig>
+		<!--FileServerAddress的地址-->
+		<FileServerAddress>http://localhost:8882/</FileServerAddress>
+		<!--GoServerAddress的地址-->
+		<GoServerAddress>http://localhost:8883/</GoServerAddress>
+	</ServerConfig>
+
 	<!--日志配置-->
 	<LogConfig>
 		<!--是否Debug模式-->
