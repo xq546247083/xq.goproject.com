@@ -117,14 +117,17 @@ function ajax(className, methodName, data, type, callback, floorCount) {
         Data: data
     };
 
+    //获取字符串并加密
     var paramStr = JSON.stringify(params);
+    var resultParamStr = $.base64.btoa(paramStr);
+
     var layerIndex = layer.load();
     $.ajax({
         dataType: "text",
         type: type,
         async: asyncFlag,
         url: urlStr,
-        data: paramStr,
+        data: resultParamStr,
         success: function(returnInfo) {
             layer.close(layerIndex);
 
