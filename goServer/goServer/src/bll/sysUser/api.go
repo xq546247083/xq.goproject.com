@@ -360,15 +360,6 @@ func identify(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 		return responseObj
 	}
 
-	//注册页面，判断邮箱是否未注册
-	for _, sysUserTemp := range sysUserMap {
-		if sysUserTemp.Email == email && style == 0 {
-			responseObj.SetResultStatus(webServerObject.EmailAlreadyExist)
-			return responseObj
-		}
-	}
-
-	//找回密码，判断邮箱是否已注册
 	count := 0
 	for _, sysUserTemp := range sysUserMap {
 		if sysUserTemp.Email == email {
@@ -376,8 +367,15 @@ func identify(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 		}
 	}
 
+	//找回密码，判断邮箱是否已注册
 	if count == 0 && style == 1 {
 		responseObj.SetResultStatus(webServerObject.EmailIsNotRegister)
+		return responseObj
+	}
+
+	//注册页面，判断邮箱是否未注册
+	if count != 0 && style == 0 {
+		responseObj.SetResultStatus(webServerObject.EmailAlreadyExist)
 		return responseObj
 	}
 
