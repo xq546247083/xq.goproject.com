@@ -243,6 +243,7 @@ func register(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 			roleIds += intTool.Int32ToString(sysRole.RoleID) + ","
 		}
 	}
+
 	if len(roleIds) > 0 {
 		roleIds = roleIds[0 : len(roleIds)-1]
 	}
