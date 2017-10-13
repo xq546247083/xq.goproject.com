@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"time"
 
+	"xq.goproject.com/commonTools/intTool"
+
 	"github.com/jinzhu/gorm"
 	"xq.goproject.com/commonTools/EncrpytTool"
 	"xq.goproject.com/commonTools/configTool"
@@ -237,7 +239,9 @@ func register(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 	//默认用户角色id
 	roleIds := ""
 	for _, sysRole := range sysRoleMap {
-		roleIds += string(sysRole.RoleID) + ","
+		if sysRole.IsDefault {
+			roleIds += intTool.Int32ToString(sysRole.RoleID) + ","
+		}
 	}
 	if len(roleIds) > 0 {
 		roleIds = roleIds[0 : len(roleIds)-1]
