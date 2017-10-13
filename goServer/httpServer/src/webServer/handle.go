@@ -6,8 +6,6 @@ import (
 	"path"
 	"strings"
 
-	"xq.goproject.com/commonTools/logTool"
-
 	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/goServer/goServerModel/src/consts"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
@@ -18,7 +16,6 @@ type handle struct{}
 
 //服务监听
 func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *http.Request) {
-	logTool.LogDebug(request.RequestURI)
 	//如果是获取服务器配置
 	if request.RequestURI == "/GetConfig" {
 		getConfig(responseWriter, request)
