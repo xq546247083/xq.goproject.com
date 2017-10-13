@@ -6,6 +6,9 @@
     //文件服务器配置
     FileServerConfig: "",
 
+    //聊天服务器配置
+    ChatServerConfig: "",
+
     //----------------------------------------------一些通用方法----------------------------------------------
     //初始化,检测数据
     //flag: 0：登录页面，1：检测数据,一般界面，2：重新登录,3:注册页面
@@ -386,6 +389,7 @@ $(function() {
                 var returnData = JSON.parse(returnInfo);
                 WebMain.FileServerConfig = returnData.Data.FileServerAddress;
                 WebMain.WebServerConfig = returnData.Data.GoServerAddress;
+                WebMain.ChatServerConfig = returnData.Data.ChatServerAddress;
             } catch (e) {
                 toastr.error("提示", "获取服务器失败！");
                 return

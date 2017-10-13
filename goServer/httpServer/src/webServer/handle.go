@@ -49,6 +49,7 @@ func getConfig(responseWriter http.ResponseWriter, requestObj *http.Request) {
 	clientInfo := make(map[string]interface{})
 	clientInfo[consts.FileServerAddress] = configTool.FileServerAddress
 	clientInfo[consts.GoServerAddress] = configTool.GoServerAddress
+	clientInfo[consts.ChatServerAddress] = configTool.ChatServerAddress
 
 	responseObj.Data = clientInfo
 }

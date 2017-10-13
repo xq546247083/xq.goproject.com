@@ -73,6 +73,9 @@ var (
 	// FileServerAddress FileServerAddress的地址
 	FileServerAddress = "http://107.151.172.51:8882/"
 
+	// ChatServerAddress ChatServerAddress的地址
+	ChatServerAddress = "http://107.151.172.51:8884/"
+
 	// 读取的配置
 	xmlConfig *XmlConfig
 
@@ -159,6 +162,9 @@ func init() {
 	checkError(err, false)
 
 	GoServerAddress, err = xmlConfig.String("root/ServerConfig/GoServerAddress", "")
+	checkError(err, false)
+
+	ChatServerAddress, err = xmlConfig.String("root/ServerConfig/ChatServerAddress", "")
 	checkError(err, false)
 
 	//读取文件配置

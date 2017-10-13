@@ -11,6 +11,8 @@
 		<FileServerAddress>http://107.151.172.51:8882/</FileServerAddress>
 		<!--GoServerAddress的地址-->
 		<GoServerAddress>http://107.151.172.51:8883/</GoServerAddress>
+		<!--ChatServerAddress的地址-->
+		<ChatServerAddress>http://107.151.172.51:8884/</ChatServerAddress>
 	</ServerConfig>
 
 	<!--日志配置-->

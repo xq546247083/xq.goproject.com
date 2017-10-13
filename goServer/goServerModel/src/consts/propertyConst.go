@@ -29,4 +29,5 @@ const (
 	Token             = "Token"
 	FileServerAddress = "FileServerAddress"
 	GoServerAddress   = "GoServerAddress"
+	ChatServerAddress = "ChatServerAddress"
 )
