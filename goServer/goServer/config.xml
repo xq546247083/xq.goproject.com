@@ -28,7 +28,7 @@
 	<!--网站配置-->
 	<WebSiteConfig>
 		<!--网站的标识-->
-		<WebSiteReferer>http://localhost</WebSiteReferer>
+		<WebSiteReferer>http://localhost,http://xiaohe.info</WebSiteReferer>
 		<!--密码过期时间-->
 		<PwdExpiredTime>1</PwdExpiredTime>
 		<!--邮箱主机-->

@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"xq.goproject.com/commonTools/EncrpytTool"
 	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/commonTools/stringTool"
 	"xq.goproject.com/commonTools/typeTool"
@@ -62,9 +63,15 @@ func (thisObj *RequestObject) GetValStr() (string, error) {
 			return "", errors.New("RequestBytes为空")
 		}
 
+		//解密数据
+		resultData, err2 := EncrpytTool.Base64Decrypt(dataTemp)
+		if err2 != nil {
+			return "", errors.New("解析数据失败")
+		}
+
 		// 反序列化
-		if err := json.Unmarshal(dataTemp, &thisObj.requestInfo); err != nil {
-			logTool.Log(logTool.Error, fmt.Sprintf("反序列化失败，字符串为：%s.err:%s", string(dataTemp), err))
+		if err := json.Unmarshal(resultData, &thisObj.requestInfo); err != nil {
+			logTool.Log(logTool.Error, fmt.Sprintf("反序列化失败，字符串为：%s.err:%s", string(resultData), err))
 			return "", err
 		}
 	}

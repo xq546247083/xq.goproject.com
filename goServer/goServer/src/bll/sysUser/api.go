@@ -84,11 +84,12 @@ func login(requestObj *webServerObject.RequestObject) *webServerObject.ResponseO
 		return responseObj
 	}
 
+	lastLoginTime, _ := time.Parse("2000-01-01 01:01:01", time.Now().Format("2000-01-01 01:01:01"))
 	//事务处理数据
 	transaction.Handle(func(tempDB *gorm.DB) error {
 		duration := time.Duration(int(time.Hour) * configTool.PwdExpiredTime)
 		sysUser.PwdExpiredTime = time.Now().Add(duration)
-		sysUser.LastLoginTime = time.Now()
+		sysUser.LastLoginTime = lastLoginTime
 		sysUser.LoginCount++
 
 		if err := dal.SysUserDALObj.SaveInfo(sysUser, tempDB); err != nil {

@@ -87,7 +87,7 @@ func CheckPwdExpiredTime(userNameOrEmail string) bool {
 func GetUserToken(userNameOrEmail string) string {
 	sysUser := GetItemByUserNameOrEmail(userNameOrEmail)
 	if sysUser != nil {
-		timeStamp := sysUser.LastLoginTime.Format("2006-01-02 03:04:05 PM")
+		timeStamp := sysUser.LastLoginTime.Format("2000-01-04 01:01:01")
 		result := EncrpytTool.Encrypt(sysUser.UserName + "!A%HS*I^" + timeStamp)
 		return result
 	}

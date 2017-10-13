@@ -57,7 +57,15 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 
 	//检测refrer
 	httpReferer := request.Referer()
-	if strings.Index(httpReferer, configTool.WebSiteReferer) != 0 {
+	webSiteRefererList := strings.Split(configTool.WebSiteReferer, ",")
+	refererFlag := false
+	for _, webSiteReferer := range webSiteRefererList {
+		if strings.Index(httpReferer, webSiteReferer) == 0 {
+			refererFlag = true
+		}
+	}
+
+	if !refererFlag {
 		responseObj.SetResultStatus(webServerObject.DataError)
 		return
 	}
