@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"xq.goproject.com/commonTools/EncrpytTool"
-
 	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/commonTools/initTool"
 	"xq.goproject.com/commonTools/stringTool"
