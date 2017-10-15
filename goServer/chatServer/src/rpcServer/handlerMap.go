@@ -38,7 +38,7 @@ func logRegisterHandlerInfo() error {
 //RegisterHandler 注册方法
 // methodName:调用方法全名
 // handlerFunc：方法定义
-func RegisterHandler(methodName string, handlerFunc func(*rpcServerObject.RequestObject) *rpcServerObject.ResponseObject) {
+func RegisterHandler(methodName string, handlerFunc func(*rpcServerObject.RequestObject)) {
 	if _, exists := handlerMap[methodName]; exists {
 		panic(fmt.Sprintf("%s已经存在，请重新取名", methodName))
 	}
@@ -47,18 +47,14 @@ func RegisterHandler(methodName string, handlerFunc func(*rpcServerObject.Reques
 }
 
 //调用方法
-func callFunction(requestObj *rpcServerObject.RequestObject) *rpcServerObject.ResponseObject {
-	responseObj := rpcServerObject.NewResponseObject()
-
+func callFunction(requestObj *rpcServerObject.RequestObject) {
 	handlerObj, exists := getHandler(requestObj.MethodName)
 	// 查找方法
 	if !exists {
 		logTool.Log(logTool.Error, fmt.Sprintf("方法名:%s未定义", requestObj.MethodName))
-
-		return responseObj.SetResultStatus(rpcServerObject.NoTargetMethod)
 	}
 
-	return handlerObj.handlerFunc(requestObj)
+	handlerObj.handlerFunc(requestObj)
 }
 
 //获取处理

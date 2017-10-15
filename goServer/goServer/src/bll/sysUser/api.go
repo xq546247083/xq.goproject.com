@@ -15,10 +15,8 @@ import (
 	"xq.goproject.com/goServer/goServer/src/bll/transaction"
 	"xq.goproject.com/goServer/goServer/src/dal"
 	"xq.goproject.com/goServer/goServer/src/model"
-	"xq.goproject.com/goServer/goServer/src/rpcServer"
 	"xq.goproject.com/goServer/goServer/src/webServer"
 	"xq.goproject.com/goServer/goServerModel/src/consts"
-	"xq.goproject.com/goServer/goServerModel/src/rpcServerObject"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
 
@@ -30,33 +28,6 @@ func init() {
 	webServer.RegisterHandler("/API/SysUser/Retrieve", retrieve)
 	webServer.RegisterHandler("/API/SysUser/Identify", identify)
 	webServer.RegisterHandler("/Func/SysUser/CheckRequest", checkRequest)
-
-	rpcServer.RegisterHandler("RpcTest", rpcTest)
-}
-
-//rpcTest rpcTest方法
-func rpcTest(requestObj *rpcServerObject.RequestObject) *rpcServerObject.ResponseObject {
-	responseObj := rpcServerObject.NewResponseObject()
-	responseObj.SetResultStatus(rpcServerObject.Success)
-	responseObj.Data = requestObj.Parameters[0]
-
-	clientObj, ok := requestObj.Parameters[1].(*rpcServer.Client)
-	if !ok {
-		responseObj.Data = "转换client失败"
-	}
-
-	go func() {
-		for {
-			time.Sleep(10 * time.Second)
-			clientObj := rpcServer.GetClient(clientObj.GetID())
-			responseObj.SetResultStatus(rpcServerObject.Success)
-			responseObj.Data = "推送消息"
-
-			rpcServer.ResponseResult(clientObj, responseObj, rpcServer.ConHighPriority)
-		}
-	}()
-
-	return responseObj
 }
 
 //login 登录

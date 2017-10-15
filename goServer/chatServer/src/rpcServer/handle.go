@@ -66,6 +66,26 @@ func handleReceiveData(clientObj *Client) {
 	}
 }
 
+//handRequest 处理请求
+func handRequest(clientObj *Client, message []byte) {
+	responseObj := rpcServerObject.NewResponseObject()
+	var requestObj rpcServerObject.RequestObject
+
+	// 解析请求字符串
+	if err := json.Unmarshal(message, &requestObj); err != nil {
+		logTool.Log(logTool.Error, fmt.Sprintf("反序列化出错，错误信息为：%s", err))
+
+		ResponseResult(clientObj, responseObj.SetResultStatus(rpcServerObject.DataError), ConHighPriority)
+		return
+	}
+
+	logTool.Log(logTool.Debug, "RPC服务器接受到请求："+string(message))
+
+	//调用方法
+	requestObj.RequestInfo["Client"] = clientObj
+	callFunction(&requestObj)
+}
+
 //handSendData 处理发送数据
 func handleSendData(clientObj *Client, ch chan bool) {
 	goroutineTool.Operate("handleSendData", common.AddOperate)
@@ -99,31 +119,4 @@ func handleSendData(clientObj *Client, ch chan bool) {
 			time.Sleep(50 * time.Millisecond)
 		}
 	}
-}
-
-//handRequest 处理请求
-func handRequest(clientObj *Client, message []byte) {
-	responseObj := rpcServerObject.NewResponseObject()
-	var requestObj rpcServerObject.RequestObject
-
-	// 解析请求字符串
-	if err := json.Unmarshal(message, &requestObj); err != nil {
-		logTool.Log(logTool.Error, fmt.Sprintf("反序列化出错，错误信息为：%s", err))
-
-		responseObj.RequestObject = &requestObj
-		ResponseResult(clientObj, responseObj.SetResultStatus(rpcServerObject.DataError), ConHighPriority)
-		return
-	}
-
-	//设置返回值的请求数据
-	responseObj.RequestObject = &requestObj
-
-	//如果是登录，则给玩家注册Client
-	if requestObj.MethodName == "PlayerLogin" {
-		requestObj.Parameters = append(requestObj.Parameters, clientObj)
-	}
-
-	logTool.Log(logTool.Debug, "RPC服务器接受到请求："+string(message))
-	response := callFunction(&requestObj)
-	ResponseResult(clientObj, response, ConHighPriority)
 }

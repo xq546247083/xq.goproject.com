@@ -10,13 +10,13 @@ type handler struct {
 	messageType string
 
 	// 方法定义
-	handlerFunc func(*rpcServerObject.RequestObject) *rpcServerObject.ResponseObject
+	handlerFunc func(*rpcServerObject.RequestObject)
 }
 
 // 创建新的请求方法对象
 // _messageType：消息类型
 // _handlerFunc：方法定义
-func newHandler(_messageType string, _handlerFunc func(*rpcServerObject.RequestObject) *rpcServerObject.ResponseObject) *handler {
+func newHandler(_messageType string, _handlerFunc func(*rpcServerObject.RequestObject)) *handler {
 	return &handler{
 		messageType: _messageType,
 		handlerFunc: _handlerFunc,

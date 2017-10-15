@@ -14,14 +14,17 @@ func init() {
 }
 
 //rpcTest rpcTest方法
-func rpcTest(requestObj *rpcServerObject.RequestObject) *rpcServerObject.ResponseObject {
+func rpcTest(requestObj *rpcServerObject.RequestObject) {
+	clientObj, err := rpcServer.GetRequestClient(requestObj)
+	if err != nil {
+		return
+	}
+
 	responseObj := rpcServerObject.NewResponseObject()
 	responseObj.SetResultStatus(rpcServerObject.Success)
-	responseObj.Data = requestObj.Parameters[0]
-
-	clientObj, ok := requestObj.Parameters[1].(*rpcServer.Client)
-	if !ok {
-		responseObj.Data = "转换client失败"
+	userName, err := requestObj.GetStringData(1)
+	if err != nil {
+		return
 	}
 
 	go func() {
@@ -29,13 +32,11 @@ func rpcTest(requestObj *rpcServerObject.RequestObject) *rpcServerObject.Respons
 			time.Sleep(10 * time.Second)
 			clientObj := rpcServer.GetClient(clientObj.GetID())
 			responseObj.SetResultStatus(rpcServerObject.Success)
-			responseObj.Data = "推送消息"
+			responseObj.Data = userName
 
 			rpcServer.ResponseResult(clientObj, responseObj, rpcServer.ConHighPriority)
 		}
 	}()
-
-	return responseObj
 }
 
 // checkRequest 检测请求

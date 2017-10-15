@@ -2,7 +2,7 @@
 	<!--基础配置-->
 	<BaseConfig>
 		<!--RpcServer监听的地址-->
-		<RPCListenAddress>:8885</RPCListenAddress>
+		<RPCListenAddress>:8884</RPCListenAddress>
 	</BaseConfig>
 
 	<!--日志配置-->

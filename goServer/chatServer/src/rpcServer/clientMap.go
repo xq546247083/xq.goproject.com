@@ -1,7 +1,10 @@
 package rpcServer
 
 import (
+	"fmt"
 	"sync"
+
+	"xq.goproject.com/goServer/goServerModel/src/rpcServerObject"
 )
 
 var (
@@ -36,6 +39,21 @@ func GetClient(clientID int32) *Client {
 	}
 
 	return nil
+}
+
+// GetRequestClient 获取客户端
+func GetRequestClient(requestObj *rpcServerObject.RequestObject) (*Client, error) {
+	clientObj, err := requestObj.GetObjVal("Client")
+	if err != nil {
+		return nil, err
+	}
+
+	returnClientObj, ok := clientObj.(*Client)
+	if !ok {
+		return nil, fmt.Errorf("转换client失败")
+	}
+
+	return returnClientObj, nil
 }
 
 //getClientCount 获取客户端的数量
