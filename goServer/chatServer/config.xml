@@ -1,10 +1,8 @@
 <root>
 	<!--基础配置-->
 	<BaseConfig>
-		<!--WebServer监听的地址-->
-		<WebListenAddress>:8883</WebListenAddress>
 		<!--RpcServer监听的地址-->
-		<RPCListenAddress>:8884</RPCListenAddress>
+		<RPCListenAddress>:8885</RPCListenAddress>
 	</BaseConfig>
 
 	<!--日志配置-->

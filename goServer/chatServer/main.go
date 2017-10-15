@@ -8,7 +8,6 @@ import (
 	"xq.goproject.com/commonTools/initTool"
 	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/goServer/chatServer/src/rpcServer"
-	"xq.goproject.com/goServer/chatServer/src/webServer"
 
 	_ "github.com/go-sql-driver/mysql"
 	_ "xq.goproject.com/goServer/chatServer/src/bll"
@@ -32,9 +31,6 @@ func main() {
 
 	//开启rpc服务
 	go rpcServer.StartServer(&wg, configTool.RPCListenAddress)
-
-	//开启web服务
-	go webServer.StartServer(&wg, configTool.WebListenAddress)
 
 	wg.Wait()
 }
