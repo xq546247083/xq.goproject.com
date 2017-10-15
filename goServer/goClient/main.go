@@ -15,8 +15,7 @@ import (
 )
 
 func main() {
-	testWebServer()
-	return
+	//testWebServer()
 	testRPCServer()
 }
 
@@ -52,9 +51,9 @@ func testRPCServer() {
 		fmt.Printf("Connect to the server. (local address: %s)", conn.LocalAddr())
 	}
 
-	var requestObj rpcServerObject.RequestObject
+	requestObj := rpcServerObject.NewRequestObject()
 	requestObj.MethodName = "RpcTest"
-	requestObj.Parameters = []interface{}{"xxx"}
+	requestObj.RequestInfo["Data"] = []interface{}{"xx111x"}
 
 	message, _ := json.Marshal(&requestObj)
 

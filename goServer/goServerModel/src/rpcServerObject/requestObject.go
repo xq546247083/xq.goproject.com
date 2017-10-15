@@ -21,6 +21,13 @@ type RequestObject struct {
 	RequestInfo map[string]interface{}
 }
 
+// NewRequestObject 新建RpcHttp请求
+func NewRequestObject() *RequestObject {
+	return &RequestObject{
+		RequestInfo: make(map[string]interface{}),
+	}
+}
+
 //--------------------------------------下面获取val数据------------------------------------------------------
 
 // GetObjVal 获取对象

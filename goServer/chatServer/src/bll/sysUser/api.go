@@ -29,12 +29,12 @@ func rpcTest(requestObj *rpcServerObject.RequestObject) {
 
 	go func() {
 		for {
-			time.Sleep(10 * time.Second)
 			clientObj := rpcServer.GetClient(clientObj.GetID())
 			responseObj.SetResultStatus(rpcServerObject.Success)
 			responseObj.Data = userName
 
 			rpcServer.ResponseResult(clientObj, responseObj, rpcServer.ConHighPriority)
+			time.Sleep(10 * time.Second)
 		}
 	}()
 }
