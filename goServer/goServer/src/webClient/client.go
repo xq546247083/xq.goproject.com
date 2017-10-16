@@ -17,7 +17,17 @@ import (
 )
 
 // PostDataToChatServer 推送聊天服务器数据
-func PostDataToChatServer(apiStr APIType, data []interface{}) (responseObj *webServerObject.ResponseObject, err error) {
+func PostDataToChatServer(apiStr APIType, data []interface{}, isAsync bool) (responseObj *webServerObject.ResponseObject, err error) {
+	if isAsync {
+		go postDataToChatServer(apiStr, data)
+		return nil, nil
+	}
+
+	return postDataToChatServer(apiStr, data)
+}
+
+// postDataToChatServer 推送聊天服务器数据
+func postDataToChatServer(apiStr APIType, data []interface{}) (responseObj *webServerObject.ResponseObject, err error) {
 	requestObj := make(map[string]interface{})
 	requestObj["Data"] = data
 

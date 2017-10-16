@@ -60,7 +60,7 @@ func login(requestObj *webServerObject.RequestObject) *webServerObject.ResponseO
 	}
 
 	//处理数据
-	lastLoginTime, _ := time.Parse("2000-01-01 01:01:01", time.Now().Format("2000-01-01 01:01:01"))
+	lastLoginTime := time.Unix(time.Now().Unix(), 0)
 	duration := time.Duration(int(time.Hour) * configTool.PwdExpiredTime)
 
 	//事务处理数据
@@ -77,7 +77,7 @@ func login(requestObj *webServerObject.RequestObject) *webServerObject.ResponseO
 	})
 
 	//更新聊天服务器的用户数据
-	webClient.PostDataToChatServer(webClient.UpdateUserAPI, []interface{}{sysUser})
+	webClient.PostDataToChatServer(webClient.UpdateUserAPI, []interface{}{sysUser}, true)
 
 	//返回用户信息
 	clientInfo := make(map[string]interface{})
@@ -130,7 +130,7 @@ func loginOut(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 	})
 
 	//更新聊天服务器的用户数据
-	webClient.PostDataToChatServer(webClient.UpdateUserAPI, []interface{}{sysUser})
+	webClient.PostDataToChatServer(webClient.UpdateUserAPI, []interface{}{sysUser}, true)
 
 	//返回用户信息
 	responseObj.Data = assembleToClient(sysUser)
