@@ -1,6 +1,7 @@
 package sysUser
 
 import (
+	"sync"
 	"time"
 
 	"xq.goproject.com/commonTools/EncrpytTool"
@@ -11,10 +12,24 @@ import (
 var (
 	//用户数据缓存
 	sysUserMap = make(map[string]*model.SysUser)
+
+	//锁
+	mutex sync.RWMutex
 )
+
+// 添加或者更新用户用户
+func updateSysUser(sysUser *model.SysUser) {
+	mutex.Lock()
+	defer mutex.Unlock()
+
+	sysUserMap[sysUser.UserID] = sysUser
+}
 
 // GetItemByUserNameOrEmail 获取用户通过用户名或者邮箱
 func GetItemByUserNameOrEmail(userNameOrEmail string) (sysUser *model.SysUser) {
+	mutex.RLock()
+	defer mutex.RUnlock()
+
 	//通过用户名或者邮箱获取用户
 	if stringTool.IsEmail(userNameOrEmail) {
 		for _, sysUser := range sysUserMap {

@@ -5,6 +5,14 @@
 		<WebListenAddress>:8883</WebListenAddress>
 	</BaseConfig>
 
+	<!--服务器配置-->
+	<ServerConfig>
+		<!--ChatServerAddress的地址-->
+		<ChatServerAddress>http://localhost:8884/</ChatServerAddress>
+		<!--ChatServerWebAddress的地址-->
+		<ChatServerWebAddress>http://localhost:8885/</ChatServerWebAddress>
+	</ServerConfig>
+
 	<!--日志配置-->
 	<LogConfig>
 		<!--是否Debug模式-->

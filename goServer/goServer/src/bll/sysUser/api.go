@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"time"
 
+	"xq.goproject.com/goServer/goServer/src/webClient"
+
 	"xq.goproject.com/commonTools/intTool"
 
 	"github.com/jinzhu/gorm"
@@ -57,10 +59,12 @@ func login(requestObj *webServerObject.RequestObject) *webServerObject.ResponseO
 		return responseObj
 	}
 
+	//处理数据
 	lastLoginTime, _ := time.Parse("2000-01-01 01:01:01", time.Now().Format("2000-01-01 01:01:01"))
+	duration := time.Duration(int(time.Hour) * configTool.PwdExpiredTime)
+
 	//事务处理数据
 	transaction.Handle(func(tempDB *gorm.DB) error {
-		duration := time.Duration(int(time.Hour) * configTool.PwdExpiredTime)
 		sysUser.PwdExpiredTime = time.Now().Add(duration)
 		sysUser.LastLoginTime = lastLoginTime
 		sysUser.LoginCount++
@@ -71,6 +75,9 @@ func login(requestObj *webServerObject.RequestObject) *webServerObject.ResponseO
 
 		return nil
 	})
+
+	//更新聊天服务器的用户数据
+	webClient.PostDataToChatServer(webClient.UpdateUserAPI, []interface{}{sysUser})
 
 	//返回用户信息
 	clientInfo := make(map[string]interface{})
@@ -121,6 +128,9 @@ func loginOut(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 
 		return nil
 	})
+
+	//更新聊天服务器的用户数据
+	webClient.PostDataToChatServer(webClient.UpdateUserAPI, []interface{}{sysUser})
 
 	//返回用户信息
 	responseObj.Data = assembleToClient(sysUser)

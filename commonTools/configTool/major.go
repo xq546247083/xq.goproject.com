@@ -79,6 +79,9 @@ var (
 	// ChatServerAddress ChatServerAddress的地址
 	ChatServerAddress = "http://107.151.172.51:8884/"
 
+	// ChatServerWebAddress ChatServerWebAddress的地址
+	ChatServerWebAddress = "http://107.151.172.51:8885/"
+
 	// 读取的配置
 	xmlConfig *XmlConfig
 
@@ -100,7 +103,7 @@ func init() {
 	checkError(err, false)
 
 	// 读取数据库配置
-	ChatDBConnection, err = xmlConfig.String("root/DBConnection/ChatServer", "")
+	DBConnection, err = xmlConfig.String("root/DBConnection/WebServer", "")
 	checkError(err, false)
 
 	// 读取聊天数据库配置
@@ -172,6 +175,9 @@ func init() {
 	checkError(err, false)
 
 	ChatServerAddress, err = xmlConfig.String("root/ServerConfig/ChatServerAddress", "")
+	checkError(err, false)
+
+	ChatServerWebAddress, err = xmlConfig.String("root/ServerConfig/ChatServerWebAddress", "")
 	checkError(err, false)
 
 	//读取文件配置

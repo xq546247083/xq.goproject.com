@@ -217,9 +217,9 @@ func (thisObj *RequestObject) GetData() ([]interface{}, error) {
 	return thisObj.GetSliceObjectVal("Data")
 }
 
-// getObjectData 获取请求的值(Data：请求参数值数据)
+// GetObjectData 获取请求的值(Data：请求参数值数据)
 //参数值：num（从1开始）
-func (thisObj *RequestObject) getObjectData(num int32) (interface{}, error) {
+func (thisObj *RequestObject) GetObjectData(num int32) (interface{}, error) {
 	data, err := thisObj.GetData()
 	if err != nil {
 		return "", err
@@ -235,7 +235,7 @@ func (thisObj *RequestObject) getObjectData(num int32) (interface{}, error) {
 // GetStringData 获取请求的值(Data：请求参数值数据)
 //参数值：num（从1开始）
 func (thisObj *RequestObject) GetStringData(num int32) (string, error) {
-	obj, err := thisObj.getObjectData(num)
+	obj, err := thisObj.GetObjectData(num)
 	if err != nil {
 		logTool.LogError(fmt.Sprintf("请求地址：%s %s请求数据：%s %s获取第%d个参数失败", thisObj.HTTPRequest.RequestURI, stringTool.GetNewLine(), thisObj.requestInfo, stringTool.GetNewLine(), num), err.Error())
 		return "", err
@@ -250,10 +250,28 @@ func (thisObj *RequestObject) GetStringData(num int32) (string, error) {
 	return str, nil
 }
 
+// GetByteData 获取请求的值(Data：请求参数值数据)
+//参数值：num（从1开始）
+func (thisObj *RequestObject) GetByteData(num int32) ([]byte, error) {
+	obj, err := thisObj.GetObjectData(num)
+	if err != nil {
+		logTool.LogError(fmt.Sprintf("请求地址：%s %s请求数据：%s %s获取第%d个参数失败", thisObj.HTTPRequest.RequestURI, stringTool.GetNewLine(), thisObj.requestInfo, stringTool.GetNewLine(), num), err.Error())
+		return nil, err
+	}
+
+	result, err := json.Marshal(obj)
+	if err != nil {
+		logTool.LogError(fmt.Sprintf("请求地址：%s %s请求数据：%s %s获取第%d个参数失败", thisObj.HTTPRequest.RequestURI, stringTool.GetNewLine(), thisObj.requestInfo, stringTool.GetNewLine(), num), err.Error())
+		return nil, err
+	}
+
+	return result, nil
+}
+
 // GetIntData 获取请求的值(Data：请求参数值数据)
 //参数值：num（从1开始）
 func (thisObj *RequestObject) GetIntData(num int32) (int, error) {
-	obj, err := thisObj.getObjectData(num)
+	obj, err := thisObj.GetObjectData(num)
 	if err != nil {
 		logTool.LogError(fmt.Sprintf("请求地址：%s %s请求数据：%s %s获取第%d个参数失败", thisObj.HTTPRequest.RequestURI, stringTool.GetNewLine(), thisObj.requestInfo, stringTool.GetNewLine(), num), err.Error())
 		return -1, err
@@ -271,7 +289,7 @@ func (thisObj *RequestObject) GetIntData(num int32) (int, error) {
 // GetInt32Data 获取请求的值(Data：请求参数值数据)
 //参数值：num（从1开始）
 func (thisObj *RequestObject) GetInt32Data(num int32) (int32, error) {
-	obj, err := thisObj.getObjectData(num)
+	obj, err := thisObj.GetObjectData(num)
 	if err != nil {
 		logTool.LogError(fmt.Sprintf("请求地址：%s %s请求数据：%s %s获取第%d个参数失败", thisObj.HTTPRequest.RequestURI, stringTool.GetNewLine(), thisObj.requestInfo, stringTool.GetNewLine(), num), err.Error())
 		return -1, err
@@ -289,7 +307,7 @@ func (thisObj *RequestObject) GetInt32Data(num int32) (int32, error) {
 // GetInt64Data 获取请求的值(Data：请求参数值数据)
 //参数值：num（从1开始）
 func (thisObj *RequestObject) GetInt64Data(num int32) (int64, error) {
-	obj, err := thisObj.getObjectData(num)
+	obj, err := thisObj.GetObjectData(num)
 	if err != nil {
 		logTool.LogError(fmt.Sprintf("请求地址：%s %s请求数据：%s %s获取第%d个参数失败", thisObj.HTTPRequest.RequestURI, stringTool.GetNewLine(), thisObj.requestInfo, stringTool.GetNewLine(), num), err.Error())
 		return -1, err
@@ -307,7 +325,7 @@ func (thisObj *RequestObject) GetInt64Data(num int32) (int64, error) {
 // GetFloat64Data 获取请求的值(Data：请求参数值数据)
 //参数值：num（从1开始）
 func (thisObj *RequestObject) GetFloat64Data(num int32) (float64, error) {
-	obj, err := thisObj.getObjectData(num)
+	obj, err := thisObj.GetObjectData(num)
 	if err != nil {
 		logTool.LogError(fmt.Sprintf("请求地址：%s %s请求数据：%s %s获取第%d个参数失败", thisObj.HTTPRequest.RequestURI, stringTool.GetNewLine(), thisObj.requestInfo, stringTool.GetNewLine(), num), err.Error())
 		return -1, err
@@ -325,7 +343,7 @@ func (thisObj *RequestObject) GetFloat64Data(num int32) (float64, error) {
 // GetBoolData 获取请求的值(Data：请求参数值数据)
 //参数值：num（从1开始）
 func (thisObj *RequestObject) GetBoolData(num int32) (bool, error) {
-	obj, err := thisObj.getObjectData(num)
+	obj, err := thisObj.GetObjectData(num)
 	if err != nil {
 		logTool.LogError(fmt.Sprintf("请求地址：%s %s请求数据：%s %s获取第%d个参数失败", thisObj.HTTPRequest.RequestURI, stringTool.GetNewLine(), thisObj.requestInfo, stringTool.GetNewLine(), num), err.Error())
 		return false, err

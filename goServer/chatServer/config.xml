@@ -3,6 +3,9 @@
 	<BaseConfig>
 		<!--RpcServer监听的地址-->
 		<RPCListenAddress>:8884</RPCListenAddress>
+
+		<!--WebServer监听的地址-->
+		<WebListenAddress>:8885</WebListenAddress>
 	</BaseConfig>
 
 	<!--日志配置-->

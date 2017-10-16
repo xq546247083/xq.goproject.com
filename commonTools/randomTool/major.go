@@ -13,7 +13,7 @@ func GetRandomStr(length int32) string {
 
 	for a := int32(1); a <= length; a++ {
 		index := random.Intn(len(str))
-		result += str[index-1 : index]
+		result += string(str[index])
 	}
 
 	return result

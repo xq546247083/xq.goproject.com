@@ -1,47 +1,46 @@
 package sysUser
 
 import (
-	"time"
+	"encoding/json"
 
+	"xq.goproject.com/goServer/chatServer/src/model"
 	"xq.goproject.com/goServer/chatServer/src/rpcServer"
+	"xq.goproject.com/goServer/chatServer/src/webServer"
 	"xq.goproject.com/goServer/goServerModel/src/rpcServerObject"
+	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
 
 // 注册需要给客户端访问的模块、方法
 func init() {
-	rpcServer.RegisterHandler("/API/SysUser/UpdateUser", updateUser)
+	webServer.RegisterHandler("/API/SysUser/UpdateUser", updateUser)
 	rpcServer.RegisterCheckHandler(checkRequest)
 }
 
-//updateUser 更新用户信息
-func updateUser(requestObj *rpcServerObject.RequestObject) {
-	clientObj, err := rpcServer.GetRequestClient(requestObj)
+// updateUser 更新用户数据
+func updateUser(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
+	responseObj := webServerObject.NewResponseObject()
+	sysUserByte, err := requestObj.GetByteData(1)
 	if err != nil {
-		return
+		responseObj.SetResultStatus(webServerObject.APIDataError)
+		return responseObj
 	}
 
-	responseObj := rpcServerObject.NewResponseObject()
-	responseObj.SetResultStatus(rpcServerObject.Success)
-	userName, err := requestObj.GetStringData(1)
-	if err != nil {
-		return
+	// 转换用户数据
+	sysUser := new(model.SysUser)
+	err2 := json.Unmarshal(sysUserByte, sysUser)
+	if err2 != nil {
+		responseObj.SetResultStatus(webServerObject.APIDataError)
+		return responseObj
 	}
 
-	go func() {
-		for {
-			clientObj := rpcServer.GetClient(clientObj.GetID())
-			responseObj.SetResultStatus(rpcServerObject.Success)
-			responseObj.Data = userName
+	updateSysUser(sysUser)
 
-			rpcServer.ResponseResult(clientObj, responseObj, rpcServer.ConHighPriority)
-			time.Sleep(10 * time.Second)
-		}
-	}()
+	return responseObj
 }
 
 // checkRequest 检测请求
 func checkRequest(requestObject *rpcServerObject.RequestObject) bool {
-	//根据用户名字判断过期时间
+	// 根据用户名字判断过期时间
 	userName, err := requestObject.GetStringVal("UserName")
 	token, err2 := requestObject.GetStringVal("Token")
 	if err != nil || err2 != nil {
@@ -52,7 +51,7 @@ func checkRequest(requestObject *rpcServerObject.RequestObject) bool {
 		return false
 	}
 
-	//如果过期，返回过期提示
+	// 如果过期，返回过期提示
 	if CheckPwdExpiredTime(userName) {
 		return false
 	}
