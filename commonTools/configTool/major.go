@@ -13,6 +13,9 @@ var (
 	// DBConnection 数据库地址
 	DBConnection string
 
+	// ChatDBConnection 数据库地址
+	ChatDBConnection string
+
 	// IsDebug 是否测试模式
 	IsDebug = false
 
@@ -97,7 +100,11 @@ func init() {
 	checkError(err, false)
 
 	// 读取数据库配置
-	DBConnection, err = xmlConfig.String("root/DBConnection/WebServer", "")
+	ChatDBConnection, err = xmlConfig.String("root/DBConnection/ChatServer", "")
+	checkError(err, false)
+
+	// 读取聊天数据库配置
+	ChatDBConnection, err = xmlConfig.String("root/DBConnection/ChatServer", "")
 	checkError(err, false)
 
 	// 读取日志配置

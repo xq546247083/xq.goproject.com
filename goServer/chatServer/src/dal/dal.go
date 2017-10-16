@@ -3,11 +3,10 @@ package dal
 import (
 	"fmt"
 
-	"xq.goproject.com/commonTools/stringTool"
-
 	"github.com/jinzhu/gorm"
 	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/commonTools/logTool"
+	"xq.goproject.com/commonTools/stringTool"
 )
 
 var (
@@ -16,7 +15,7 @@ var (
 )
 
 func init() {
-	dbConStr := configTool.DBConnection
+	dbConStr := configTool.ChatDBConnection
 	var err error
 	if DB, err = gorm.Open("mysql", dbConStr); err != nil {
 		logTool.Log(logTool.Error, fmt.Sprintf("连接数据库错误：%s", err))

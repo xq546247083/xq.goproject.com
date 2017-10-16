@@ -5,8 +5,8 @@ import (
 	"xq.goproject.com/goServer/chatServer/src/dal"
 )
 
-//Handle 事务处理
-func Handle(dbAction func(*gorm.DB) error) {
+//HandleDB 事务处理
+func HandleDB(dbAction func(*gorm.DB) error) {
 	DBTemp := dal.DB.Begin()
 	defer func() {
 		if err := recover(); err != nil {

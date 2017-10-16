@@ -11,6 +11,9 @@ import (
 var (
 	// 所有对外提供的方法列表
 	handlerMap = make(map[string]*handler)
+
+	// 检测handler
+	checkHandler func(*rpcServerObject.RequestObject) bool
 )
 
 func init() {
@@ -64,4 +67,15 @@ func getHandler(methodName string) (*handler, bool) {
 	}
 
 	return nil, false
+}
+
+//RegisterCheckHandler 注册方法
+// methodName:调用方法全名
+// handlerFunc：方法定义
+func RegisterCheckHandler(handlerFunc func(*rpcServerObject.RequestObject) bool) {
+	if checkHandler != nil {
+		panic("检测方法【checkHandler】已经存在!")
+	}
+
+	checkHandler = handlerFunc
 }
