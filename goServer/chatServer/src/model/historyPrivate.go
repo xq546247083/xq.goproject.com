@@ -29,3 +29,15 @@ type HistoryPrivate struct {
 func (thisObj *HistoryPrivate) TableName() string {
 	return "history_private"
 }
+
+// NewHistoryPrivate 新建私聊聊天记录
+func NewHistoryPrivate(sysUserID, message, voice, fromSysUserID string) *HistoryPrivate {
+	return &HistoryPrivate{
+		ID:            -1,
+		SysUserID:     sysUserID,
+		Message:       message,
+		Voice:         voice,
+		FromSysUserID: fromSysUserID,
+		Crtime:        time.Now(),
+	}
+}

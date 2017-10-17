@@ -60,11 +60,12 @@ function disconnect() {
 
 // 断开连接  
 function sendMessage(method, message) {
+    var userName = $.cookie("UserName");
     //方法参数
     var requestInfo = {
-        UserName: $.cookie("UserName"),
+        UserName: userName,
         Token: $.cookie("Token"),
-        Data: new Array(message),
+        Data: new Array(userName, message),
     };
 
     //调用参数
@@ -97,6 +98,6 @@ $(function() {
     ChatMain.Connect();
 
     setTimeout(function() {
-        ChatMain.SendMessage("SendMessgaeInWorld", "hello world");
+        ChatMain.SendMessage("SendMessgaeInWorld", "hello world 025game.cn");
     }, 1000);
 });

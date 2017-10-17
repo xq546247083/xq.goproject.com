@@ -26,3 +26,13 @@ type HistoryWorld struct {
 func (thisObj *HistoryWorld) TableName() string {
 	return "history_world"
 }
+
+// NewHistoryWorld 新建世界聊天记录
+func NewHistoryWorld(message, voice, fromSysUserID string) *HistoryWorld {
+	return &HistoryWorld{
+		Message:       message,
+		Voice:         voice,
+		FromSysUserID: fromSysUserID,
+		Crtime:        time.Now(),
+	}
+}
