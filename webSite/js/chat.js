@@ -26,12 +26,13 @@ function connect() {
         return;
     }
 
-    if ('WebSocket' in window) {
-        webSocketClient = new WebSocket("ws:" + WebMain.ChatServerConfig);
+    var wsAddress = "ws://" + WebMain.ChatServerConfig + "ws"
+    if (window["WebSocket"]) {
+        webSocketClient = new WebSocket(wsAddress);
     } else if ('MozWebSocket' in window) {
-        webSocketClient = new MozWebSocket("ws:" + WebMain.ChatServerConfig);
+        webSocketClient = new MozWebSocket(wsAddress);
     } else {
-        alert("您的浏览器不支持WebSocket。");
+        setStatus("您的浏览器不支持WebSocket");
         return;
     }
 
@@ -39,7 +40,7 @@ function connect() {
         setStatus("已连接");
     }
     webSocketClient.onmessage = function(e) {
-        handle(e.data)
+        handerSocketData(e.data)
     }
     webSocketClient.onclose = function(e) {
         setStatus("连接关闭");
@@ -73,14 +74,14 @@ function sendMessage(method, message) {
 
     //获取字符串并加密
     var paramStr = JSON.stringify(params);
-    if (webSocketClient != null) {
+    if (webSocketClient != null && webSocketClient.readyState == 1) {
         webSocketClient.send(paramStr);
     }
 }
 
 // 处理消息
-function hander(data) {
-    aler(data)
+function handerSocketData(data) {
+    alert(data)
 }
 
 // 设置状态
