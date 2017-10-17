@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
+	"xq.goproject.com/commonTools/logTool"
 )
 
 const (
@@ -70,6 +71,8 @@ func (c *Client) readPump() {
 			break
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
+
+		logTool.Log(logTool.Debug, "webSocketServer服务器接受到请求："+string(message))
 		c.hub.broadcast <- message
 	}
 }
