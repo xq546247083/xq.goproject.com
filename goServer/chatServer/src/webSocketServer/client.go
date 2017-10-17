@@ -99,10 +99,6 @@ func (c *Client) readPump() {
 
 			requestObj.RequestInfo["Client"] = c
 			callFunction(&requestObj)
-		} else {
-			//没通过，断掉客户端
-			c.hub.unregister <- c
-			c.conn.Close()
 		}
 	}
 }
