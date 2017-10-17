@@ -10,6 +10,9 @@ var (
 	// WebListenAddress 监听地址
 	WebListenAddress string
 
+	// WebSockectListenAddress 监听地址
+	WebSockectListenAddress string
+
 	// DBConnection 数据库地址
 	DBConnection string
 
@@ -82,6 +85,9 @@ var (
 	// ChatServerWebAddress ChatServerWebAddress的地址
 	ChatServerWebAddress = "http://107.151.172.51:8885/"
 
+	// Referer web客户端的Referer
+	Referer = "http://localhost/"
+
 	// 读取的配置
 	xmlConfig *XmlConfig
 
@@ -100,6 +106,9 @@ func init() {
 	checkError(err, false)
 
 	WebListenAddress, err = xmlConfig.String("root/BaseConfig/WebListenAddress", "")
+	checkError(err, false)
+
+	WebSockectListenAddress, err = xmlConfig.String("root/BaseConfig/WebSockectListenAddress", "")
 	checkError(err, false)
 
 	// 读取数据库配置
@@ -178,6 +187,10 @@ func init() {
 	checkError(err, false)
 
 	ChatServerWebAddress, err = xmlConfig.String("root/ServerConfig/ChatServerWebAddress", "")
+	checkError(err, false)
+
+	//web客户端的配置
+	Referer, err = xmlConfig.String("root/WebClientConfig/Referer", "")
 	checkError(err, false)
 
 	//读取文件配置

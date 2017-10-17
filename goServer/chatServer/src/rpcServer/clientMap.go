@@ -41,6 +41,14 @@ func GetClient(clientID int32) *Client {
 	return nil
 }
 
+//GetAllClient 获取所有客户端
+func GetAllClient() map[int32]*Client {
+	clientMutex.RLock()
+	defer clientMutex.RUnlock()
+
+	return clientMap
+}
+
 // GetRequestClient 获取客户端
 func GetRequestClient(requestObj *rpcServerObject.RequestObject) (*Client, error) {
 	clientObj, err := requestObj.GetObjVal("Client")

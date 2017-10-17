@@ -1,10 +1,11 @@
 package rpcServer
 
 import (
-	"xq.goproject.com/commonTools/logTool"
 	"fmt"
 	"net"
 	"sync"
+
+	"xq.goproject.com/commonTools/logTool"
 )
 
 //StartServer 开启服务
@@ -20,7 +21,7 @@ func StartServer(wg *sync.WaitGroup, serverAddress string) {
 
 	//监听服务
 	logTool.Log(logTool.Info, fmt.Sprintf("Rpc服务器监听：%s", serverAddress))
-	fmt.Println( fmt.Sprintf("Rpc服务器监听：%s", serverAddress))
+	fmt.Println(fmt.Sprintf("Rpc服务器监听：%s", serverAddress))
 	go clearClient()
 
 	for {

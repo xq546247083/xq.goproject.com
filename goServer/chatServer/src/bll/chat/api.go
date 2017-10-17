@@ -9,7 +9,7 @@ import (
 
 // 注册需要给客户端访问的模块、方法
 func init() {
-	rpcServer.RegisterHandler("/API/Chat/SendMessgaeInWorld", rpcTest)
+	rpcServer.RegisterHandler("RpcTest", rpcTest)
 }
 
 //rpcTest rpcTest方法

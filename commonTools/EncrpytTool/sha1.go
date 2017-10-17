@@ -4,6 +4,7 @@ import (
 	"crypto/sha1"
 	"errors"
 	"fmt"
+	"io"
 )
 
 //Sha1String 对字符串进行SHA1加密
@@ -32,4 +33,14 @@ func Sha1Bytes(b []byte) string {
 	result := sha1Instance.Sum([]byte(""))
 
 	return string(fmt.Sprintf("%x", result))
+}
+
+// Sha1BytesByNil 对字符数组进行SHA1加密()
+// b:输入字符数组
+// ifUpper:输出是否大写
+// 返回值：md5加密后的字符串
+func Sha1BytesByNil(b string) []byte {
+	sha1Instance := sha1.New()
+	io.WriteString(sha1Instance, b)
+	return sha1Instance.Sum(nil)
 }

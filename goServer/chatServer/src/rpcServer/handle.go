@@ -82,10 +82,8 @@ func handRequest(clientObj *Client, message []byte) {
 	logTool.Log(logTool.Debug, "RPC服务器接受到请求："+string(message))
 
 	//先判断用户请求,如果通过，再调用方法
-	if checkHandler(&requestObj) {
-		requestObj.RequestInfo["Client"] = clientObj
-		callFunction(&requestObj)
-	}
+	requestObj.RequestInfo["Client"] = clientObj
+	callFunction(&requestObj)
 }
 
 //handSendData 处理发送数据

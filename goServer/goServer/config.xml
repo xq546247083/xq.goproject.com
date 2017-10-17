@@ -5,6 +5,12 @@
 		<WebListenAddress>:8883</WebListenAddress>
 	</BaseConfig>
 
+	<!--web客户端配置-->
+	<WebClientConfig>
+		<!--web客户端的Referer-->
+		<Referer>http://localhost/</Referer>
+	</WebClientConfig>
+
 	<!--服务器配置-->
 	<ServerConfig>
 		<!--ChatServerAddress的地址-->

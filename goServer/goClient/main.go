@@ -44,7 +44,7 @@ func testWebServer() {
 }
 
 func testRPCServer() {
-	conn, err := net.DialTimeout("tcp", "localhost:8884", 2*time.Second)
+	conn, err := net.DialTimeout("tcp", "localhost:8886", 2*time.Second)
 	if err != nil {
 		fmt.Printf("Dial Error: %s", err)
 	} else {

@@ -17,3 +17,11 @@ func Base64Encrypt(src []byte) []byte {
 func Base64Decrypt(src []byte) ([]byte, error) {
 	return coder.DecodeString(string(src))
 }
+
+// Base64EncryptByStd 加密
+func Base64EncryptByStd(src []byte) []byte {
+	accept := make([]byte, 28)
+	base64.StdEncoding.Encode(accept, src)
+
+	return accept
+}
