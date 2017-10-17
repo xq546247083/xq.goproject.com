@@ -120,9 +120,8 @@ function ajax(className, methodName, data, type, callback, floorCount) {
         Data: data
     };
 
-    //获取字符串并加密
+    //获取字符串
     var paramStr = JSON.stringify(params);
-    var resultParamStr = $.base64.btoa(paramStr);
 
     var layerIndex = layer.load();
     $.ajax({
@@ -130,7 +129,7 @@ function ajax(className, methodName, data, type, callback, floorCount) {
         type: type,
         async: asyncFlag,
         url: urlStr,
-        data: resultParamStr,
+        data: paramStr,
         success: function(returnInfo) {
             layer.close(layerIndex);
 

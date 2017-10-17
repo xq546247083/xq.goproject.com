@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"strings"
 
-	"xq.goproject.com/commonTools/EncrpytTool"
 	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
@@ -38,11 +37,10 @@ func postDataToChatServer(apiStr APIType, data []interface{}) (responseObj *webS
 	}()
 
 	requestByte, _ := json.Marshal(requestObj)
-	requestStr := string(EncrpytTool.Base64Encrypt(requestByte))
 
 	//构造请求
 	client := &http.Client{}
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s%s", configTool.ChatServerWebAddress, apiStr), strings.NewReader(requestStr))
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s%s", configTool.ChatServerWebAddress, apiStr), strings.NewReader(string(requestByte)))
 	req.Header.Add("User-Agent", "webClient")
 	req.Header.Add("Referer", configTool.Referer)
 	req.Close = true

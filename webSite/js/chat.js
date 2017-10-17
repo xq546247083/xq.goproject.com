@@ -77,10 +77,9 @@ function sendMessage(method, message) {
 
     //获取字符串
     var paramStr = JSON.stringify(params);
-    var resultParamStr = $.base64.btoa(paramStr);
 
     if (webSocketClient != null && webSocketClient.readyState == 1) {
-        webSocketClient.send(resultParamStr);
+        webSocketClient.send(paramStr);
     }
 }
 
@@ -136,6 +135,8 @@ $(document).on("click", "#sendMessageBtn", function() {
     } else {
         //这里是私聊
     }
+
+    $("#messageInput").val("");
 });
 
 

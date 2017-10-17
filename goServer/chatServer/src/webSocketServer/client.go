@@ -5,6 +5,7 @@
 package webSocketServer
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -12,7 +13,6 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"xq.goproject.com/commonTools/EncrpytTool"
 	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/goServer/goServerModel/src/webSocketServerObject"
 )
@@ -77,24 +77,19 @@ func (c *Client) readPump() {
 			break
 		}
 
-		//message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
-
-		//处理接受到的数据
-		messageData, err2 := EncrpytTool.Base64Decrypt(message)
-		if err2 != nil {
-			logTool.LogError(fmt.Sprintf("webSocketServer解密数据错误，err：%s", err2.Error()))
-			break
-		}
+		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
 
 		var requestObj webSocketServerObject.RequestObject
 
+		logTool.Log(logTool.Debug, "webSocketServer服务器接受到请求："+string(message))
+
 		// 解析请求字符串
-		if err := json.Unmarshal(messageData, &requestObj); err != nil {
+		if err := json.Unmarshal(message, &requestObj); err != nil {
 			logTool.Log(logTool.Error, fmt.Sprintf("反序列化出错，错误信息为：%s", err))
-			break
+			continue
 		}
 
-		logTool.Log(logTool.Debug, "webSocketServer服务器接受到请求："+string(messageData))
+		logTool.Log(logTool.Debug, "webSocketServer服务器接受到请求："+string(message))
 
 		//先判断用户请求,如果通过，再调用方法
 		if checkHandler(&requestObj) {
@@ -107,6 +102,7 @@ func (c *Client) readPump() {
 		} else {
 			//没通过，断掉客户端
 			c.hub.unregister <- c
+			c.conn.Close()
 		}
 	}
 }
