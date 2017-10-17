@@ -13,7 +13,7 @@ type HistoryPrivate struct {
 	SysUserID string `gorm:"ConfigValue:SysUserID;primary_key"`
 
 	// 私聊消息的接收者Name
-	SysUserName string
+	SysUserName string `gorm:"ConfigValue:SysUserName;"`
 
 	// 聊天消息
 	Message string `gorm:"column:Message"`
@@ -25,7 +25,7 @@ type HistoryPrivate struct {
 	FromSysUserID string `gorm:"column:FromSysUserID"`
 
 	// 源用户Name
-	FromSysUserName string
+	FromSysUserName string `gorm:"column:FromSysUserName"`
 
 	// 创建时间
 	Crtime time.Time `gorm:"column:Crtime"`

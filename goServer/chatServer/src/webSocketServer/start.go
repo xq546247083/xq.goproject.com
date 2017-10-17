@@ -33,7 +33,7 @@ func StartServer(wg *sync.WaitGroup, serverAddress string) {
 	logTool.Log(logTool.Info, fmt.Sprintf("webSocketServer服务器监听：%s", serverAddress))
 	fmt.Println(fmt.Sprintf("webSocketServer服务器监听：%s", serverAddress))
 
-	go hub.run()
+	go runHub()
 
 	// 处理事件
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {

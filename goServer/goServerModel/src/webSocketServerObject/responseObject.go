@@ -8,20 +8,20 @@ type ResponseObject struct {
 	// 响应结果的状态值所对应的描述信息
 	StatusValue string
 
-	// 附加数据
-	AttachData map[string]interface{}
+	// 类型
+	Type SocketType
 
 	// 响应结果的数据
 	Data interface{}
 }
 
 //NewResponseObject 创建一个新的服务器返回object
-func NewResponseObject() *ResponseObject {
+func NewResponseObject(st SocketType) *ResponseObject {
 
 	return &ResponseObject{
 		Status:      Success,
 		StatusValue: Success.ToDescription(),
-		AttachData:  make(map[string]interface{}),
+		Type:        st,
 		Data:        nil,
 	}
 }

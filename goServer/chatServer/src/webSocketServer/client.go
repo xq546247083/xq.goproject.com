@@ -136,6 +136,7 @@ func (c *Client) writePump() {
 			if err != nil {
 				return
 			}
+			logTool.Log(logTool.Debug, "webSocketServer服务器发送数据："+string(message))
 			w.Write(message)
 
 			// Add queued chat messages to the current websocket message.

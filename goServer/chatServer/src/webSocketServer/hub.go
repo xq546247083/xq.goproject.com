@@ -7,7 +7,7 @@ package webSocketServer
 import (
 	"encoding/json"
 
-	"xq.goproject.com/goServer/chatServer/src/model"
+	"xq.goproject.com/goServer/goServerModel/src/webSocketServerObject"
 )
 
 // Hub maintains the set of active clients and broadcasts messages to the
@@ -31,23 +31,56 @@ func newHub() *Hub {
 	}
 }
 
-func (h *Hub) run() {
+func runHub() {
 	for {
 		select {
-		case client := <-h.register:
-			h.clients[client] = true
-		case client := <-h.unregister:
-			if _, ok := h.clients[client]; ok {
-				delete(h.clients, client)
+		case client := <-hub.register:
+			hub.clients[client] = true
+		case client := <-hub.unregister:
+			if _, ok := hub.clients[client]; ok {
+				delete(hub.clients, client)
 				close(client.send)
 			}
+
+			broadClients()
 		}
 	}
 }
 
+// GetAllClientUserName 获取客户端的用命
+func GetAllClientUserName() []string {
+	result := make([]string, 0, len(hub.clients))
+	for client, flag := range hub.clients {
+		if !flag {
+			continue
+		}
+
+		//如果结果不存在，则添加
+		exists := false
+		for _, str := range result {
+			if str == client.userName {
+				exists = true
+			}
+		}
+
+		if !exists {
+			result = append(result, client.userName)
+		}
+	}
+
+	return result
+}
+
+//  broadClients 广播客户端
+func broadClients() {
+	requestObj := webSocketServerObject.NewRequestObject()
+	requestObj.MethodName = "BroadClients"
+	callFunction(requestObj)
+}
+
 // BroadMessage 广播消息
-func BroadMessage(historyWorld *model.HistoryWorld) {
-	message, err := json.Marshal(historyWorld)
+func BroadMessage(responseObject *webSocketServerObject.ResponseObject) {
+	message, err := json.Marshal(responseObject)
 	if err != nil {
 		//返回对象反序列化失败，只能返回空数据
 		message = []byte("")
@@ -66,15 +99,15 @@ func BroadMessage(historyWorld *model.HistoryWorld) {
 }
 
 // SendMessage 给客户端发送消息
-func SendMessage(historyPrivate *model.HistoryPrivate) {
-	message, err := json.Marshal(historyPrivate)
+func SendMessage(userName string, responseObject *webSocketServerObject.ResponseObject) {
+	message, err := json.Marshal(responseObject)
 	if err != nil {
 		//返回对象反序列化失败，只能返回空数据
 		message = []byte("")
 	}
 
 	for c, flag := range hub.clients {
-		if flag && c.userName == historyPrivate.SysUserName {
+		if flag && c.userName == userName {
 			select {
 			case c.send <- message:
 			default:

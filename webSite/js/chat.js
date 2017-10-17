@@ -19,7 +19,6 @@ var ChatMain = {
     },
 };
 
-
 // 连接  
 function connect() {
     if (webSocketClient != null) {
@@ -37,6 +36,8 @@ function connect() {
     }
 
     webSocketClient.onopen = function() {
+        //连接成功，广播到所有用户
+        ChatMain.SendMessage("BroadClients", "");
         setStatus("已连接");
     }
     webSocketClient.onmessage = function(e) {
@@ -84,8 +85,34 @@ function sendMessage(method, message) {
 }
 
 // 处理消息
-function handerSocketData(data) {
-    alert(data)
+function handerSocketData(returnData) {
+    var userName = $.cookie("UserName");
+
+    var returnObj = JSON.parse(returnData);
+    if (returnObj.Type == "BroadClients") {
+        var personStr = "  <li><a href=\"#\" class=\"contactPerson\" fullName=\"所有人\" userName=\"所有人\"><i class=\"fa fa-comments \"></i> 所有人</a></li>"
+        $.each(returnObj.Data, function(n, value) {
+            //如果不是当前用户广播，则添加进入列表
+            if (value.UserName != userName) {
+                personStr += "<li><a href=\"#\" class=\"contactPerson\" fullName=\"" + value.FullName + "\" userName=\"" + value.UserName + "\"> <i class=\"fa fa-comment\"></i> " + value.FullName + "</a></li>";
+            }
+        });
+
+        $("#chatPersonList").html(personStr)
+    } else if (returnObj.Type == "World") {
+        if (userName == returnObj.Data.FromSysUserName) {
+            var crTimeStr = returnObj.Data.Crtime.substr(11, 5);
+            var messageContent = "<div class=\"right\"><div class=\"author-name\">" + returnObj.Data.FromSysUserName + "<small class=\"chat-date \">" + crTimeStr + "</small></div><div class=\"chat-message active \">" + returnObj.Data.Message + "</div></div>"
+            $("#chatContent").append(messageContent)
+        } else {
+            var crTimeStr = returnObj.Data.Crtime.substr(11, 5);
+            var messageContent = "<div class=\"left\"><div class=\"author-name\">" + returnObj.Data.FromSysUserName + "<small class=\"chat-date \">" + crTimeStr + "</small></div><div class=\"chat-message \">" + returnObj.Data.Message + "</div></div>"
+            $("#chatContent").append(messageContent)
+        }
+
+    } else if (returnObj.Type == "Private") {
+
+    }
 }
 
 // 设置状态
@@ -94,15 +121,31 @@ function setStatus(status) {
 }
 
 $(document).on("click", ".contactPerson", function() {
-    var name = $(this).attr("name");
+    var name = $(this).attr("fullName");
     var userName = $(this).attr("userName");
-    $("#chatHead").html("与" + name + "聊天中");
+    $("#chatHead").html("与 " + name + " 聊天中");
+    $("#chatHead").attr("userName") = userName;
 });
+
+$(document).on("click", "#sendMessageBtn", function() {
+    var talkUserName = $("#chatHead").attr("userName");
+    var messgae = $("#messageInput").val()
+
+    if (talkUserName == "所有人") {
+        ChatMain.SendMessage("SendMessgaeInWorld", messgae);
+    } else {
+        //这里是私聊
+    }
+});
+
 
 // 获取服务器配置
 $(function() {
     ChatMain.Connect();
     var timeStr = new Date().toLocaleDateString();
     $("#chatDate").html(timeStr)
-        // ChatMain.SendMessage("SendMessgaeInWorld", "hello world 025game.cn");
+
+    // setTimeout(function() {
+    //     ChatMain.SendMessage("SendMessgaeInWorld", "hello world 025game.cn");
+    // }, 1000);
 });

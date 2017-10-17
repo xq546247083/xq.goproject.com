@@ -19,7 +19,7 @@ type HistoryWorld struct {
 	FromSysUserID string `gorm:"column:FromSysUserID"`
 
 	// 源用户Name
-	FromSysUserName string
+	FromSysUserName string `gorm:"column:FromSysUserName"`
 
 	// 创建时间
 	Crtime time.Time `gorm:"column:Crtime"`

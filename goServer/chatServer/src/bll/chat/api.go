@@ -17,12 +17,13 @@ func init() {
 	rpcServer.RegisterHandler("RpcTest", rpcTest)
 
 	webSocketServer.RegisterHandler("SendMessgaeInWorld", sendMessgaeInWorld)
+	webSocketServer.RegisterHandler("BroadClients", broadClients)
 }
 
 //sendMessgaeInWorld 广播消息
 func sendMessgaeInWorld(requestObj *webSocketServerObject.RequestObject) {
-	responseObj := rpcServerObject.NewResponseObject()
-	responseObj.SetResultStatus(rpcServerObject.Success)
+	responseObj := webSocketServerObject.NewResponseObject(webSocketServerObject.World)
+
 	userName, err := requestObj.GetStringData(1)
 	message, err2 := requestObj.GetStringData(2)
 	if err != nil && err2 != nil {
@@ -51,8 +52,33 @@ func sendMessgaeInWorld(requestObj *webSocketServerObject.RequestObject) {
 	historyWorld := model.NewHistoryWorld(message, "", sysUser.UserID, sysUser.UserName)
 	insertHistoryWorld(historyWorld)
 
+	responseObj.Data = historyWorld
 	//广播消息
-	webSocketServer.BroadMessage(historyWorld)
+	webSocketServer.BroadMessage(responseObj)
+}
+
+//broadClients 广播所有客户端
+func broadClients(requestObj *webSocketServerObject.RequestObject) {
+	responseObj := webSocketServerObject.NewResponseObject(webSocketServerObject.BroadClients)
+
+	clientUserNames := webSocketServer.GetAllClientUserName()
+	returnMap := make([]map[string]string, 0, len(clientUserNames))
+
+	//循环客户端用户名，添加用户的信息，返回
+	for _, clientUserName := range clientUserNames {
+		sysUser := sysUser.GetItemByUserNameOrEmail(clientUserName)
+		if sysUser != nil {
+			userStrMap := make(map[string]string)
+			userStrMap["UserName"] = sysUser.UserName
+			userStrMap["FullName"] = sysUser.FullName
+
+			returnMap = append(returnMap, userStrMap)
+		}
+	}
+
+	responseObj.Data = returnMap
+	//广播消息
+	webSocketServer.BroadMessage(responseObj)
 }
 
 //rpcTest rpcTest方法
