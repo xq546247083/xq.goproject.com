@@ -12,6 +12,9 @@ type HistoryPrivate struct {
 	// 私聊消息的接收者Id
 	SysUserID string `gorm:"ConfigValue:SysUserID;primary_key"`
 
+	// 私聊消息的接收者Name
+	SysUserName string
+
 	// 聊天消息
 	Message string `gorm:"column:Message"`
 
@@ -20,6 +23,9 @@ type HistoryPrivate struct {
 
 	// 源用户Id
 	FromSysUserID string `gorm:"column:FromSysUserID"`
+
+	// 源用户Name
+	FromSysUserName string
 
 	// 创建时间
 	Crtime time.Time `gorm:"column:Crtime"`
@@ -31,13 +37,14 @@ func (thisObj *HistoryPrivate) TableName() string {
 }
 
 // NewHistoryPrivate 新建私聊聊天记录
-func NewHistoryPrivate(sysUserID, message, voice, fromSysUserID string) *HistoryPrivate {
+func NewHistoryPrivate(sysUserID, sysUserName, message, voice, fromSysUserID, fromSysUserName string) *HistoryPrivate {
 	return &HistoryPrivate{
-		ID:            -1,
-		SysUserID:     sysUserID,
-		Message:       message,
-		Voice:         voice,
-		FromSysUserID: fromSysUserID,
-		Crtime:        time.Now(),
+		SysUserID:       sysUserID,
+		SysUserName:     sysUserName,
+		Message:         message,
+		Voice:           voice,
+		FromSysUserID:   fromSysUserID,
+		FromSysUserName: fromSysUserName,
+		Crtime:          time.Now(),
 	}
 }

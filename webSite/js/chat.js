@@ -93,11 +93,16 @@ function setStatus(status) {
     $("#chatStatus").html("聊天服务器状态:" + status);
 }
 
+$(document).on("click", ".contactPerson", function() {
+    var name = $(this).attr("name");
+    var userName = $(this).attr("userName");
+    $("#chatHead").html("与" + name + "聊天中");
+});
+
 // 获取服务器配置
 $(function() {
     ChatMain.Connect();
-
-    setTimeout(function() {
-        ChatMain.SendMessage("SendMessgaeInWorld", "hello world 025game.cn");
-    }, 1000);
+    var timeStr = new Date().toLocaleDateString();
+    $("#chatDate").html(timeStr)
+        // ChatMain.SendMessage("SendMessgaeInWorld", "hello world 025game.cn");
 });

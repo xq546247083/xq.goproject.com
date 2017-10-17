@@ -18,6 +18,7 @@
     <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="css/webMain.css" rel="stylesheet">
+    <link href="css/chat.css" rel="stylesheet">
 </head>
 
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
@@ -357,76 +358,119 @@
         </div>
         <!--右侧边栏结束-->
         <!--mini聊天窗口开始-->
-        <div class="small-chat-box fadeInRight animated">
+        <div class="small-chat-box fadeInRight  ">
             <div class="heading" draggable="true">
-                <small class="chat-date pull-right">
-                    2015.9.1
-                </small> 与 admin 聊天中
+                <small id="chatDate" class="chat-date pull-right">2015.9.1</small>
+                <div id="chatHead"> 与 admin 聊天中</div>
             </div>
-            <div class="content">
-                <div class="left">
-                    <div class="author-name">
-                        admin <small class="chat-date">
-                            10:02
-                        </small>
-                    </div>
-                    <div class="chat-message active">
-                        你好
-                    </div>
-                </div>
-                <div class="right">
-                    <div class="author-name">
-                        游客
-                        <small class="chat-date">
-                            11:24
-                        </small>
-                    </div>
-                    <div class="chat-message">
-                        你好
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="ibox float-e-margins ">
+                        <div class="ibox-content mailbox-content">
+                            <div class="file-manager">
+                                <h5>在线</h5>
+                                <ul class="folder-list m-b-md chat-scroll" style="padding: 0">
+                                    <li>
+                                        <a href="#" class="contactPerson" name="所有人" userName="所有人"><i class="fa fa-comments "></i> 所有人</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="contactPerson" name="someone" userName=""> <i class="fa fa-comment"></i> someone</a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="left">
-                    <div class="author-name">
-                        admin
-                        <small class="chat-date">
-                            08:45
-                        </small>
-                    </div>
-                    <div class="chat-message active">
-                        我不好
-                    </div>
-                </div>
-                <div class="right">
-                    <div class="author-name">
-                        游客
-                        <small class="chat-date">
-                            11:24
-                        </small>
-                    </div>
-                    <div class="chat-message">
-                        那你可以溜了
-                    </div>
-                </div>
-                <div class="left">
-                    <div class="author-name">
-                        admin
-                        <small class="chat-date">
-                            08:45
-                        </small>
-                    </div>
-                    <div class="chat-message active">
-                        。。。 。。。
-                    </div>
-                </div>
+                <div class="col-sm-8">
+                    <div id="chatContent" class="content">
+                        <div class="left">
+                            <div class="author-name">
+                                admin <small class="chat-date">
+                                    10:02
+                                </small>
+                            </div>
+                            <div class="chat-message active">
+                                你好
+                            </div>
+                        </div>
+                        <div class="right">
+                            <div class="author-name">
+                                游客
+                                <small class="chat-date">
+                                    11:24
+                                </small>
+                            </div>
+                            <div class="chat-message">
+                                你好
+                            </div>
+                        </div>
+                        <div class="left">
+                            <div class="author-name">
+                                admin
+                                <small class="chat-date">
+                                    08:45
+                                </small>
+                            </div>
+                            <div class="chat-message active">
+                                我不好
+                            </div>
+                        </div>
+                        <div class="right">
+                            <div class="author-name">
+                                游客
+                                <small class="chat-date">
+                                    11:24
+                                </small>
+                            </div>
+                            <div class="chat-message">
+                                那你可以溜了
+                            </div>
+                        </div>
+                        <div class="right">
+                            <div class="author-name">
+                                游客
+                                <small class="chat-date">
+                                        11:24
+                                    </small>
+                            </div>
+                            <div class="chat-message">
+                                那你可以溜了
+                            </div>
+                        </div>
+                        <div class="right">
+                            <div class="author-name">
+                                游客
+                                <small class="chat-date">
+                                            11:24
+                                        </small>
+                            </div>
+                            <div class="chat-message">
+                                那你可以溜了
+                            </div>
+                        </div>
+                        <div class="left">
+                            <div class="author-name">
+                                admin
+                                <small class="chat-date">
+                                    08:45
+                                </small>
+                            </div>
+                            <div class="chat-message active">
+                                。。。 。。。
+                            </div>
+                        </div>
 
-            </div>
-            <div class="form-chat">
-                <div class="input-group input-group-sm">
-                    <input type="text" class="form-control"> <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button">
-                            发送
-                        </button>
-                    </span>
+                    </div>
+                    <div class="form-chat">
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control"> <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button">
+                                    发送
+                                </button>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

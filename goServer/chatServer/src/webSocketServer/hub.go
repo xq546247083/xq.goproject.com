@@ -4,6 +4,12 @@
 
 package webSocketServer
 
+import (
+	"encoding/json"
+
+	"xq.goproject.com/goServer/chatServer/src/model"
+)
+
 // Hub maintains the set of active clients and broadcasts messages to the
 // clients.
 type Hub struct {
@@ -39,10 +45,16 @@ func (h *Hub) run() {
 	}
 }
 
-// SendMessage 给客户端发送消息
-func SendMessage(userName string, message []byte) {
+// BroadMessage 广播消息
+func BroadMessage(historyWorld *model.HistoryWorld) {
+	message, err := json.Marshal(historyWorld)
+	if err != nil {
+		//返回对象反序列化失败，只能返回空数据
+		message = []byte("")
+	}
+
 	for c, flag := range hub.clients {
-		if flag && c.userName == userName {
+		if flag {
 			select {
 			case c.send <- message:
 			default:
@@ -53,10 +65,16 @@ func SendMessage(userName string, message []byte) {
 	}
 }
 
-// BroadMessage 广播消息
-func BroadMessage(message []byte) {
+// SendMessage 给客户端发送消息
+func SendMessage(historyPrivate *model.HistoryPrivate) {
+	message, err := json.Marshal(historyPrivate)
+	if err != nil {
+		//返回对象反序列化失败，只能返回空数据
+		message = []byte("")
+	}
+
 	for c, flag := range hub.clients {
-		if flag {
+		if flag && c.userName == historyPrivate.SysUserName {
 			select {
 			case c.send <- message:
 			default:

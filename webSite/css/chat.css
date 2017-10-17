@@ -1,0 +1,6 @@
+.chat-scroll {
+    max-height: 247px;
+    max-width: 150px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}

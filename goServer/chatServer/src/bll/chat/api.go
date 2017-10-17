@@ -48,11 +48,11 @@ func sendMessgaeInWorld(requestObj *webSocketServerObject.RequestObject) {
 	}
 
 	//插入聊天消息到数据库
-	historyWorld := model.NewHistoryWorld(message, "", sysUser.UserID)
+	historyWorld := model.NewHistoryWorld(message, "", sysUser.UserID, sysUser.UserName)
 	insertHistoryWorld(historyWorld)
 
 	//广播消息
-	webSocketServer.BroadMessage([]byte(message))
+	webSocketServer.BroadMessage(historyWorld)
 }
 
 //rpcTest rpcTest方法

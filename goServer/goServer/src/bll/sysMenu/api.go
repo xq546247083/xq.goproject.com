@@ -2,6 +2,7 @@ package sysMenu
 
 import (
 	"xq.goproject.com/goServer/goServer/src/bll/sysUser"
+	"xq.goproject.com/goServer/goServer/src/webClient"
 	"xq.goproject.com/goServer/goServer/src/webServer"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
@@ -26,6 +27,9 @@ func getInfo(requestObj *webServerObject.RequestObject) *webServerObject.Respons
 		responseObj.SetResultStatus(webServerObject.UserIsNotExist)
 		return responseObj
 	}
+
+	//更新聊天服务器的用户数据
+	webClient.PostDataToChatServer(webClient.UpdateUserAPI, []interface{}{sysUser}, true)
 
 	//返回用户菜单信息
 	responseObj.Data = assembleToClient(sysUser)

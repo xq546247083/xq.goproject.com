@@ -18,6 +18,9 @@ type HistoryWorld struct {
 	// 源用户Id
 	FromSysUserID string `gorm:"column:FromSysUserID"`
 
+	// 源用户Name
+	FromSysUserName string
+
 	// 创建时间
 	Crtime time.Time `gorm:"column:Crtime"`
 }
@@ -28,11 +31,12 @@ func (thisObj *HistoryWorld) TableName() string {
 }
 
 // NewHistoryWorld 新建世界聊天记录
-func NewHistoryWorld(message, voice, fromSysUserID string) *HistoryWorld {
+func NewHistoryWorld(message, voice, fromSysUserID, fromSysUserName string) *HistoryWorld {
 	return &HistoryWorld{
-		Message:       message,
-		Voice:         voice,
-		FromSysUserID: fromSysUserID,
-		Crtime:        time.Now(),
+		Message:         message,
+		Voice:           voice,
+		FromSysUserID:   fromSysUserID,
+		FromSysUserName: fromSysUserName,
+		Crtime:          time.Now(),
 	}
 }
