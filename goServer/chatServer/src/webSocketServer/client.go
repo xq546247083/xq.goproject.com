@@ -5,13 +5,16 @@
 package webSocketServer
 
 import (
-	"bytes"
+	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
 
 	"github.com/gorilla/websocket"
+	"xq.goproject.com/commonTools/EncrpytTool"
 	"xq.goproject.com/commonTools/logTool"
+	"xq.goproject.com/goServer/goServerModel/src/webSocketServerObject"
 )
 
 const (
@@ -47,6 +50,9 @@ type Client struct {
 
 	// Buffered channel of outbound messages.
 	send chan []byte
+
+	// 用户名字
+	userName string
 }
 
 // readPump pumps messages from the websocket connection to the hub.
@@ -66,14 +72,42 @@ func (c *Client) readPump() {
 		_, message, err := c.conn.ReadMessage()
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
-				log.Printf("error: %v", err)
+				logTool.LogError(fmt.Sprintf("webSocketServer接受数据错误，err：%s", err.Error()))
 			}
 			break
 		}
-		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
 
-		logTool.Log(logTool.Debug, "webSocketServer服务器接受到请求："+string(message))
-		c.hub.broadcast <- message
+		//message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
+
+		//处理接受到的数据
+		messageData, err2 := EncrpytTool.Base64Decrypt(message)
+		if err2 != nil {
+			logTool.LogError(fmt.Sprintf("webSocketServer解密数据错误，err：%s", err2.Error()))
+			break
+		}
+
+		var requestObj webSocketServerObject.RequestObject
+
+		// 解析请求字符串
+		if err := json.Unmarshal(messageData, &requestObj); err != nil {
+			logTool.Log(logTool.Error, fmt.Sprintf("反序列化出错，错误信息为：%s", err))
+			break
+		}
+
+		logTool.Log(logTool.Debug, "webSocketServer服务器接受到请求："+string(messageData))
+
+		//先判断用户请求,如果通过，再调用方法
+		if checkHandler(&requestObj) {
+			//检测通过，则认为当前客户端为用户的客户端
+			userName, _ := requestObj.GetStringVal("UserName")
+			c.userName = userName
+
+			requestObj.RequestInfo["Client"] = c
+			callFunction(&requestObj)
+		} else {
+			//没通过，断掉客户端
+			c.hub.unregister <- c
+		}
 	}
 }
 

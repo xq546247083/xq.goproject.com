@@ -14,6 +14,11 @@ import (
 	"xq.goproject.com/commonTools/logTool"
 )
 
+var (
+	//hub
+	hub = newHub()
+)
+
 // StartServer 开启服务
 func StartServer(wg *sync.WaitGroup, serverAddress string) {
 	defer func() {
@@ -24,18 +29,16 @@ func StartServer(wg *sync.WaitGroup, serverAddress string) {
 	var addr = flag.String("addr", serverAddress, "http service address")
 	flag.Parse()
 
-	//开启发消息协程
-	hub := newHub()
+	//监听服务
+	logTool.Log(logTool.Info, fmt.Sprintf("webSocketServer服务器监听：%s", serverAddress))
+	fmt.Println(fmt.Sprintf("webSocketServer服务器监听：%s", serverAddress))
+
 	go hub.run()
 
 	// 处理事件
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		serveWs(hub, w, r)
 	})
-
-	//监听服务
-	logTool.Log(logTool.Info, fmt.Sprintf("webSocketServer服务器监听：%s", serverAddress))
-	fmt.Println(fmt.Sprintf("webSocketServer服务器监听：%s", serverAddress))
 
 	//监听地址
 	err := http.ListenAndServe(*addr, nil)

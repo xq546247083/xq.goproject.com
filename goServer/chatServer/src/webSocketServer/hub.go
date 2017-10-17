@@ -4,14 +4,11 @@
 
 package webSocketServer
 
-// hub maintains the set of active clients and broadcasts messages to the
+// Hub maintains the set of active clients and broadcasts messages to the
 // clients.
 type Hub struct {
 	// Registered clients.
 	clients map[*Client]bool
-
-	// Inbound messages from the clients.
-	broadcast chan []byte
 
 	// Register requests from the clients.
 	register chan *Client
@@ -22,7 +19,6 @@ type Hub struct {
 
 func newHub() *Hub {
 	return &Hub{
-		broadcast:  make(chan []byte),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 		clients:    make(map[*Client]bool),
@@ -39,14 +35,33 @@ func (h *Hub) run() {
 				delete(h.clients, client)
 				close(client.send)
 			}
-		case message := <-h.broadcast:
-			for client := range h.clients {
-				select {
-				case client.send <- message:
-				default:
-					close(client.send)
-					delete(h.clients, client)
-				}
+		}
+	}
+}
+
+// SendMessage 给客户端发送消息
+func SendMessage(userName string, message []byte) {
+	for c, flag := range hub.clients {
+		if flag && c.userName == userName {
+			select {
+			case c.send <- message:
+			default:
+				close(c.send)
+				c.hub.unregister <- c
+			}
+		}
+	}
+}
+
+// BroadMessage 广播消息
+func BroadMessage(message []byte) {
+	for c, flag := range hub.clients {
+		if flag {
+			select {
+			case c.send <- message:
+			default:
+				close(c.send)
+				c.hub.unregister <- c
 			}
 		}
 	}

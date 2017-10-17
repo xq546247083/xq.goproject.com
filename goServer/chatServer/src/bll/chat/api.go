@@ -13,19 +13,19 @@ import (
 func init() {
 	rpcServer.RegisterHandler("RpcTest", rpcTest)
 
-	webSocketServer.RegisterHandler("RpcTest", rpcTest1)
+	webSocketServer.RegisterHandler("SendMessgaeInWorld", sendMessgaeInWorld)
 }
 
-//rpcTest1 rpcTest方法
-func rpcTest1(requestObj *webSocketServerObject.RequestObject) {
+//sendMessgaeInWorld 广播消息
+func sendMessgaeInWorld(requestObj *webSocketServerObject.RequestObject) {
 	responseObj := rpcServerObject.NewResponseObject()
 	responseObj.SetResultStatus(rpcServerObject.Success)
-	userName, err := requestObj.GetStringData(1)
+	message, err := requestObj.GetStringData(1)
 	if err != nil {
 		return
 	}
 
-	_ = userName
+	webSocketServer.BroadMessage([]byte(message))
 }
 
 //rpcTest rpcTest方法

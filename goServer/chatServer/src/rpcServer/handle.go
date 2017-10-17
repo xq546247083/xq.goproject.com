@@ -68,20 +68,17 @@ func handleReceiveData(clientObj *Client) {
 
 //handRequest 处理请求
 func handRequest(clientObj *Client, message []byte) {
-	responseObj := rpcServerObject.NewResponseObject()
 	var requestObj rpcServerObject.RequestObject
 
 	// 解析请求字符串
 	if err := json.Unmarshal(message, &requestObj); err != nil {
 		logTool.Log(logTool.Error, fmt.Sprintf("反序列化出错，错误信息为：%s", err))
-
-		ResponseResult(clientObj, responseObj.SetResultStatus(rpcServerObject.DataError), ConHighPriority)
 		return
 	}
 
 	logTool.Log(logTool.Debug, "RPC服务器接受到请求："+string(message))
 
-	//先判断用户请求,如果通过，再调用方法
+	//调用方法
 	requestObj.RequestInfo["Client"] = clientObj
 	callFunction(&requestObj)
 }

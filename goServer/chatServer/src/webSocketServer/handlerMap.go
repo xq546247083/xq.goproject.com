@@ -24,9 +24,9 @@ func init() {
 func logRegisterHandlerInfo() error {
 	handlerInfo := make([]string, 0, len(handlerMap))
 	if len(handlerMap) > 0 {
-		handlerInfo = append(handlerInfo, "rpcServer当前已注册接口：")
+		handlerInfo = append(handlerInfo, "webSocketServer当前已注册接口：")
 	} else {
-		handlerInfo = append(handlerInfo, "rpcServer暂无注册接口")
+		handlerInfo = append(handlerInfo, "webSocketServer暂无注册接口")
 	}
 
 	//获取注册的接口名
@@ -55,6 +55,7 @@ func callFunction(requestObj *webSocketServerObject.RequestObject) {
 	// 查找方法
 	if !exists {
 		logTool.Log(logTool.Error, fmt.Sprintf("方法名:%s未定义", requestObj.MethodName))
+		return
 	}
 
 	handlerObj.handlerFunc(requestObj)

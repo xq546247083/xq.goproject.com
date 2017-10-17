@@ -61,10 +61,11 @@ function disconnect() {
 // 断开连接  
 function sendMessage(method, message) {
     //方法参数
-    var requestInfo = new Array();
-    requestInfo["UserName"] = $.cookie("UserName");
-    requestInfo["Token"] = $.cookie("Token");
-    requestInfo["Data"] = new Array(message)
+    var requestInfo = {
+        UserName: $.cookie("UserName"),
+        Token: $.cookie("Token"),
+        Data: new Array(message),
+    };
 
     //调用参数
     var params = {
@@ -72,10 +73,12 @@ function sendMessage(method, message) {
         RequestInfo: requestInfo
     };
 
-    //获取字符串并加密
+    //获取字符串
     var paramStr = JSON.stringify(params);
+    var resultParamStr = $.base64.btoa(paramStr);
+
     if (webSocketClient != null && webSocketClient.readyState == 1) {
-        webSocketClient.send(paramStr);
+        webSocketClient.send(resultParamStr);
     }
 }
 
@@ -94,6 +97,6 @@ $(function() {
     ChatMain.Connect();
 
     setTimeout(function() {
-        ChatMain.SendMessage("/API/Chat/SendMessgaeInWorld", "hello world");
+        ChatMain.SendMessage("SendMessgaeInWorld", "hello world");
     }, 1000);
 });
