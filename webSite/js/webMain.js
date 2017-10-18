@@ -29,6 +29,12 @@
     CookieOneKey: function(cookName, cookValue) {
         return cookieOneKey.call(this, cookName, cookValue);
     },
+    SaveLocalData: function(cookName, cookValue) {
+        return saveLocalData.call(this, cookName, cookValue);
+    },
+    GetLocalData: function(cookName) {
+        return getLocalData.call(this, cookName);
+    },
     //封装sweetalert,
     //title：标题
     //type：类型
@@ -281,6 +287,16 @@ function swalTimerFunc(title, content, btnaText, callbacka, i) {
                 callbacka();
         }
     });
+}
+
+//存数据
+function saveLocalData(cookName, cookValue) {
+    localStorage.setItem(cookName, cookValue);
+}
+
+//获取数据
+function getLocalData(cookName) {
+    return localStorage.getItem(cookName);
 }
 
 //设置cookie

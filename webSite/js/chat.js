@@ -124,7 +124,7 @@ function handerSocketData(returnData) {
         var chatPerSonUserName = $("#chatHead").attr("username");
 
         //获取玩家聊天历史记录
-        var history = $.cookie("AllPersonHistory");
+        var history = WebMain.GetLocalData("AllPersonHistory");
         if (history == null || history == "undefined") {
             history = "";
         }
@@ -147,7 +147,7 @@ function handerSocketData(returnData) {
             scrollToEnd();
         }
 
-        WebMain.CookieOneKey("AllPersonHistory", history + messageContent);
+        WebMain.SaveLocalData("AllPersonHistory", history + messageContent);
 
     } else if (returnObj.Type == "Private") {
         var chatPerSonUserName = $("#chatHead").attr("username");
@@ -158,7 +158,7 @@ function handerSocketData(returnData) {
 
         if (userName == returnObj.Data.FromSysUserName) {
             //获取玩家聊天历史记录
-            var history = $.cookie(returnObj.Data.SysUserName + "History");
+            var history = WebMain.GetLocalData(returnObj.Data.SysUserName + "History");
             if (history == null || history == "undefined") {
                 history = "";
             }
@@ -170,10 +170,10 @@ function handerSocketData(returnData) {
                 $("#chatContent").append(messageContent);
                 scrollToEnd();
             }
-            WebMain.CookieOneKey(returnObj.Data.SysUserName + "History", history + messageContent);
+            WebMain.SaveLocalData(returnObj.Data.SysUserName + "History", history + messageContent);
         } else {
             //获取玩家聊天历史记录
-            var history = $.cookie(returnObj.Data.FromSysUserName + "History");
+            var history = WebMain.GetLocalData(returnObj.Data.FromSysUserName + "History");
             if (history == null || history == "undefined") {
                 history = "";
             }
@@ -188,7 +188,7 @@ function handerSocketData(returnData) {
 
             toastr.success("提示", "收到一条私聊消息");
             AddMessgaeNum();
-            WebMain.CookieOneKey(returnObj.Data.FromSysUserName + "History", history + messageContent);
+            WebMain.SaveLocalData(returnObj.Data.FromSysUserName + "History", history + messageContent);
         }
     }
 }
@@ -259,9 +259,9 @@ $(document).on("click", ".contactPerson", function() {
     var history = "";
     if (userName == "所有人") {
         //获取玩家聊天历史记录
-        history = $.cookie("AllPersonHistory");
+        history = WebMain.GetLocalData("AllPersonHistory");
     } else {
-        history = $.cookie(userName + "History");
+        history = WebMain.GetLocalData(userName + "History");
     }
 
     if (history == null || history == "undefined") {
@@ -289,7 +289,7 @@ $(function() {
 
     //加载所有人的聊天记录
     $("#chatPersonList li:first").addClass("chat-back");
-    var history = $.cookie("AllPersonHistory");
+    var history = WebMain.GetLocalData("AllPersonHistory");
     $("#chatContent").html(history)
 });
 
