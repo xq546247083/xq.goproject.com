@@ -145,6 +145,7 @@ function handerSocketData(returnData) {
             scrollToEnd();
         }
 
+        AddMessgaeNum();
         WebMain.CookieOneKey("AllPersonHistory", history + messageContent);
 
     } else if (returnObj.Type == "Private") {
@@ -172,13 +173,28 @@ function handerSocketData(returnData) {
             scrollToEnd();
         }
 
+        AddMessgaeNum();
         WebMain.CookieOneKey(returnObj.Data.FromSysUserName + "History", history + messageContent);
     }
 }
 
+$("#chatContent").scroll(function() {
+    $("#messgaeNum").html("");
+});
+
 // 设置状态
 function setStatus(status) {
     $("#chatStatus").html("聊天服务器状态:" + status);
+}
+
+//添加消息数量
+function AddMessgaeNum() {
+    var htmlStr = $("#messgaeNum").html();
+    if (htmlStr == null || htmlStr == "") {
+        $("#messgaeNum").html("1");
+    } else {
+        $("#messgaeNum").html(parseInt(htmlStr) + 1);
+    }
 }
 
 // 聊天框滚动到底部
@@ -196,7 +212,7 @@ function scrollToEnd() {
 $(document).on("click", ".contactPerson", function() {
     var fullName = $(this).attr("fullName");
     var userName = $(this).attr("username");
-    $("#chatHead").html("与 " + name + " 聊天中");
+    $("#chatHead").html("与 " + fullName + " 聊天中");
     $("#chatHead").attr("username", userName);
     $("#chatHead").attr("fullname", fullName);
 
@@ -268,3 +284,8 @@ $(function() {
     var history = $.cookie("AllPersonHistory");
     $("#chatContent").html(history)
 });
+
+//点击打开消息按钮
+$(".open-small-chat").click(function() {
+    $("#messgaeNum").html("");
+})
