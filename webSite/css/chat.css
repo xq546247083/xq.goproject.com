@@ -4,3 +4,7 @@
     overflow-y: scroll;
     overflow-x: hidden;
 }
+
+.chat-back {
+    background: rgb(193, 195, 196);
+}

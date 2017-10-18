@@ -44,3 +44,8 @@ func GetHistoryPrivateList(userID string) []*model.HistoryPrivate {
 
 	return result
 }
+
+// savetHistoryPrivate 保存私聊聊天记录
+func savetHistoryPrivate(histtoryPrivate *model.HistoryPrivate) error {
+	return dal.HistoryPrivateDALObj.SaveInfo(histtoryPrivate, nil)
+}

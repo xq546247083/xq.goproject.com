@@ -14,8 +14,8 @@ var ChatMain = {
     },
 
     // 发送消息
-    SendMessage: function(method, message) {
-        return sendMessage.call(this, method, message);
+    SendMessage: function(method, talkToUserName, message) {
+        return sendMessage.call(this, method, talkToUserName, message);
     },
 };
 
@@ -37,7 +37,7 @@ function connect() {
 
     webSocketClient.onopen = function() {
         //连接成功，广播到所有用户
-        ChatMain.SendMessage("BroadClients", "");
+        ChatMain.SendMessage("BroadClients", "", "");
         setStatus("已连接");
     }
     webSocketClient.onmessage = function(e) {
@@ -60,13 +60,13 @@ function disconnect() {
 }
 
 // 断开连接  
-function sendMessage(method, message) {
+function sendMessage(method, talkToUserName, message) {
     var userName = $.cookie("UserName");
     //方法参数
     var requestInfo = {
         UserName: userName,
         Token: $.cookie("Token"),
-        Data: new Array(userName, message),
+        Data: new Array(userName, talkToUserName, message),
     };
 
     //调用参数
@@ -89,28 +89,90 @@ function handerSocketData(returnData) {
 
     var returnObj = JSON.parse(returnData);
     if (returnObj.Type == "BroadClients") {
-        var personStr = "  <li><a href=\"#\" class=\"contactPerson\" fullName=\"所有人\" userName=\"所有人\"><i class=\"fa fa-comments \"></i> 所有人</a></li>"
+        //遍历返回的元素，如果不存在，则添加
         $.each(returnObj.Data, function(n, value) {
+            var existFlag = false;
+            $("#chatPersonList li").each(function() {
+                var liUserName = $($(this).children("a").get(0)).attr("username");
+                if (liUserName == returnObj.Data) {
+                    existFlag = true;
+                    return;
+                }
+            });
+
             //如果不是当前用户广播，则添加进入列表
-            if (value.UserName != userName) {
-                personStr += "<li><a href=\"#\" class=\"contactPerson\" fullName=\"" + value.FullName + "\" userName=\"" + value.UserName + "\"> <i class=\"fa fa-comment\"></i> " + value.FullName + "</a></li>";
+            if (value.UserName != userName && !existFlag) {
+                $("#chatPersonList").append("<li><a href=\"#\" class=\"contactPerson\" fullname=\"" + value.FullName + "\" username=\"" + value.UserName + "\"> <i class=\"fa fa-comment\"></i> " + value.FullName + "</a></li>");
             }
         });
 
-        $("#chatPersonList").html(personStr)
+        //如果服务器不存在，则删除
+        $("#chatPersonList li").each(function() {
+            var liUserName = $($(this).children("a").get(0)).attr("username");
+            var existFlag = false;
+            $.each(returnObj.Data, function(n, value) {
+                if (liUserName == value.UserName) {
+                    existFlag = true;
+                    return;
+                }
+            });
+            if (!existFlag && liUserName != "所有人") {
+                $(this).remove();
+            }
+        });
     } else if (returnObj.Type == "World") {
-        if (userName == returnObj.Data.FromSysUserName) {
-            var crTimeStr = returnObj.Data.Crtime.substr(11, 5);
-            var messageContent = "<div class=\"right\"><div class=\"author-name\">" + returnObj.Data.FromSysUserName + "<small class=\"chat-date \">" + crTimeStr + "</small></div><div class=\"chat-message active \">" + returnObj.Data.Message + "</div></div>"
-            $("#chatContent").append(messageContent)
-        } else {
-            var crTimeStr = returnObj.Data.Crtime.substr(11, 5);
-            var messageContent = "<div class=\"left\"><div class=\"author-name\">" + returnObj.Data.FromSysUserName + "<small class=\"chat-date \">" + crTimeStr + "</small></div><div class=\"chat-message \">" + returnObj.Data.Message + "</div></div>"
-            $("#chatContent").append(messageContent)
+        var chatPerSonUserName = $("#chatHead").attr("username");
+
+        //获取玩家聊天历史记录
+        var history = $.cookie("AllPersonHistory");
+        if (history == null || history == "undefined") {
+            history = "";
         }
 
-    } else if (returnObj.Type == "Private") {
+        var crTimeStr = returnObj.Data.Crtime.substr(11, 5);
+        var messageContent = "";
 
+        if (userName == returnObj.Data.FromSysUserName) {
+            messageContent = "<div class=\"right\"><div class=\"author-name\">" + returnObj.Data.FromSysUserName + "<small class=\"chat-date \">" + crTimeStr + "</small></div><div class=\"chat-message active \">" + returnObj.Data.Message + "</div></div>";
+
+        } else {
+            messageContent = "<div class=\"left\"><div class=\"author-name\">" + returnObj.Data.FromSysUserName + "<small class=\"chat-date \">" + crTimeStr + "</small></div><div class=\"chat-message \">" + returnObj.Data.Message + "</div></div>";
+        }
+
+        //聊天追加元素，更新聊天记录cookie
+        if (chatPerSonUserName == "所有人") {
+            $("#chatContent").append(messageContent);
+            scrollToEnd();
+        }
+
+        WebMain.CookieOneKey("AllPersonHistory", history + messageContent);
+
+    } else if (returnObj.Type == "Private") {
+        var chatPerSonUserName = $("#chatHead").attr("username");
+
+        //获取玩家聊天历史记录
+        var history = $.cookie(returnObj.Data.FromSysUserName + "History");
+        if (history == null || history == "undefined") {
+            history = "";
+        }
+
+        var crTimeStr = returnObj.Data.Crtime.substr(11, 5);
+        var messageContent = "";
+
+        if (userName == returnObj.Data.FromSysUserName) {
+            messageContent = "<div class=\"right\"><div class=\"author-name\">" + returnObj.Data.FromSysUserName + "<small class=\"chat-date \">" + crTimeStr + "</small></div><div class=\"chat-message active \">" + returnObj.Data.Message + "</div></div>";
+
+        } else {
+            messageContent = "<div class=\"left\"><div class=\"author-name\">" + returnObj.Data.FromSysUserName + "<small class=\"chat-date \">" + crTimeStr + "</small></div><div class=\"chat-message \">" + returnObj.Data.Message + "</div></div>";
+        }
+
+        //聊天追加元素，更新聊天记录cookie
+        if (chatPerSonUserName == returnObj.Data.FromSysUserName) {
+            $("#chatContent").append(messageContent);
+            scrollToEnd();
+        }
+
+        WebMain.CookieOneKey(returnObj.Data.FromSysUserName + "History", history + messageContent);
     }
 }
 
@@ -119,24 +181,79 @@ function setStatus(status) {
     $("#chatStatus").html("聊天服务器状态:" + status);
 }
 
+// 聊天框滚动到底部
+function scrollToEnd() {
+    var beforeHeight = $("#chatContent").scrollTop();
+    $("#chatContent").scrollTop($("#chatContent").scrollTop() + 20);
+    var afterHeight = $("#chatContent").scrollTop();
+    if (beforeHeight == afterHeight) {
+
+    } else {
+        setTimeout("scrollToEnd()", 5);
+    }
+}
+
 $(document).on("click", ".contactPerson", function() {
-    var name = $(this).attr("fullName");
-    var userName = $(this).attr("userName");
+    var fullName = $(this).attr("fullName");
+    var userName = $(this).attr("username");
     $("#chatHead").html("与 " + name + " 聊天中");
-    $("#chatHead").attr("userName") = userName;
+    $("#chatHead").attr("username", userName);
+    $("#chatHead").attr("fullname", fullName);
+
+    //设置选中行背景
+    $("#chatPersonList li").each(function() {
+        $(this).removeClass("chat-back");
+    });
+
+    $(this).parent().addClass("chat-back");
+
+    //加载聊天记录
+    var history = "";
+    if (userName == "所有人") {
+        //获取玩家聊天历史记录
+        history = $.cookie("AllPersonHistory");
+    } else {
+        history = $.cookie(userName + "History");
+    }
+
+    if (history == null || history == "undefined") {
+        history = "";
+    }
+
+    $("#chatContent").html(history)
+    scrollToEnd();
 });
 
 $(document).on("click", "#sendMessageBtn", function() {
-    var talkUserName = $("#chatHead").attr("userName");
+    var talkToUserName = $("#chatHead").attr("username");
     var messgae = $("#messageInput").val()
-
-    if (talkUserName == "所有人") {
-        ChatMain.SendMessage("SendMessgaeInWorld", messgae);
-    } else {
-        //这里是私聊
+    if (messgae == "") {
+        return;
     }
 
+    var method = "BroadMessgae"
+    if (talkToUserName != "所有人") {
+        method = "SendMessgae"
+
+        //获取玩家聊天历史记录
+        var history = $.cookie(talkToUserName + "History");
+        if (history == null || history == "undefined") {
+            history = "";
+        }
+
+        var crTimeStr = (new Date().getHours()) + ":" + (new Date().getMinutes());
+        var fullName = $("#chatHead").attr("fullname");
+
+        //追加当前消息
+        messageContent = "<div class=\"right\"><div class=\"author-name\">" + fullName + "<small class=\"chat-date \">" + crTimeStr + "</small></div><div class=\"chat-message active \">" + messgae + "</div></div>"
+        $("#chatContent").append(messageContent);
+        WebMain.CookieOneKey(talkToUserName + "History", history + messageContent);
+    }
+
+    ChatMain.SendMessage(method, talkToUserName, messgae);
+
     $("#messageInput").val("");
+    scrollToEnd();
 });
 
 
@@ -146,7 +263,8 @@ $(function() {
     var timeStr = new Date().toLocaleDateString();
     $("#chatDate").html(timeStr)
 
-    // setTimeout(function() {
-    //     ChatMain.SendMessage("SendMessgaeInWorld", "hello world 025game.cn");
-    // }, 1000);
+    //加载所有人的聊天记录
+    $("#chatPersonList li:first").addClass("chat-back");
+    var history = $.cookie("AllPersonHistory");
+    $("#chatContent").html(history)
 });

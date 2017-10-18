@@ -23,7 +23,7 @@ func GetHistoryWorldList(num int32) []*model.HistoryWorld {
 	return historyWorldList[front:length]
 }
 
-// insertHistoryWorld 插入世界聊天记录
-func insertHistoryWorld(histtoryword *model.HistoryWorld) error {
-	return dal.HistoryWorldDALObj.SaveInfo(histtoryword, nil)
+// savetHistoryWorld 保存世界聊天记录
+func savetHistoryWorld(histtoryWorld *model.HistoryWorld) error {
+	return dal.HistoryWorldDALObj.SaveInfo(histtoryWorld, nil)
 }

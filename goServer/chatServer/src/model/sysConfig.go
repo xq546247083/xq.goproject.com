@@ -6,7 +6,7 @@ type SysConfig struct {
 	ConfigKey int32 `gorm:"column:ConfigKey;primary_key"`
 
 	// 配置值
-	ConfigValue string `gorm:"ConfigValue:ConfigValue"`
+	ConfigValue string `gorm:"column:ConfigValue"`
 
 	// 配置描述
 	ConfigDesc string `gorm:"column:ConfigDesc"`

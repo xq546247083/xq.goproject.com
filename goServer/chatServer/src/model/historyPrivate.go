@@ -10,10 +10,10 @@ type HistoryPrivate struct {
 	ID int32 `gorm:"column:ID;primary_key"`
 
 	// 私聊消息的接收者Id
-	SysUserID string `gorm:"ConfigValue:SysUserID;primary_key"`
+	SysUserID string `gorm:"column:SysUserID;primary_key"`
 
 	// 私聊消息的接收者Name
-	SysUserName string `gorm:"ConfigValue:SysUserName;"`
+	SysUserName string `gorm:"column:SysUserName;"`
 
 	// 聊天消息
 	Message string `gorm:"column:Message"`
