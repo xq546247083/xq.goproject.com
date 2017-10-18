@@ -165,6 +165,11 @@ function handerSocketData(returnData) {
 
             messageContent = "<div class=\"right\"><div class=\"author-name\">" + returnObj.Data.FromSysUserName + "<small class=\"chat-date \">" + crTimeStr + "</small></div><div class=\"chat-message active \">" + returnObj.Data.Message + "</div></div>";
 
+            //聊天追加元素
+            if (chatPerSonUserName == returnObj.Data.SysUserName) {
+                $("#chatContent").append(messageContent);
+                scrollToEnd();
+            }
             WebMain.CookieOneKey(returnObj.Data.SysUserName + "History", history + messageContent);
         } else {
             //获取玩家聊天历史记录
@@ -175,15 +180,15 @@ function handerSocketData(returnData) {
 
             messageContent = "<div class=\"left\"><div class=\"author-name\">" + returnObj.Data.FromSysUserName + "<small class=\"chat-date \">" + crTimeStr + "</small></div><div class=\"chat-message \">" + returnObj.Data.Message + "</div></div>";
 
+            //聊天追加元素
+            if (chatPerSonUserName == returnObj.Data.FromSysUserName) {
+                $("#chatContent").append(messageContent);
+                scrollToEnd();
+            }
+
             toastr.success("提示", "收到一条私聊消息");
             AddMessgaeNum();
             WebMain.CookieOneKey(returnObj.Data.FromSysUserName + "History", history + messageContent);
-        }
-
-        //聊天追加元素，更新聊天记录cookie
-        if (chatPerSonUserName == returnObj.Data.FromSysUserName) {
-            $("#chatContent").append(messageContent);
-            scrollToEnd();
         }
     }
 }
