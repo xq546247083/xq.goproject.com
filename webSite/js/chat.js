@@ -174,6 +174,7 @@ function handerSocketData(returnData) {
         }
 
         AddMessgaeNum();
+        toastr.success("提示", "收到一条消息");
         WebMain.CookieOneKey(returnObj.Data.FromSysUserName + "History", history + messageContent);
     }
 }
@@ -220,8 +221,6 @@ function setStatus(status) {
 
 //添加消息数量
 function AddMessgaeNum() {
-    toastr.success("提示", "收到一条消息");
-
     var htmlStr = $("#messgaeNum").html();
     if (htmlStr == null || htmlStr == "") {
         $("#messgaeNum").html("1");
