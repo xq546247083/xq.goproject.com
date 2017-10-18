@@ -20,20 +20,14 @@ _cgo_export.*
 _testmain.go
 
 *.exe
+*.linux
 *.test
 *.prof
 
 debug
 Debug
 DEBUG
-goClient.linux
-goClient.exe
-fileServer.linux
-fileServer.exe
-goServer.linux
-goServer.exe
-httpServer.linux
-httpServer.exe
+
 Log
 LOG
 LOG/*
