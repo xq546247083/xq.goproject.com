@@ -81,8 +81,6 @@ func (c *Client) readPump() {
 
 		var requestObj webSocketServerObject.RequestObject
 
-		logTool.Log(logTool.Debug, "webSocketServer服务器接受到请求："+string(message))
-
 		// 解析请求字符串
 		if err := json.Unmarshal(message, &requestObj); err != nil {
 			logTool.Log(logTool.Error, fmt.Sprintf("反序列化出错，错误信息为：%s", err))
