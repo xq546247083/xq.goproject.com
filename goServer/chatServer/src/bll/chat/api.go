@@ -108,8 +108,9 @@ func sendMessgae(requestObj *webSocketServerObject.RequestObject) {
 	savetHistoryPrivate(historyPrivate)
 
 	responseObj.Data = historyPrivate
-	//给对方发消息
+	//给对和自己方发消息
 	webSocketServer.SendMessage(talkToSysUser.UserName, responseObj)
+	webSocketServer.SendMessage(selfSysUser.UserName, responseObj)
 }
 
 //broadClients 广播所有客户端
