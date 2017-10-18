@@ -1,4 +1,4 @@
-<root>
+﻿<root>
 	<!--基础配置-->
 	<BaseConfig>
 		<!--WebServer监听的地址-->
@@ -12,7 +12,7 @@
 		<!--GoServerAddress的地址-->
 		<GoServerAddress>http://localhost:8883/</GoServerAddress>
 		<!--ChatServerAddress的地址-->
-		<ChatServerAddress>http://localhost:8884/</ChatServerAddress>
+		<ChatServerAddress>localhost:8884/</ChatServerAddress>
 	</ServerConfig>
 
 	<!--日志配置-->
