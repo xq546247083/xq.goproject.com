@@ -178,9 +178,40 @@ function handerSocketData(returnData) {
     }
 }
 
-$("#chatContent").scroll(function() {
-    $("#messgaeNum").html("");
-});
+//点击发送消息
+function sendMessageClick() {
+    var talkToUserName = $("#chatHead").attr("username");
+    var messgae = $("#messageInput").val()
+    if (messgae == "") {
+        return;
+    }
+
+    var method = "BroadMessgae"
+    if (talkToUserName != "所有人") {
+        method = "SendMessgae"
+
+        //获取玩家聊天历史记录
+        var history = $.cookie(talkToUserName + "History");
+        if (history == null || history == "undefined") {
+            history = "";
+        }
+
+        var crTimeStr = (new Date().getHours()) + ":" + (new Date().getMinutes());
+        var fullName = $("#chatHead").attr("fullname");
+
+        //追加当前消息
+        messageContent = "<div class=\"right\"><div class=\"author-name\">" + fullName + "<small class=\"chat-date \">" + crTimeStr + "</small></div><div class=\"chat-message active \">" + messgae + "</div></div>"
+        $("#chatContent").append(messageContent);
+        WebMain.CookieOneKey(talkToUserName + "History", history + messageContent);
+    }
+
+    ChatMain.SendMessage(method, talkToUserName, messgae);
+
+    $("#messageInput")[0].focus()
+    $("#messageInput").val("");
+    scrollToEnd();
+}
+
 
 // 设置状态
 function setStatus(status) {
@@ -240,36 +271,12 @@ $(document).on("click", ".contactPerson", function() {
     scrollToEnd();
 });
 
+$("#chatContent").scroll(function() {
+    $("#messgaeNum").html("");
+});
+
 $(document).on("click", "#sendMessageBtn", function() {
-    var talkToUserName = $("#chatHead").attr("username");
-    var messgae = $("#messageInput").val()
-    if (messgae == "") {
-        return;
-    }
-
-    var method = "BroadMessgae"
-    if (talkToUserName != "所有人") {
-        method = "SendMessgae"
-
-        //获取玩家聊天历史记录
-        var history = $.cookie(talkToUserName + "History");
-        if (history == null || history == "undefined") {
-            history = "";
-        }
-
-        var crTimeStr = (new Date().getHours()) + ":" + (new Date().getMinutes());
-        var fullName = $("#chatHead").attr("fullname");
-
-        //追加当前消息
-        messageContent = "<div class=\"right\"><div class=\"author-name\">" + fullName + "<small class=\"chat-date \">" + crTimeStr + "</small></div><div class=\"chat-message active \">" + messgae + "</div></div>"
-        $("#chatContent").append(messageContent);
-        WebMain.CookieOneKey(talkToUserName + "History", history + messageContent);
-    }
-
-    ChatMain.SendMessage(method, talkToUserName, messgae);
-
-    $("#messageInput").val("");
-    scrollToEnd();
+    sendMessageClick();
 });
 
 
@@ -288,4 +295,13 @@ $(function() {
 //点击打开消息按钮
 $(".open-small-chat").click(function() {
     $("#messgaeNum").html("");
+})
+
+//回车提交
+$(function() {
+    $(document).keydown(function(e) {
+        if (e.keyCode == "13") {
+            sendMessageClick();
+        }
+    })
 })
