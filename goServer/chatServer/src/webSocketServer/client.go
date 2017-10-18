@@ -28,7 +28,7 @@ const (
 	pingPeriod = (pongWait * 9) / 10
 
 	// Maximum message size allowed from peer.
-	maxMessageSize = 512000
+	maxMessageSize = 51200
 )
 
 var (
@@ -74,6 +74,7 @@ func (c *Client) readPump() {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
 				logTool.LogError(fmt.Sprintf("webSocketServer接受数据错误，err：%s", err.Error()))
 			}
+
 			break
 		}
 
