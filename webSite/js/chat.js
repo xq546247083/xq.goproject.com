@@ -136,6 +136,7 @@ function handerSocketData(returnData) {
             messageContent = "<div class=\"right\"><div class=\"author-name\">" + returnObj.Data.FromSysUserName + "<small class=\"chat-date \">" + crTimeStr + "</small></div><div class=\"chat-message active \">" + returnObj.Data.Message + "</div></div>";
 
         } else {
+            toastr.success("提示", "收到一条广播消息");
             messageContent = "<div class=\"left\"><div class=\"author-name\">" + returnObj.Data.FromSysUserName + "<small class=\"chat-date \">" + crTimeStr + "</small></div><div class=\"chat-message \">" + returnObj.Data.Message + "</div></div>";
         }
 
@@ -162,8 +163,8 @@ function handerSocketData(returnData) {
 
         if (userName == returnObj.Data.FromSysUserName) {
             messageContent = "<div class=\"right\"><div class=\"author-name\">" + returnObj.Data.FromSysUserName + "<small class=\"chat-date \">" + crTimeStr + "</small></div><div class=\"chat-message active \">" + returnObj.Data.Message + "</div></div>";
-
         } else {
+            toastr.success("提示", "收到一条私聊消息");
             messageContent = "<div class=\"left\"><div class=\"author-name\">" + returnObj.Data.FromSysUserName + "<small class=\"chat-date \">" + crTimeStr + "</small></div><div class=\"chat-message \">" + returnObj.Data.Message + "</div></div>";
         }
 
@@ -174,7 +175,6 @@ function handerSocketData(returnData) {
         }
 
         AddMessgaeNum();
-        toastr.success("提示", "收到一条消息");
         WebMain.CookieOneKey(returnObj.Data.FromSysUserName + "History", history + messageContent);
     }
 }
