@@ -94,7 +94,7 @@ function handerSocketData(returnData) {
             var existFlag = false;
             $("#chatPersonList li").each(function() {
                 var liUserName = $($(this).children("a").get(0)).attr("username");
-                if (liUserName == returnObj.Data) {
+                if (liUserName == value.UserName) {
                     existFlag = true;
                     return;
                 }
