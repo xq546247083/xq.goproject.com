@@ -49,7 +49,7 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 				if responseObj.Status == webServerObject.Success {
 					logTool.LogDebug(fmt.Sprintf("web服务器接受请求,请求地址：%s %s请求数据：%s %s返回数据：%s", requestObject.HTTPRequest.RequestURI, stringTool.GetNewLine(), valStr, stringTool.GetNewLine(), string(data)))
 				} else {
-					logTool.LogError(fmt.Sprintf("web服务器接受请求,请求地址：%s %s请求数据：%s %s返回数据：%s", requestObject.HTTPRequest.RequestURI, stringTool.GetNewLine(), valStr, stringTool.GetNewLine(), string(data)))
+					logTool.LogDebug(fmt.Sprintf("web服务器接受请求,请求地址：%s %s请求数据：%s %s返回数据：%s", requestObject.HTTPRequest.RequestURI, stringTool.GetNewLine(), valStr, stringTool.GetNewLine(), string(data)))
 				}
 			}
 		}
