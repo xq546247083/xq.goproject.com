@@ -96,7 +96,6 @@ func (c *Client) readPump() {
 			userName, _ := requestObj.GetStringVal("UserName")
 			c.userName = userName
 
-			requestObj.RequestInfo["Client"] = c
 			callFunction(&requestObj)
 		}
 	}
