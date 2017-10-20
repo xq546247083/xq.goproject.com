@@ -111,7 +111,11 @@ function handerSocketData(returnData) {
                 var contentLiStr = "<li " + chatTargetStatusStr + "><a href=\"#\" class=\"contactPerson\" fullname=\"" + value.FullName + "\" username=\"" + value.UserName + "\"> <i class=\"fa fa-comment\"></i> <font class=\"" + chatStatusStr + "\">" + value.FullName + "</font></a></li>";
 
                 if (existFlag) {
-                    $(tempNode).replaceWith(contentLiStr);
+                    $(tempNode).remove();
+                }
+
+                if (value.Online) {
+                    $($("#chatPersonList").children("li").get(0)).after(contentLiStr);
                 } else {
                     $("#chatPersonList").append(contentLiStr);
                 }
