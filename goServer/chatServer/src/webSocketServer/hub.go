@@ -47,6 +47,15 @@ func runHub() {
 	}
 }
 
+// SetOnlineStatus 设置在线状态
+func SetOnlineStatus(userName string, flag bool) {
+	for client := range hub.clients {
+		if userName == client.userName {
+			hub.clients[client] = flag
+		}
+	}
+}
+
 // IsOnline 玩家是否在线
 func IsOnline(userName string) bool {
 	for client, flag := range hub.clients {

@@ -42,6 +42,8 @@ function LockScreen() {
     var data = new Array();
     data[0] = userName;
 
+    //先退出聊天服务器
+    ChatMain.SendMessage("Logout", "", "");
     WebMain.Post("SysUser", "LoginOut", data, function(returnInfo) {
         WebMain.Cookie(userName, null, null, null, null, null, null, null);
         window.location.href = 'lockscreen.html';
@@ -60,6 +62,8 @@ function LoginOut() {
     var data = new Array();
     data[0] = userName;
 
+    //先退出聊天服务器
+    ChatMain.SendMessage("Logout", "", "");
     WebMain.Post("SysUser", "LoginOut", data, function(returnInfo) {
         WebMain.Cookie(null, null, null, null, null, null, null, null);
         window.location.href = 'login.html';

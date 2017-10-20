@@ -19,6 +19,7 @@ func init() {
 	rpcServer.RegisterHandler("RpcTest", rpcTest)
 
 	webSocketServer.RegisterHandler("Login", login)
+	webSocketServer.RegisterHandler("Logout", logout)
 	webSocketServer.RegisterHandler("BroadMessgae", broadMessgae)
 	webSocketServer.RegisterHandler("BroadClients", broadClients)
 	webSocketServer.RegisterHandler("SendMessgae", sendMessgae)
@@ -121,7 +122,6 @@ func sendMessgae(requestObj *webSocketServerObject.RequestObject) {
 
 //login 登录
 func login(requestObj *webSocketServerObject.RequestObject) {
-	responseObj := webSocketServerObject.NewResponseObject(webSocketServerObject.Private)
 	userName, err := requestObj.GetStringData(1)
 	if err != nil {
 		return
@@ -130,6 +130,7 @@ func login(requestObj *webSocketServerObject.RequestObject) {
 	//给登陆用户发送未接受的消息
 	historyPrivates := getUnSendHistoryPrivateList(userName)
 	for _, historyPrivate := range historyPrivates {
+		responseObj := webSocketServerObject.NewResponseObject(webSocketServerObject.Private)
 		responseObj.Data = historyPrivate
 		webSocketServer.SendMessage(userName, responseObj)
 
@@ -138,6 +139,19 @@ func login(requestObj *webSocketServerObject.RequestObject) {
 		savetHistoryPrivate(historyPrivate)
 	}
 
+	webSocketServer.SetOnlineStatus(userName, true)
+	//广播在线消息
+	broadClients(requestObj)
+}
+
+//logout 退出
+func logout(requestObj *webSocketServerObject.RequestObject) {
+	userName, err := requestObj.GetStringData(1)
+	if err != nil {
+		return
+	}
+
+	webSocketServer.SetOnlineStatus(userName, false)
 	//广播在线消息
 	broadClients(requestObj)
 }
