@@ -37,7 +37,7 @@ function connect() {
 
     webSocketClient.onopen = function() {
         //连接成功，广播到所有用户
-        ChatMain.SendMessage("BroadClients", "", "");
+        ChatMain.SendMessage("Login", "", "");
         setStatus("已连接");
     }
     webSocketClient.onmessage = function(e) {
@@ -89,21 +89,32 @@ function handerSocketData(returnData) {
 
     var returnObj = JSON.parse(returnData);
     if (returnObj.Type == "BroadClients") {
+        var chatPerSonUserName = $("#chatHead").attr("username");
+
         //遍历返回的元素，如果不存在，则添加
         $.each(returnObj.Data, function(n, value) {
             var existFlag = false;
+            var tempNode;
             $("#chatPersonList li").each(function() {
                 var liUserName = $($(this).children("a").get(0)).attr("username");
                 if (liUserName == value.UserName) {
                     existFlag = true;
+                    tempNode = this;
                     return;
                 }
             });
 
             //如果不是当前用户广播，则添加进列表
-            if (value.UserName != userName && !existFlag) {
+            if (value.UserName != userName) {
+                var chatTargetStatusStr = chatPerSonUserName == value.UserName ? "class=\"chat-back\"" : "";
                 var chatStatusStr = value.Online ? "chat-online" : "chat-notonline ";
-                $("#chatPersonList").append("<li><a href=\"#\" class=\"contactPerson\" fullname=\"" + value.FullName + "\" username=\"" + value.UserName + "\"> <i class=\"fa fa-comment\"></i> <font class=\"" + chatStatusStr + "\">" + value.FullName + "</font></a></li>");
+                var contentLiStr = "<li " + chatTargetStatusStr + "><a href=\"#\" class=\"contactPerson\" fullname=\"" + value.FullName + "\" username=\"" + value.UserName + "\"> <i class=\"fa fa-comment\"></i> <font class=\"" + chatStatusStr + "\">" + value.FullName + "</font></a></li>";
+
+                if (existFlag) {
+                    $(tempNode).replaceWith(contentLiStr);
+                } else {
+                    $("#chatPersonList").append(contentLiStr);
+                }
             }
         });
 

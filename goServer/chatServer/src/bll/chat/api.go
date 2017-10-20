@@ -18,6 +18,7 @@ import (
 func init() {
 	rpcServer.RegisterHandler("RpcTest", rpcTest)
 
+	webSocketServer.RegisterHandler("Login", login)
 	webSocketServer.RegisterHandler("BroadMessgae", broadMessgae)
 	webSocketServer.RegisterHandler("BroadClients", broadClients)
 	webSocketServer.RegisterHandler("SendMessgae", sendMessgae)
@@ -114,7 +115,31 @@ func sendMessgae(requestObj *webSocketServerObject.RequestObject) {
 		historyPrivate.IsSend = true
 	}
 
+	historyPrivateMap[historyPrivate.SysUserName] = append(historyPrivateMap[historyPrivate.SysUserName], historyPrivate)
 	savetHistoryPrivate(historyPrivate)
+}
+
+//login 登录
+func login(requestObj *webSocketServerObject.RequestObject) {
+	responseObj := webSocketServerObject.NewResponseObject(webSocketServerObject.Private)
+	userName, err := requestObj.GetStringData(1)
+	if err != nil {
+		return
+	}
+
+	//给登陆用户发送未接受的消息
+	historyPrivates := getUnSendHistoryPrivateList(userName)
+	for _, historyPrivate := range historyPrivates {
+		responseObj.Data = historyPrivate
+		webSocketServer.SendMessage(userName, responseObj)
+
+		//保存发送记录
+		historyPrivate.IsSend = true
+		savetHistoryPrivate(historyPrivate)
+	}
+
+	//广播在线消息
+	broadClients(requestObj)
 }
 
 //broadClients 广播所有客户端

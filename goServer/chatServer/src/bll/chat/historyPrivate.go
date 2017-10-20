@@ -24,22 +24,28 @@ func initHistoryPrivateData() error {
 
 	//初始化数据
 	for _, item := range historyPrivateList {
-		if historyPrivateMap[item.SysUserID] == nil {
-			historyPrivateMap[item.SysUserID] = make([]*model.HistoryPrivate, 0, 32)
+		if historyPrivateMap[item.SysUserName] == nil {
+			historyPrivateMap[item.SysUserName] = make([]*model.HistoryPrivate, 0, 32)
 		}
 
-		historyPrivateMap[item.SysUserID] = append(historyPrivateMap[item.SysUserID], item)
+		historyPrivateMap[item.SysUserName] = append(historyPrivateMap[item.SysUserName], item)
 	}
 
 	return nil
 }
 
-// GetHistoryPrivateList 获取用户的私聊聊天记录
-func GetHistoryPrivateList(userID string) []*model.HistoryPrivate {
+// getUnSendHistoryPrivateList 获取用户的离线私聊聊天记录
+func getUnSendHistoryPrivateList(userName string) []*model.HistoryPrivate {
 	result := make([]*model.HistoryPrivate, 0, 32)
-	resultTemp, exist := historyPrivateMap[userID]
+
+	//获取用户聊天记录
+	resultTemp, exist := historyPrivateMap[userName]
 	if exist {
-		result = resultTemp
+		for _, historyPrivate := range resultTemp {
+			if !historyPrivate.IsSend {
+				result = append(result, historyPrivate)
+			}
+		}
 	}
 
 	return result

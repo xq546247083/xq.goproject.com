@@ -57,7 +57,7 @@ func updateSysUser(sysUser *model.SysUser) {
 	mutex.Lock()
 	defer mutex.Unlock()
 
-	sysUserMap[sysUser.UserID] = sysUser
+	sysUserMap[sysUser.UserName] = sysUser
 }
 
 // GetItemByUserNameOrEmail 获取用户通过用户名或者邮箱
