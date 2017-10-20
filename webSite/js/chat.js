@@ -202,7 +202,7 @@ function handerSocketData(returnData) {
                 scrollToEnd();
             }
 
-            toastr.success("提示", "收到一条私聊消息");
+            toastr.success("提示", "收到来自" + returnObj.Data.FromSysUserName + "的私聊消息");
             AddMessgaeNum();
             WebMain.SaveLocalData(returnObj.Data.FromSysUserName + "History", history + messageContent);
         }
