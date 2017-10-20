@@ -47,6 +47,30 @@ func runHub() {
 	}
 }
 
+// GetOnlineClientUserName 获取在线客户端的用户名
+func GetOnlineClientUserName() []string {
+	result := make([]string, 0, len(hub.clients))
+	for client, flag := range hub.clients {
+		if !flag {
+			continue
+		}
+
+		//如果结果不存在，则添加
+		exists := false
+		for _, str := range result {
+			if str == client.userName {
+				exists = true
+			}
+		}
+
+		if !exists {
+			result = append(result, client.userName)
+		}
+	}
+
+	return result
+}
+
 //  broadClients 广播客户端
 func broadClients() {
 	requestObj := webSocketServerObject.NewRequestObject()

@@ -6,5 +6,13 @@
 }
 
 .chat-back {
-    background: rgb(193, 195, 196);
+    background: rgba(193, 195, 196, 0.308);
+}
+
+.chat-online {
+    color: rgb(0, 0, 0);
+}
+
+.chat-notonline {
+    color: rgb(173, 169, 169);
 }

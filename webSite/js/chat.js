@@ -100,9 +100,10 @@ function handerSocketData(returnData) {
                 }
             });
 
-            //如果不是当前用户广播，则添加进入列表
+            //如果不是当前用户广播，则添加进列表
             if (value.UserName != userName && !existFlag) {
-                $("#chatPersonList").append("<li><a href=\"#\" class=\"contactPerson\" fullname=\"" + value.FullName + "\" username=\"" + value.UserName + "\"> <i class=\"fa fa-comment\"></i> " + value.FullName + "</a></li>");
+                var chatStatusStr = value.Online ? "chat-online" : "chat-notonline ";
+                $("#chatPersonList").append("<li><a href=\"#\" class=\"contactPerson\" fullname=\"" + value.FullName + "\" username=\"" + value.UserName + "\"> <i class=\"fa fa-comment\"></i> <font class=\"" + chatStatusStr + "\">" + value.FullName + "</font></a></li>");
             }
         });
 

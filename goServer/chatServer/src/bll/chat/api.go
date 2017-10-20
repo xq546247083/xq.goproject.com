@@ -117,15 +117,24 @@ func sendMessgae(requestObj *webSocketServerObject.RequestObject) {
 func broadClients(requestObj *webSocketServerObject.RequestObject) {
 	responseObj := webSocketServerObject.NewResponseObject(webSocketServerObject.BroadClients)
 
+	onlineClientUserNames := webSocketServer.GetOnlineClientUserName()
 	sysUsers := sysUser.GetAllSysUser()
-	returnMap := make([]map[string]string, 0, len(sysUsers))
+	returnMap := make([]map[string]interface{}, 0, len(sysUsers))
 
 	//循环用户，返回用户的数据
 	for _, sysUser := range sysUsers {
-		userStrMap := make(map[string]string)
+		userStrMap := make(map[string]interface{})
 		userStrMap[consts.UserName] = sysUser.UserName
 		userStrMap[consts.FullName] = sysUser.FullName
-		userStrMap[consts.Online] = sysUser.FullName
+
+		isOnlineFlag := false
+		for _, userName := range onlineClientUserNames {
+			if userName == sysUser.UserName {
+				isOnlineFlag = true
+			}
+		}
+
+		userStrMap[consts.Online] = isOnlineFlag
 
 		returnMap = append(returnMap, userStrMap)
 	}
