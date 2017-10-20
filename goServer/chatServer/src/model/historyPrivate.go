@@ -27,6 +27,9 @@ type HistoryPrivate struct {
 	// 源用户Name
 	FromSysUserName string `gorm:"column:FromSysUserName"`
 
+	//是否发送
+	IsSend bool `gorm:"column:IsSend"`
+
 	// 创建时间
 	Crtime time.Time `gorm:"column:Crtime"`
 }
@@ -45,6 +48,7 @@ func NewHistoryPrivate(sysUserID, sysUserName, message, voice, fromSysUserID, fr
 		Voice:           voice,
 		FromSysUserID:   fromSysUserID,
 		FromSysUserName: fromSysUserName,
+		IsSend:          false,
 		Crtime:          time.Now(),
 	}
 }

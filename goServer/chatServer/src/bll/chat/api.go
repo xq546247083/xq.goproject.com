@@ -105,19 +105,22 @@ func sendMessgae(requestObj *webSocketServerObject.RequestObject) {
 
 	//插入聊天消息到数据库
 	historyPrivate := model.NewHistoryPrivate(talkToSysUser.UserID, talkToSysUser.UserName, message, "", selfSysUser.UserID, selfSysUser.UserName)
-	savetHistoryPrivate(historyPrivate)
 
 	responseObj.Data = historyPrivate
 	//给对和自己方发消息
-	webSocketServer.SendMessage(talkToSysUser.UserName, responseObj)
 	webSocketServer.SendMessage(selfSysUser.UserName, responseObj)
+	if webSocketServer.IsOnline(talkToSysUser.UserName) {
+		webSocketServer.SendMessage(talkToSysUser.UserName, responseObj)
+		historyPrivate.IsSend = true
+	}
+
+	savetHistoryPrivate(historyPrivate)
 }
 
 //broadClients 广播所有客户端
 func broadClients(requestObj *webSocketServerObject.RequestObject) {
 	responseObj := webSocketServerObject.NewResponseObject(webSocketServerObject.BroadClients)
 
-	onlineClientUserNames := webSocketServer.GetOnlineClientUserName()
 	sysUsers := sysUser.GetAllSysUser()
 	returnMap := make([]map[string]interface{}, 0, len(sysUsers))
 
@@ -126,15 +129,7 @@ func broadClients(requestObj *webSocketServerObject.RequestObject) {
 		userStrMap := make(map[string]interface{})
 		userStrMap[consts.UserName] = sysUser.UserName
 		userStrMap[consts.FullName] = sysUser.FullName
-
-		isOnlineFlag := false
-		for _, userName := range onlineClientUserNames {
-			if userName == sysUser.UserName {
-				isOnlineFlag = true
-			}
-		}
-
-		userStrMap[consts.Online] = isOnlineFlag
+		userStrMap[consts.Online] = webSocketServer.IsOnline(sysUser.UserName)
 
 		returnMap = append(returnMap, userStrMap)
 	}
