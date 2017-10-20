@@ -30,8 +30,31 @@ func init() {
 	webServer.RegisterHandler("/API/SysUser/Retrieve", retrieve)
 	webServer.RegisterHandler("/API/SysUser/Identify", identify)
 
+	webServer.RegisterHandler("/Func/SysUser/GetUser", getUser)
 	webServer.RegisterHandler("/Func/SysUser/GetAllUser", getAllUser)
 	webServer.RegisterHandler("/Func/SysUser/CheckRequest", checkRequest)
+}
+
+//getUser 获取用户
+func getUser(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
+	responseObj := webServerObject.NewResponseObject()
+	userName, err := requestObj.GetStringData(1)
+	if err != nil {
+		responseObj.SetResultStatus(webServerObject.APIDataError)
+		return responseObj
+	}
+
+	//获取用户
+	sysUser := GetItemByUserNameOrEmail(userName)
+	if sysUser == nil {
+		responseObj.SetResultStatus(webServerObject.UserIsNotExist)
+		return responseObj
+	}
+
+	//返回用户信息
+	responseObj.Data = sysUser
+
+	return responseObj
 }
 
 //getAllUser 获取所有用户

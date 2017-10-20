@@ -2,8 +2,11 @@ package sysUser
 
 import (
 	"encoding/json"
+	"fmt"
 
+	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/goServer/chatServer/src/model"
+	"xq.goproject.com/goServer/chatServer/src/webClient"
 	"xq.goproject.com/goServer/chatServer/src/webServer"
 	"xq.goproject.com/goServer/chatServer/src/webSocketServer"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
@@ -45,6 +48,34 @@ func checkRequest(requestObject *webSocketServerObject.RequestObject) bool {
 	token, err2 := requestObject.GetStringVal("Token")
 	if err != nil || err2 != nil {
 		return false
+	}
+
+	//如果是登录，先去业务服务器获取用户最新数据
+	if requestObject.MethodName == "Login" {
+		// 获取用户数据
+		responseObj, err3 := webClient.PostDataToChatServer(webClient.GetUser, []interface{}{userName}, false)
+		if err3 != nil {
+			logTool.LogError(fmt.Sprintf("登录聊天服务器，拉取用户数据失败，err:%s", err3))
+			return false
+		}
+
+		//反序列化字典为byte
+		dataByte, err4 := json.Marshal(responseObj.Data)
+		if err4 != nil {
+			logTool.LogError(fmt.Sprintf("登录聊天服务器，拉取用户数据，序列化失败，err:%s", err4))
+			return false
+		}
+
+		getUser := &model.SysUser{}
+		//再序列化为对象
+		err5 := json.Unmarshal(dataByte, getUser)
+		if err5 != nil {
+			logTool.LogError(fmt.Sprintf("登录聊天服务器，拉取用户数据，反序列化失败，err:%s", err5))
+			return false
+		}
+
+		//更新玩家数据
+		sysUserMap[getUser.UserName] = getUser
 	}
 
 	if GetUserToken(userName) != token {
