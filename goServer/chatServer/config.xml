@@ -11,6 +11,18 @@
 		<RPCListenAddress>:8886</RPCListenAddress>
 	</BaseConfig>
 
+	<!--服务器配置-->
+	<ServerConfig>
+		<!--GoServerWebAddress的地址-->
+		<GoServerWebAddress>http://localhost:8883/</GoServerWebAddress>
+	</ServerConfig>
+
+	<!--web客户端配置-->
+	<WebClientConfig>
+		<!--web客户端的Referer-->
+		<Referer>http://localhost/</Referer>
+	</WebClientConfig>
+
 	<!--日志配置-->
 	<LogConfig>
 		<!--是否Debug模式-->

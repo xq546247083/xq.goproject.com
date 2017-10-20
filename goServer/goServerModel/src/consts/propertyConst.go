@@ -30,4 +30,5 @@ const (
 	FileServerAddress = "FileServerAddress"
 	GoServerAddress   = "GoServerAddress"
 	ChatServerAddress = "ChatServerAddress"
+	Online            = "Online"
 )

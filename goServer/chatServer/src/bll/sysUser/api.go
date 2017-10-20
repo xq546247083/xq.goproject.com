@@ -12,7 +12,7 @@ import (
 
 // 注册需要给客户端访问的模块、方法
 func init() {
-	webServer.RegisterHandler("/API/SysUser/UpdateUser", updateUser)
+	webServer.RegisterHandler("/Func/SysUser/UpdateUser", updateUser)
 	webSocketServer.RegisterCheckHandler(checkRequest)
 }
 

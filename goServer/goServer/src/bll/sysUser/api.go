@@ -29,7 +29,19 @@ func init() {
 	webServer.RegisterHandler("/API/SysUser/Register", register)
 	webServer.RegisterHandler("/API/SysUser/Retrieve", retrieve)
 	webServer.RegisterHandler("/API/SysUser/Identify", identify)
+
+	webServer.RegisterHandler("/Func/SysUser/GetAllUser", getAllUser)
 	webServer.RegisterHandler("/Func/SysUser/CheckRequest", checkRequest)
+}
+
+//getAllUser 获取所有用户
+func getAllUser(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
+	responseObj := webServerObject.NewResponseObject()
+
+	//返回所有用户信息
+	responseObj.Data = assembleToClientAllUser()
+
+	return responseObj
 }
 
 //login 登录

@@ -112,3 +112,28 @@ func assembleToClient(sysUser *model.SysUser) map[string]interface{} {
 
 	return clientInfo
 }
+
+// 组装数据返回
+func assembleToClientAllUser() map[string]map[string]interface{} {
+	result := make(map[string]map[string]interface{})
+	for _, sysUser := range sysUserMap {
+		clientInfo := make(map[string]interface{})
+
+		clientInfo[consts.UserID] = sysUser.UserID
+		clientInfo[consts.UserName] = sysUser.UserName
+		clientInfo[consts.FullName] = sysUser.FullName
+		clientInfo[consts.Sex] = sysUser.Sex
+		clientInfo[consts.Phone] = sysUser.Phone
+		clientInfo[consts.Email] = sysUser.Email
+		clientInfo[consts.LastLoginTime] = sysUser.LastLoginTime
+		clientInfo[consts.LastLoginIP] = sysUser.LastLoginIP
+		clientInfo[consts.LoginCount] = sysUser.LoginCount
+		clientInfo[consts.Status] = sysUser.Status
+		clientInfo[consts.CreateTime] = sysUser.CreateTime
+		clientInfo[consts.PwdExpiredTime] = sysUser.PwdExpiredTime
+
+		result[sysUser.UserName] = clientInfo
+	}
+
+	return result
+}

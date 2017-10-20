@@ -5,11 +5,11 @@ import (
 	"time"
 
 	"xq.goproject.com/commonTools/stringTool"
-
 	"xq.goproject.com/goServer/chatServer/src/bll/sysUser"
 	"xq.goproject.com/goServer/chatServer/src/model"
 	"xq.goproject.com/goServer/chatServer/src/rpcServer"
 	"xq.goproject.com/goServer/chatServer/src/webSocketServer"
+	"xq.goproject.com/goServer/goServerModel/src/consts"
 	"xq.goproject.com/goServer/goServerModel/src/rpcServerObject"
 	"xq.goproject.com/goServer/goServerModel/src/webSocketServerObject"
 )
@@ -117,19 +117,17 @@ func sendMessgae(requestObj *webSocketServerObject.RequestObject) {
 func broadClients(requestObj *webSocketServerObject.RequestObject) {
 	responseObj := webSocketServerObject.NewResponseObject(webSocketServerObject.BroadClients)
 
-	clientUserNames := webSocketServer.GetAllClientUserName()
-	returnMap := make([]map[string]string, 0, len(clientUserNames))
+	sysUsers := sysUser.GetAllSysUser()
+	returnMap := make([]map[string]string, 0, len(sysUsers))
 
-	//循环客户端用户名，添加用户的信息，返回
-	for _, clientUserName := range clientUserNames {
-		sysUser := sysUser.GetItemByUserNameOrEmail(clientUserName)
-		if sysUser != nil {
-			userStrMap := make(map[string]string)
-			userStrMap["UserName"] = sysUser.UserName
-			userStrMap["FullName"] = sysUser.FullName
+	//循环用户，返回用户的数据
+	for _, sysUser := range sysUsers {
+		userStrMap := make(map[string]string)
+		userStrMap[consts.UserName] = sysUser.UserName
+		userStrMap[consts.FullName] = sysUser.FullName
+		userStrMap[consts.Online] = sysUser.FullName
 
-			returnMap = append(returnMap, userStrMap)
-		}
+		returnMap = append(returnMap, userStrMap)
 	}
 
 	responseObj.Data = returnMap

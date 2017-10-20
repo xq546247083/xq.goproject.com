@@ -85,6 +85,9 @@ var (
 	// ChatServerWebAddress ChatServerWebAddress的地址
 	ChatServerWebAddress = "http://107.151.172.51:8885/"
 
+	// GoServerWebAddress GoServerWebAddress的地址
+	GoServerWebAddress = "http://107.151.172.51:8883/"
+
 	// Referer web客户端的Referer
 	Referer = "http://localhost/"
 
@@ -187,6 +190,9 @@ func init() {
 	checkError(err, false)
 
 	ChatServerWebAddress, err = xmlConfig.String("root/ServerConfig/ChatServerWebAddress", "")
+	checkError(err, false)
+
+	GoServerWebAddress, err = xmlConfig.String("root/ServerConfig/GoServerWebAddress", "")
 	checkError(err, false)
 
 	//web客户端的配置

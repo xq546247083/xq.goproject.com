@@ -30,9 +30,9 @@ func postDataToChatServer(apiStr APIType, data []interface{}) (responseObj *webS
 	// 记录错误日志
 	defer func() {
 		if err != nil {
-			logTool.LogError(fmt.Sprintf("推送聊天服务器数据失败，err:%s", err.Error()))
+			logTool.LogError(fmt.Sprintf("推送业务服务器数据失败，err:%s", err.Error()))
 		} else {
-			logTool.LogDebug(fmt.Sprintf("推送聊天服务器数据成功，requestObj:%s，responseObj：%s", requestObj, responseObj))
+			logTool.LogDebug(fmt.Sprintf("推送业务服务器数据成功，requestObj:%s，responseObj：%s", requestObj, responseObj))
 		}
 	}()
 
@@ -40,8 +40,8 @@ func postDataToChatServer(apiStr APIType, data []interface{}) (responseObj *webS
 
 	//构造请求
 	client := &http.Client{}
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s%s", configTool.ChatServerWebAddress, apiStr), strings.NewReader(string(requestByte)))
-	req.Header.Add("User-Agent", "goWebClient")
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s%s", configTool.GoServerWebAddress, apiStr), strings.NewReader(string(requestByte)))
+	req.Header.Add("User-Agent", "chatWebClient")
 	req.Header.Add("Referer", configTool.Referer)
 	req.Close = true
 

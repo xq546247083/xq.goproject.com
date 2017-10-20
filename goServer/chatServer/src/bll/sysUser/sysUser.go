@@ -1,12 +1,15 @@
 package sysUser
 
 import (
+	"encoding/json"
 	"sync"
 	"time"
 
 	"xq.goproject.com/commonTools/EncrpytTool"
+	"xq.goproject.com/commonTools/initTool"
 	"xq.goproject.com/commonTools/stringTool"
 	"xq.goproject.com/goServer/chatServer/src/model"
+	"xq.goproject.com/goServer/chatServer/src/webClient"
 )
 
 var (
@@ -16,6 +19,38 @@ var (
 	//锁
 	mutex sync.RWMutex
 )
+
+func init() {
+	initTool.RegisterInitFunc(initSysUserData, initTool.I_NeedInit)
+}
+
+// initSysUserData 初始化用户数据
+func initSysUserData() error {
+	// 获取用户数据
+	responseObj, err := webClient.PostDataToChatServer(webClient.GetAllUser, []interface{}{}, false)
+	if err != nil {
+		return err
+	}
+
+	//反序列化字典为byte
+	dataByte, err2 := json.Marshal(responseObj.Data)
+	if err2 != nil {
+		return err2
+	}
+
+	//再序列化为对象
+	err3 := json.Unmarshal(dataByte, &sysUserMap)
+	if err3 != nil {
+		return err3
+	}
+
+	return nil
+}
+
+// GetAllSysUser 获取所有用户
+func GetAllSysUser() map[string]*model.SysUser {
+	return sysUserMap
+}
 
 // 添加或者更新用户用户
 func updateSysUser(sysUser *model.SysUser) {

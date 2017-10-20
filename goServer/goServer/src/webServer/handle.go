@@ -70,12 +70,17 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 		return
 	}
 
-	//先判断用户请求
-	handlerObj, _ := getHandler("/Func/SysUser/CheckRequest")
-	updatePwdExpiredTimeResponseObj := handlerObj.handlerFunc(requestObject)
-	if updatePwdExpiredTimeResponseObj.Status != webServerObject.Success {
-		responseObj = updatePwdExpiredTimeResponseObj
-		return
+	//如果调用的用户API，则检测用户请求
+	var PwdExpiredTime interface{}
+	if strings.Index(request.RequestURI, "/API") == 0 {
+		handlerObj, _ := getHandler("/Func/SysUser/CheckRequest")
+		updatePwdExpiredTimeResponseObj := handlerObj.handlerFunc(requestObject)
+		if updatePwdExpiredTimeResponseObj.Status != webServerObject.Success {
+			responseObj = updatePwdExpiredTimeResponseObj
+			return
+		}
+
+		PwdExpiredTime = updatePwdExpiredTimeResponseObj.AttachData["PwdExpiredTime"]
 	}
 
 	// 根据路径选择不同的处理方法
@@ -87,5 +92,5 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 
 	// 调用方法,并赋值更新后的密码过期时间
 	responseObj = handlerObj.handlerFunc(requestObject)
-	responseObj.AttachData["PwdExpiredTime"] = updatePwdExpiredTimeResponseObj.AttachData["PwdExpiredTime"]
+	responseObj.AttachData["PwdExpiredTime"] = PwdExpiredTime
 }
