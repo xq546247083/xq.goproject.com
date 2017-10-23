@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"xq.goproject.com/commonTools/logTool"
+	"xq.goproject.com/commonTools/stringTool"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
 
@@ -23,6 +24,9 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 		return
 	}
 
+	//组装请求
+	requestObject := webServerObject.NewRequestObject(request)
+
 	//返回前，先返回数据，后写日志
 	defer func() {
 		data, err := json.Marshal(responseObj)
@@ -37,12 +41,13 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 		if logInfo != "" {
 			logTool.Log(logTool.Error, logInfo)
 		} else {
-			logTool.Log(logTool.Debug, fmt.Sprintf("web服务器接受请求：%s返回数据：%s", request, string(data)))
+			if valStr, err := requestObject.GetValStr(); err != nil {
+				logTool.LogError(fmt.Sprintf("web服务器获取请求数据失败,请求：%s%serr:%s", request, stringTool.GetNewLine(), err))
+			} else {
+				logTool.LogDebug(fmt.Sprintf("web服务器接受请求,请求地址：%s %s请求数据：%s %s返回数据：%s", requestObject.HTTPRequest.RequestURI, stringTool.GetNewLine(), valStr, stringTool.GetNewLine(), string(data)))
+			}
 		}
 	}()
-
-	//组装请求
-	requestObject := webServerObject.NewRequestObject(request)
 
 	//检测上传文件用户请求
 	if strings.Index(request.RequestURI, "/APIFromFile/") == 0 {

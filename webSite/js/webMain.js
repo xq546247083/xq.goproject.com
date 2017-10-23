@@ -18,10 +18,10 @@
     },
     //ajax请求，如果有回调函数，则采用异步的方式，如果没有，则采用非异步的方式返回
     Get: function(className, methodName, data, callback, floorCount) {
-        return ajax.call(this, className, methodName, data, 'Get', callback, floorCount);
+        return ajax.call(this, className, methodName, data, 'Get', callback, floorCount, WebMain.WebServerConfig);
     },
     Post: function(className, methodName, data, callback, floorCount) {
-        return ajax.call(this, className, methodName, data, 'Post', callback, floorCount);
+        return ajax.call(this, className, methodName, data, 'Post', callback, floorCount, WebMain.WebServerConfig);
     },
     Cookie: function(userName, pwdExpiredTime, fullName, email, sex, loginCount, lastLoginTime, lastLoginIP) {
         return cookie.call(this, userName, pwdExpiredTime, fullName, email, sex, loginCount, lastLoginTime, lastLoginIP);
@@ -110,13 +110,13 @@ function checkdata(flag, floorCount) {
 }
 
 //ajax请求
-function ajax(className, methodName, data, type, callback, floorCount) {
+function ajax(className, methodName, data, type, callback, floorCount, serverAddress) {
     var result = {}
 
     var userName = $.cookie("UserName");
     var asyncFlag = !callback ? false : true;
     var rootPath = GetRootPath(floorCount);
-    var urlStr = WebMain.WebServerConfig + "API/" + className + "/" + methodName;
+    var urlStr = serverAddress + "API/" + className + "/" + methodName;
     var token = $.cookie("Token");
 
     //调用参数

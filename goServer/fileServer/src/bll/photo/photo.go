@@ -27,6 +27,22 @@ func init() {
 	initTool.RegisterInitFunc(initFileData, initTool.I_NeedInit)
 }
 
+//添加图片数据到内存
+func addPhoto(userName string, photoTypeTemp photoType, photoName string) {
+	if _, exists := photoNameMap[userName]; !exists {
+		photoNameMap[userName] = make(map[photoType][]string)
+	}
+
+	userAblumPhotos := photoNameMap[userName][ablum]
+	for _, userPhotoName := range userAblumPhotos {
+		if userPhotoName == photoName {
+			return
+		}
+	}
+
+	photoNameMap[userName][ablum] = append(photoNameMap[userName][ablum], photoName)
+}
+
 // initFileData 初始化文件数据
 func initFileData() error {
 	fileList, err := fileTool.GetFileInfoList(uploadPath)

@@ -10,8 +10,9 @@ import (
 // 注册需要给客户端访问的模块、方法
 func init() {
 	webServer.RegisterHandler("/APIFromFile/UploadPhoto", uploadPhoto)
-	webServer.RegisterHandler("/APIFromFile/DownPhoto", downPhoto)
-	webServer.RegisterHandler("/API/GetUserPhotos", getUserPhotos)
+
+	webServer.RegisterHandler("/API/DownPhoto", downPhoto)
+	webServer.RegisterHandler("/API/Photo/GetUserPhotos", getUserPhotos)
 }
 
 // 上传文件
@@ -36,11 +37,15 @@ func uploadPhoto(requestObj *webServerObject.RequestObject) *webServerObject.Res
 		return responseObj
 	}
 
-	errTwo := saveFile(fmt.Sprintf("%s_%s_%s_%s", userName, picName, uploadTime, head.Filename), file)
+	fileName := fmt.Sprintf("%s_%s_%s_%s", userName, picName, uploadTime, head.Filename)
+	errTwo := saveFile(fileName, file)
 	if errTwo != nil {
 		responseObj.SetResultStatus(webServerObject.SaveFileFail)
 		return responseObj
 	}
+
+	addPhoto(userName, ablum, fileName)
+
 	return responseObj
 }
 

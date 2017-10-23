@@ -1,6 +1,57 @@
 $(document).ready(function() {
     WebMain.Init(1, 2);
+    GetPhotoList();
 });
+
+//获取照片列表
+function GetPhotoList() {
+    var userName = $.cookie("UserName");
+    var token = $.cookie("Token");
+    var urlStr = WebMain.FileServerConfig + "API/Photo/GetUserPhotos";
+
+    //方法参数
+    var data = new Array();
+    data[0] = userName;
+
+    //调用参数
+    var params = {
+        UserName: userName,
+        Token: token,
+        Data: data
+    };
+
+    //获取字符串
+    var paramStr = JSON.stringify(params);
+
+    var layerIndex = layer.load();
+    $.ajax({
+        dataType: "text",
+        type: "Post",
+        async: false,
+        url: urlStr,
+        data: paramStr,
+        success: function(returnInfo) {
+            layer.close(layerIndex);
+            handle(returnInfo);
+        },
+        error: function(request) {
+            layer.close(layerIndex);
+        }
+    });
+}
+
+function handle(returnInfo) {
+    $("#imgList").html("");
+    var returnData = JSON.parse(returnInfo);
+    //遍历返回的元素
+    $.each(returnData.Data, function(n, value) {
+        var photoName = "照片" + (n + 1);
+        var imgUrl = WebMain.FileServerConfig + "upload/" + value;
+
+        var imgStr = "<div class=\"file-box\"><div class=\"file\"><a href=\"#\"><span class=\"corner\"></span><div class=\"image\"><img alt=\"image\" class=\"img-responsive\" src=\"" + imgUrl + "\"></div><div class=\"file-name\">" + photoName + "<br/><small>...</small></div></a></div></div>"
+        $("#imgList").append(imgStr);
+    });
+}
 
 jQuery(
     function() {
@@ -56,7 +107,7 @@ jQuery(
 
         function i() {
             var e, a = "";
-            "ready" === k ? a = "选中" + m + "张图片，共" + WebUploader.formatSize(h) + "。" : "confirm" === k ? (e = n.getStats(), e.uploadFailNum && (a = "已成功上传" + e.successNum + "张照片至XX相册，" + e.uploadFailNum + '张照片上传失败，<a class="retry" href="#">重新上传</a>失败图片或<a class="ignore" href="#">忽略</a>')) : (e = n.getStats(), a = "共" + m + "张（" + WebUploader.formatSize(h) + "），已上传" + e.successNum + "张", e.uploadFailNum && (a += "，失败" + e.uploadFailNum + "张")), p.html(a)
+            "ready" === k ? a = "选中" + m + "张图片，共" + WebUploader.formatSize(h) + "。" : "confirm" === k ? (e = n.getStats(), e.uploadFailNum && (a = "已成功上传" + e.successNum + "张照片至XX相册，" + e.uploadFailNum + '张照片上传失败，<a class="retry" href="#">重新上传</a>失败图片')) : (e = n.getStats(), a = "共" + m + "张（" + WebUploader.formatSize(h) + "），已上传" + e.successNum + "张", e.uploadFailNum && (a += "，失败" + e.uploadFailNum + "张")), p.html(a)
         }
 
         function t(e) {
@@ -79,7 +130,7 @@ jQuery(
                         if (f.hide(), c.text("开始上传").addClass("disabled"), a = n.getStats(), a.successNum && !a.uploadFailNum) return void t("finish");
                         break;
                     case "finish":
-                        a = n.getStats(), a.successNum ? toastr.success("提示", "成功上传") : (k = "done", location.reload())
+                        a = n.getStats(), a.successNum ? (toastr.success("提示", "成功上传"), GetPhotoList()) : (k = "done", location.reload())
                 }
                 i()
             }
@@ -215,8 +266,6 @@ jQuery(
             p.on("click", ".retry", function() {
                 n.retry()
             }),
-            p.on("click", ".ignore", function() {
-                alert("todo")
-            }), c.addClass("state-" + k), s()
+            c.addClass("state-" + k), s()
     }
 );
