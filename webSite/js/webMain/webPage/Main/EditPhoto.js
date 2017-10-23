@@ -88,6 +88,7 @@ jQuery(
         var uploadTime = "";
         var picName = "";
         var userName = "";
+        var token = "";
         var n, o = jQuery,
             r = o("#uploader"),
             l = o('<ul class="filelist"></ul>').appendTo(r.find(".queueList")),
@@ -158,9 +159,10 @@ jQuery(
                 //-------------------------设置上传的服务器地址----------------------
                 server: WebMain.FileServerConfig + "API/UploadFile",
                 formData: {
-                    userName: "",
-                    uploadTime: "",
-                    picName: "",
+                    UserName: "",
+                    Token: "",
+                    UploadTime: "",
+                    PicName: "",
                 },
             }),
             n.addButton({
@@ -180,9 +182,10 @@ jQuery(
             },
             n.on('uploadBeforeSend', function(obj, data, headers) {
                 //赋值
-                data.uploadTime = uploadTime;
-                data.picName = picName;
-                data.userName = userName;
+                data.UploadTime = uploadTime;
+                data.PicName = picName;
+                data.UserName = userName;
+                data.Token = token;
             }),
             n.on("all", function(e) {
                 switch (e) {
@@ -202,9 +205,10 @@ jQuery(
             //上传按钮
             c.on("click", function() {
                 //修改上传时间
-                uploadTime = new Date().getTime();
-                picName = "Test";
-                userName = $.cookie("UserName")
+                UploadTime = new Date().getTime();
+                PicName = "Album";
+                UserName = $.cookie("UserName")
+                Token = $.cookie("Token")
                 return o(this).hasClass("disabled") ? !1 : void("ready" === k ? n.upload() : "paused" === k ? n.upload() : "uploading" === k && n.stop())
             }),
             p.on("click", ".retry", function() {

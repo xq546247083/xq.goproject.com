@@ -18,32 +18,28 @@ func uploadFile(requestObj *webServerObject.RequestObject) *webServerObject.Resp
 	responseObj := webServerObject.NewResponseObject()
 	responseObj.SetResultStatus(webServerObject.Success)
 
-	//从请求当中判断方法
-	if requestObj.HTTPRequest.Method == "POST" {
-		//获取文件内容 要这样获取
-		file, head, err := requestObj.HTTPRequest.FormFile("file")
-		if err != nil {
-			responseObj.SetResultStatus(webServerObject.DataError)
-			return responseObj
-		}
-		defer file.Close()
+	//获取文件内容 要这样获取
+	file, head, err := requestObj.HTTPRequest.FormFile("file")
+	if err != nil {
+		responseObj.SetResultStatus(webServerObject.DataError)
+		return responseObj
+	}
+	defer file.Close()
 
-		//获取上传用户和时间
-		userName := requestObj.HTTPRequest.FormValue("userName")
-		picName := requestObj.HTTPRequest.FormValue("picName")
-		uploadTime := requestObj.HTTPRequest.FormValue("uploadTime")
-		if userName == "" || uploadTime == "" {
-			responseObj.SetResultStatus(webServerObject.DataError)
-			return responseObj
-		}
-
-		errTwo := saveFile(fmt.Sprintf("%s_%s_%s_%s", userName, picName, uploadTime, head.Filename), file)
-		if errTwo != nil {
-			responseObj.SetResultStatus(webServerObject.SaveFileFail)
-			return responseObj
-		}
+	//获取上传用户和时间
+	userName := requestObj.HTTPRequest.FormValue("UserName")
+	picName := requestObj.HTTPRequest.FormValue("PicName")
+	uploadTime := requestObj.HTTPRequest.FormValue("UploadTime")
+	if userName == "" || uploadTime == "" {
+		responseObj.SetResultStatus(webServerObject.DataError)
+		return responseObj
 	}
 
+	errTwo := saveFile(fmt.Sprintf("%s_%s_%s_%s", userName, picName, uploadTime, head.Filename), file)
+	if errTwo != nil {
+		responseObj.SetResultStatus(webServerObject.SaveFileFail)
+		return responseObj
+	}
 	return responseObj
 }
 

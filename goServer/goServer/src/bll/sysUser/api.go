@@ -32,7 +32,8 @@ func init() {
 
 	webServer.RegisterHandler("/Func/SysUser/GetUser", getUser)
 	webServer.RegisterHandler("/Func/SysUser/GetAllUser", getAllUser)
-	webServer.RegisterHandler("/Func/SysUser/CheckRequest", checkRequest)
+
+	webServer.RegisterHandler("/InnerFunc/SysUser/CheckRequest", checkRequest)
 }
 
 //getUser 获取用户

@@ -73,7 +73,7 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 	//如果调用的用户API，则检测用户请求
 	var PwdExpiredTime interface{}
 	if strings.Index(request.RequestURI, "/API") == 0 {
-		handlerObj, _ := getHandler("/Func/SysUser/CheckRequest")
+		handlerObj, _ := getHandler("/InnerFunc/SysUser/CheckRequest")
 		updatePwdExpiredTimeResponseObj := handlerObj.handlerFunc(requestObject)
 		if updatePwdExpiredTimeResponseObj.Status != webServerObject.Success {
 			responseObj = updatePwdExpiredTimeResponseObj

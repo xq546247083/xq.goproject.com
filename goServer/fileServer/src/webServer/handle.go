@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
@@ -43,19 +44,22 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 	//组装请求
 	requestObject := webServerObject.NewRequestObject(request)
 
-	checkHandler, _ := getHandler("/InnerFunc/SysUser/CheckHandler")
-	//先判断用户请求,如果通过，再调用方法
-	if checkHandler.handlerFunc(requestObject).Status == webServerObject.Success {
-		// 根据路径选择不同的处理方法
-		handlerObj, exists := getHandler(request.RequestURI)
-		if !exists {
-			responseObj.SetResultStatus(webServerObject.DataError)
+	//检测用户请求
+	if strings.Index(request.RequestURI, "/API") == 0 {
+		checkHandler, _ := getHandler("/InnerFunc/SysUser/CheckRequest")
+		if checkHandler.handlerFunc(requestObject).Status != webServerObject.Success {
+			responseObj.SetResultStatus(webServerObject.ClientDataError)
 			return
 		}
-
-		// 调用方法
-		responseObj = handlerObj.handlerFunc(requestObject)
-	} else {
-		responseObj.SetResultStatus(webServerObject.ClientDataError)
 	}
+
+	// 根据路径选择不同的处理方法
+	handlerObj, exists := getHandler(request.RequestURI)
+	if !exists {
+		responseObj.SetResultStatus(webServerObject.ClientDataError)
+		return
+	}
+
+	// 调用方法
+	responseObj = handlerObj.handlerFunc(requestObject)
 }
