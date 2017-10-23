@@ -44,6 +44,10 @@ func initSysUserData() error {
 		return err3
 	}
 
+	if sysUserMap == nil {
+		sysUserMap = make(map[string]*model.SysUser)
+	}
+
 	return nil
 }
 

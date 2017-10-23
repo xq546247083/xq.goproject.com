@@ -44,12 +44,8 @@ func checkRequest(requestObject *webServerObject.RequestObject) *webServerObject
 	responseObj := webServerObject.NewResponseObject()
 
 	// 根据用户名字判断过期时间
-	userName, err := requestObject.GetStringVal("UserName")
-	token, err2 := requestObject.GetStringVal("Token")
-	if err != nil || err2 != nil {
-		responseObj.SetResultStatus(webServerObject.APIDataError)
-		return responseObj
-	}
+	userName := requestObject.HTTPRequest.FormValue("UserName")
+	token := requestObject.HTTPRequest.FormValue("Token")
 
 	//每次上传文件，获取用户数据，检测
 	// 获取用户数据

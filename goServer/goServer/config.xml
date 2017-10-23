@@ -17,8 +17,8 @@
 		<ChatServerAddress>http://localhost:8884/</ChatServerAddress>
 		<!--ChatServerWebAddress的地址-->
 		<ChatServerWebAddress>http://localhost:8885/</ChatServerWebAddress>
-		<!--FileServerWebAddress的地址-->
-		<FileServerWebAddress>http://localhost:8882/</FileServerWebAddress>
+		<!--FileServerAddress的地址-->
+		<FileServerAddress>http://localhost:8882/</FileServerAddress>
 	</ServerConfig>
 
 	<!--日志配置-->

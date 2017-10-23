@@ -41,7 +41,7 @@ func postDataToGoServer(apiStr APIType, data []interface{}) (responseObj *webSer
 	//构造请求
 	client := &http.Client{}
 	req, err := http.NewRequest("POST", fmt.Sprintf("%s%s", configTool.GoServerWebAddress, apiStr), strings.NewReader(string(requestByte)))
-	req.Header.Add("User-Agent", "chatWebClient")
+	req.Header.Add("User-Agent", "fileWebClient")
 	req.Header.Add("Referer", configTool.Referer)
 	req.Close = true
 

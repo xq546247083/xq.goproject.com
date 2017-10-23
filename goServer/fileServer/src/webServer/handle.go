@@ -55,5 +55,7 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 
 		// 调用方法
 		responseObj = handlerObj.handlerFunc(requestObject)
+	} else {
+		responseObj.SetResultStatus(webServerObject.ClientDataError)
 	}
 }
