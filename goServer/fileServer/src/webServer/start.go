@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"sync"
 
+	"xq.goproject.com/commonTools/configTool"
+
 	"xq.goproject.com/commonTools/logTool"
 )
 
@@ -19,9 +21,11 @@ func StartServer(wg *sync.WaitGroup, serverAddress string) {
 	fmt.Println(fmt.Sprintf("Web服务器监听：%s", serverAddress))
 
 	//服务获取文件
-	http.HandleFunc("/upload/", func(w http.ResponseWriter, r *http.Request) {
+	filePath := configTool.UploadPath[1:len(configTool.UploadPath)]
+	http.HandleFunc(filePath, func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, r.URL.Path[1:])
 	})
+
 	//处理其他消息
 	http.Handle("/", new(handle))
 

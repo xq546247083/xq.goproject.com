@@ -46,7 +46,7 @@ func initFileData() error {
 				photoNameMap[userName] = make(map[photoType][]fileInfo)
 			}
 
-			fileInfoObj := fileInfo{FileName: fileName, ModName: fileInfoVal.ModTime()}
+			fileInfoObj := fileInfo{FileName: fileName, DirName: uploadPath, ModName: fileInfoVal.ModTime()}
 			photoNameMap[userName][photoTypeTemp] = append(photoNameMap[userName][photoTypeTemp], fileInfoObj)
 		}
 	}
@@ -67,7 +67,7 @@ func addPhoto(userName string, photoTypeTemp photoType, photoName string, modTim
 		}
 	}
 
-	fileInfoObj := fileInfo{FileName: photoName, ModName: modTime}
+	fileInfoObj := fileInfo{FileName: photoName, DirName: uploadPath, ModName: modTime}
 	photoNameMap[userName][ablum] = append(photoNameMap[userName][ablum], fileInfoObj)
 }
 
