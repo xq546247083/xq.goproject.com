@@ -46,9 +46,9 @@ function handle(returnInfo) {
     //遍历返回的元素
     $.each(returnData.Data, function(n, value) {
         var photoName = "照片" + (n + 1);
-        var imgUrl = WebMain.FileServerConfig + "upload/" + value;
-
-        var imgStr = "<div class=\"file-box\"><div class=\"file\"><a href=\"#\"><span class=\"corner\"></span><div class=\"image\"><img alt=\"image\" class=\"img-responsive\" src=\"" + imgUrl + "\"></div><div class=\"file-name\">" + photoName + "<br/><small>...</small></div></a></div></div>"
+        var imgUrl = WebMain.FileServerConfig + "upload/" + value.FileName;
+        var modTimeStr = value.ModName.substr(0, 16).replace("T", " ");
+        var imgStr = "<div class=\"file-box\"><div class=\"file\"><a href=\"#\"><span class=\"corner\"></span><div class=\"image\"><img alt=\"image\" class=\"img-responsive\" src=\"" + imgUrl + "\"></div><div class=\"file-name\">" + photoName + "<br/><small>" + modTimeStr + "</small></div></a></div></div>"
         $("#imgList").append(imgStr);
     });
 }
