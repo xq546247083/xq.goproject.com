@@ -123,6 +123,7 @@ jQuery(
                     extensions: "gif,jpg,jpeg,bmp,png",
                     mimeTypes: "image/jpg,image/jpeg,image/png"
                 },
+                // compress: false,
                 compress: {
                     width: 600,
                     height: 400,
@@ -151,7 +152,7 @@ jQuery(
                 fileSizeLimit: 5242880,
                 fileSingleSizeLimit: 5242880,
                 chunked: true, //开启分片上传  
-                nkSize: 1024 * 100, // 如果要分片，分多大一片？默认大小为5M  
+                chunkSize: 1024 * 100, // 如果要分片，分多大一片？默认大小为5M  
                 chunkRetry: 3, //如果某个分片由于网络问题出错，允许自动重传多少次  
                 threads: 1, //上传并发数。允许同时最大上传进程数[默认值：3]  
                 duplicate: false, //是否重复上传（同时选择多个一样的文件），true可以重复上传  
