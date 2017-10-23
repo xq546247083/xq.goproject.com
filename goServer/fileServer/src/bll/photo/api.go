@@ -9,12 +9,13 @@ import (
 
 // 注册需要给客户端访问的模块、方法
 func init() {
-	webServer.RegisterHandler("/API/UploadFile", uploadFile)
-	webServer.RegisterHandler("/API/DownFile", downFile)
+	webServer.RegisterHandler("/API/UploadPhoto", uploadPhoto)
+	webServer.RegisterHandler("/API/DownPhoto", downPhoto)
+	webServer.RegisterHandler("/API/GetUserPhotos", getUserPhotos)
 }
 
 // 上传文件
-func uploadFile(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
+func uploadPhoto(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
 	responseObj.SetResultStatus(webServerObject.Success)
 
@@ -43,8 +44,15 @@ func uploadFile(requestObj *webServerObject.RequestObject) *webServerObject.Resp
 	return responseObj
 }
 
+// 获取用户照片
+func getUserPhotos(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
+	responseObj := webServerObject.NewResponseObject()
+
+	return responseObj
+}
+
 //下载文件
-func downFile(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
+func downPhoto(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
 
 	return responseObj

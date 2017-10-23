@@ -14,6 +14,18 @@ func IsEmail(val string) bool {
 	return result
 }
 
+// IsImg 是否图片
+func IsImg(val string) bool {
+	pattern := ".*(.jpg|.png|.jpeg)$"
+
+	result, err := regexp.MatchString(pattern, val)
+	if err != nil {
+		return false
+	}
+
+	return result
+}
+
 // IsLetter 单个字符是否字母(val必须为单个字符)
 func IsLetter(val string) bool {
 	pattern := "[a-zA-Z]"

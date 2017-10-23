@@ -5,10 +5,12 @@ import (
 	"io"
 	"mime/multipart"
 	"os"
+	"strings"
 
 	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/commonTools/fileTool"
 	"xq.goproject.com/commonTools/initTool"
+	"xq.goproject.com/commonTools/stringTool"
 )
 
 var (
@@ -33,9 +35,18 @@ func initFileData() error {
 	}
 
 	for _, fileInfo := range fileList {
-		fileName := fileInfo.Name
-		xx := fileName
-		_ = xx
+		fileName := fileInfo.Name()
+		//如果是照片，则解析文件
+		if stringTool.IsImg(fileName) {
+			strList := strings.Split(fileName, "_")
+			userName := strList[0]
+
+			if _, exists := photoNameMap[userName]; !exists {
+				photoNameMap[userName] = make(map[string][]string)
+			}
+
+			photoNameMap[userName][strList[1]] = append(photoNameMap[userName][strList[1]], fileName)
+		}
 	}
 
 	return nil

@@ -158,7 +158,7 @@ jQuery(
                 duplicate: false, //是否重复上传（同时选择多个一样的文件），true可以重复上传  
                 prepareNextFile: true, //上传当前分片时预处理下一分片  
                 //-------------------------设置上传的服务器地址----------------------
-                server: WebMain.FileServerConfig + "API/UploadFile",
+                server: WebMain.FileServerConfig + "API/UploadPhoto",
                 formData: {
                     UserName: "",
                     Token: "",
