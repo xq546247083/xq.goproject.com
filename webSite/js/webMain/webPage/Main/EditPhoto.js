@@ -205,10 +205,10 @@ jQuery(
             //上传按钮
             c.on("click", function() {
                 //修改上传时间
-                UploadTime = new Date().getTime();
-                PicName = "Album";
-                UserName = $.cookie("UserName")
-                Token = $.cookie("Token")
+                uploadTime = new Date().getTime();
+                picName = "Album";
+                userName = $.cookie("UserName")
+                token = $.cookie("Token")
                 return o(this).hasClass("disabled") ? !1 : void("ready" === k ? n.upload() : "paused" === k ? n.upload() : "uploading" === k && n.stop())
             }),
             p.on("click", ".retry", function() {

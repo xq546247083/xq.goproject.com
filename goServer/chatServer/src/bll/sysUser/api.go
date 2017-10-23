@@ -59,6 +59,11 @@ func checkRequest(requestObject *webSocketServerObject.RequestObject) bool {
 			return false
 		}
 
+		if responseObj.Data == nil {
+			responseObj.SetResultStatus(webServerObject.ClientDataError)
+			return false
+		}
+
 		//反序列化字典为byte
 		dataByte, err4 := json.Marshal(responseObj.Data)
 		if err4 != nil {

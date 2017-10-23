@@ -46,7 +46,7 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 
 	//检测用户请求
 	if strings.Index(request.RequestURI, "/API") == 0 {
-		checkHandler, _ := getHandler("/InnerFunc/SysUser/CheckRequest")
+		checkHandler, _ := getHandler("/InnerFunc/SysUser/CheckHandler")
 		if checkHandler.handlerFunc(requestObject).Status != webServerObject.Success {
 			responseObj.SetResultStatus(webServerObject.ClientDataError)
 			return

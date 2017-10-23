@@ -58,6 +58,11 @@ func checkRequest(requestObject *webServerObject.RequestObject) *webServerObject
 			return responseObj
 		}
 
+		if responseObj.Data == nil {
+			responseObj.SetResultStatus(webServerObject.ClientDataError)
+			return responseObj
+		}
+
 		//反序列化字典为byte
 		dataByte, err4 := json.Marshal(responseObj.Data)
 		if err4 != nil {
