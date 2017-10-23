@@ -20,7 +20,7 @@ var (
 	//key:用户名
 	//key：照片类型
 	//value：照片列表
-	photoNameMap = make(map[string]map[string][]string)
+	photoNameMap = make(map[string]map[photoType][]string)
 )
 
 func init() {
@@ -39,13 +39,17 @@ func initFileData() error {
 		//如果是照片，则解析文件
 		if stringTool.IsImg(fileName) {
 			strList := strings.Split(fileName, "_")
-			userName := strList[0]
-
-			if _, exists := photoNameMap[userName]; !exists {
-				photoNameMap[userName] = make(map[string][]string)
+			if len(strList) < 3 {
+				continue
 			}
 
-			photoNameMap[userName][strList[1]] = append(photoNameMap[userName][strList[1]], fileName)
+			userName := strList[0]
+			photoTypeTemp := photoType(strList[1])
+			if _, exists := photoNameMap[userName]; !exists {
+				photoNameMap[userName] = make(map[photoType][]string)
+			}
+
+			photoNameMap[userName][photoTypeTemp] = append(photoNameMap[userName][photoTypeTemp], fileName)
 		}
 	}
 
@@ -136,4 +140,25 @@ func readMultiPartFile(file multipart.File) ([]byte, error) {
 	buf := bytes.NewBuffer(make([]byte, 0, 1024*1024))
 	n, err := buf.ReadFrom(file)
 	return buf.Bytes()[:n], err
+}
+
+// 组装数据返回
+func assembleToClient(userName string) []string {
+	clientInfo := make([]string, 0, 32)
+
+	_, exists := photoNameMap[userName]
+	if !exists {
+		return clientInfo
+	}
+
+	userAblumPhotos, exists := photoNameMap[userName][ablum]
+	if !exists {
+		return clientInfo
+	}
+
+	for _, userAblumPhoto := range userAblumPhotos {
+		clientInfo = append(clientInfo, userAblumPhoto)
+	}
+
+	return clientInfo
 }

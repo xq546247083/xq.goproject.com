@@ -44,8 +44,17 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 	//组装请求
 	requestObject := webServerObject.NewRequestObject(request)
 
-	//检测用户请求
-	if strings.Index(request.RequestURI, "/API") == 0 {
+	//检测上传文件用户请求
+	if strings.Index(request.RequestURI, "/APIFromFile/") == 0 {
+		checkHandler, _ := getHandler("/InnerFunc/SysUser/CheckAPIFromFileHandler")
+		if checkHandler.handlerFunc(requestObject).Status != webServerObject.Success {
+			responseObj.SetResultStatus(webServerObject.ClientDataError)
+			return
+		}
+	}
+
+	//检测其他上传文件用户请求
+	if strings.Index(request.RequestURI, "/API/") == 0 {
 		checkHandler, _ := getHandler("/InnerFunc/SysUser/CheckHandler")
 		if checkHandler.handlerFunc(requestObject).Status != webServerObject.Success {
 			responseObj.SetResultStatus(webServerObject.ClientDataError)

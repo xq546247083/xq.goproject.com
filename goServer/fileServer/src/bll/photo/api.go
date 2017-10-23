@@ -9,8 +9,8 @@ import (
 
 // 注册需要给客户端访问的模块、方法
 func init() {
-	webServer.RegisterHandler("/API/UploadPhoto", uploadPhoto)
-	webServer.RegisterHandler("/API/DownPhoto", downPhoto)
+	webServer.RegisterHandler("/APIFromFile/UploadPhoto", uploadPhoto)
+	webServer.RegisterHandler("/APIFromFile/DownPhoto", downPhoto)
 	webServer.RegisterHandler("/API/GetUserPhotos", getUserPhotos)
 }
 
@@ -47,7 +47,13 @@ func uploadPhoto(requestObj *webServerObject.RequestObject) *webServerObject.Res
 // 获取用户照片
 func getUserPhotos(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
 	responseObj := webServerObject.NewResponseObject()
+	userName, err := requestObj.GetStringData(1)
+	if err != nil {
+		responseObj.SetResultStatus(webServerObject.APIDataError)
+		return responseObj
+	}
 
+	responseObj.Data = assembleToClient(userName)
 	return responseObj
 }
 
