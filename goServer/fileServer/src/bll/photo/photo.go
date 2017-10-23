@@ -1,4 +1,4 @@
-package file
+package photo
 
 import (
 	"bytes"
@@ -15,7 +15,10 @@ var (
 	uploadPath = configTool.UploadPath
 
 	//用户的照片路径
-	fileNameMap = make(map[string][]string)
+	//key:用户名
+	//key：照片类型
+	//value：照片列表
+	photoNameMap = make(map[string]map[string][]string)
 )
 
 func init() {
@@ -24,6 +27,16 @@ func init() {
 
 // initFileData 初始化文件数据
 func initFileData() error {
+	fileList, err := fileTool.GetFileInfoList(uploadPath)
+	if err != nil {
+		return err
+	}
+
+	for _, fileInfo := range fileList {
+		fileName := fileInfo.Name
+		xx := fileName
+		_ = xx
+	}
 
 	return nil
 }

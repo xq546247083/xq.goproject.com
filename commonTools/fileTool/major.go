@@ -50,6 +50,32 @@ func GetFileList(path string) ([]string, error) {
 	return files, nil
 }
 
+// GetFileInfoList 获取目标文件列表（完整路径）
+// path：文件夹路径
+// 返回值：文件列表（完整路径）
+func GetFileInfoList(path string) ([]os.FileInfo, error) {
+	files := make([]os.FileInfo, 0, 100)
+
+	//遍历目录，获取所有文件列表
+	filepath.Walk(path, func(filename string, fi os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		//忽略目录
+		if fi.IsDir() {
+			return nil
+		}
+
+		// 添加到列表
+		files = append(files, fi)
+
+		return nil
+	})
+
+	return files, nil
+}
+
 // 文件夹是否存在
 func IsDirectoryExists(path string) (bool, error) {
 	file, err := os.Stat(path)
@@ -63,7 +89,6 @@ func IsDirectoryExists(path string) (bool, error) {
 
 	return true, err
 }
-
 
 // 文件是否存在
 func IsFileExists(path string) (bool, error) {
