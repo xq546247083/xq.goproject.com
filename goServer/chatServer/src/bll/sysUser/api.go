@@ -53,7 +53,7 @@ func checkRequest(requestObject *webSocketServerObject.RequestObject) bool {
 	//如果是登录，先去业务服务器获取用户最新数据
 	if requestObject.MethodName == "Login" {
 		// 获取用户数据
-		responseObj, err3 := webClient.PostDataToChatServer(webClient.GetUser, []interface{}{userName}, false)
+		responseObj, err3 := webClient.PostDataToGoServer(webClient.GetUser, []interface{}{userName}, false)
 		if err3 != nil {
 			logTool.LogError(fmt.Sprintf("登录聊天服务器，拉取用户数据失败，err:%s", err3))
 			return false

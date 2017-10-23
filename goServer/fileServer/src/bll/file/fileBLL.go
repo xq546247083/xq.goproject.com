@@ -1,4 +1,4 @@
-package fileBLL
+package file
 
 import (
 	"bytes"

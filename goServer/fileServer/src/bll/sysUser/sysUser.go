@@ -8,8 +8,8 @@ import (
 	"xq.goproject.com/commonTools/EncrpytTool"
 	"xq.goproject.com/commonTools/initTool"
 	"xq.goproject.com/commonTools/stringTool"
-	"xq.goproject.com/goServer/chatServer/src/model"
-	"xq.goproject.com/goServer/chatServer/src/webClient"
+	"xq.goproject.com/goServer/fileServer/src/model"
+	"xq.goproject.com/goServer/fileServer/src/webClient"
 )
 
 var (

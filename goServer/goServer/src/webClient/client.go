@@ -13,26 +13,35 @@ import (
 )
 
 // PostDataToChatServer 推送聊天服务器数据
-func PostDataToChatServer(apiStr APIType, data []interface{}, isAsync bool) (responseObj *webServerObject.ResponseObject, err error) {
+func PostDataToChatServer(serverWebAddressList []ServerType, apiStr APIType, data []interface{}, isAsync bool) (responseObjList []*webServerObject.ResponseObject, errList []error) {
 	if isAsync {
-		go postDataToChatServer(apiStr, data)
+		for _, serverWebAddress := range serverWebAddressList {
+			go postDataToChatServer(serverWebAddress, apiStr, data)
+		}
+
 		return nil, nil
 	}
 
-	return postDataToChatServer(apiStr, data)
+	for _, serverWebAddress := range serverWebAddressList {
+		responseObj, err := postDataToChatServer(serverWebAddress, apiStr, data)
+		responseObjList = append(responseObjList, responseObj)
+		errList = append(errList, err)
+	}
+
+	return
 }
 
 // postDataToChatServer 推送聊天服务器数据
-func postDataToChatServer(apiStr APIType, data []interface{}) (responseObj *webServerObject.ResponseObject, err error) {
+func postDataToChatServer(serverWebAddress ServerType, apiStr APIType, data []interface{}) (responseObj *webServerObject.ResponseObject, err error) {
 	requestObj := make(map[string]interface{})
 	requestObj["Data"] = data
 
 	// 记录错误日志
 	defer func() {
 		if err != nil {
-			logTool.LogError(fmt.Sprintf("推送聊天服务器数据失败，err:%s", err.Error()))
+			logTool.LogError(fmt.Sprintf("推送%s服务器数据失败，err:%s", serverWebAddress, err.Error()))
 		} else {
-			logTool.LogDebug(fmt.Sprintf("推送聊天服务器数据成功，requestObj:%s，responseObj：%s", requestObj, responseObj))
+			logTool.LogDebug(fmt.Sprintf("推送%s服务器数据成功，requestObj:%s，responseObj：%s", serverWebAddress, requestObj, responseObj))
 		}
 	}()
 
@@ -40,7 +49,7 @@ func postDataToChatServer(apiStr APIType, data []interface{}) (responseObj *webS
 
 	//构造请求
 	client := &http.Client{}
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s%s", configTool.ChatServerWebAddress, apiStr), strings.NewReader(string(requestByte)))
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s%s", serverWebAddress, apiStr), strings.NewReader(string(requestByte)))
 	req.Header.Add("User-Agent", "goWebClient")
 	req.Header.Add("Referer", configTool.Referer)
 	req.Close = true

@@ -11,6 +11,12 @@
 		<UploadPath>./upload/</UploadPath>
 	</FileConfig>
 
+	<!--服务器配置-->
+	<ServerConfig>
+		<!--GoServerWebAddress的地址-->
+		<GoServerWebAddress>http://localhost:8883/</GoServerWebAddress>
+	</ServerConfig>
+
 	<!--日志配置-->
 	<LogConfig>
 		<!--是否Debug模式-->

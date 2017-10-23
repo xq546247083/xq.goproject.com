@@ -12,7 +12,7 @@ import (
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
 
-// PostDataToGoServer 推送数据到业务服务器
+// PostDataToGoServer 推送业务服务器数据
 func PostDataToGoServer(apiStr APIType, data []interface{}, isAsync bool) (responseObj *webServerObject.ResponseObject, err error) {
 	if isAsync {
 		go postDataToGoServer(apiStr, data)
@@ -22,7 +22,7 @@ func PostDataToGoServer(apiStr APIType, data []interface{}, isAsync bool) (respo
 	return postDataToGoServer(apiStr, data)
 }
 
-// postDataToGoServer 推送数据到业务服务器
+// postDataToGoServer 推送业务服务器数据
 func postDataToGoServer(apiStr APIType, data []interface{}) (responseObj *webServerObject.ResponseObject, err error) {
 	requestObj := make(map[string]interface{})
 	requestObj["Data"] = data

@@ -40,14 +40,20 @@ func (handleObj *handle) ServeHTTP(responseWriter http.ResponseWriter, request *
 		}
 	}()
 
-	// 根据路径选择不同的处理方法
-	handlerObj, exists := getHandler(request.RequestURI)
-	if !exists {
-		responseObj.SetResultStatus(webServerObject.DataError)
-		return
-	}
-
-	// 调用方法
+	//组装请求
 	requestObject := webServerObject.NewRequestObject(request)
-	responseObj = handlerObj.handlerFunc(requestObject)
+
+	checkHandler, _ := getHandler("/InnerFunc/SysUser/CheckHandler")
+	//先判断用户请求,如果通过，再调用方法
+	if checkHandler.handlerFunc(requestObject).Status == webServerObject.Success {
+		// 根据路径选择不同的处理方法
+		handlerObj, exists := getHandler(request.RequestURI)
+		if !exists {
+			responseObj.SetResultStatus(webServerObject.DataError)
+			return
+		}
+
+		// 调用方法
+		responseObj = handlerObj.handlerFunc(requestObject)
+	}
 }

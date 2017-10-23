@@ -112,7 +112,7 @@ func login(requestObj *webServerObject.RequestObject) *webServerObject.ResponseO
 	})
 
 	//更新聊天服务器的用户数据
-	webClient.PostDataToChatServer(webClient.UpdateUserAPI, []interface{}{sysUser}, true)
+	webClient.PostDataToChatServer([]webClient.ServerType{webClient.ChatWebServer, webClient.FileWebServer}, webClient.UpdateUserAPI, []interface{}{sysUser}, true)
 
 	//返回用户信息
 	clientInfo := make(map[string]interface{})
@@ -165,7 +165,7 @@ func loginOut(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 	})
 
 	//更新聊天服务器的用户数据
-	webClient.PostDataToChatServer(webClient.UpdateUserAPI, []interface{}{sysUser}, true)
+	webClient.PostDataToChatServer([]webClient.ServerType{webClient.ChatWebServer, webClient.FileWebServer}, webClient.UpdateUserAPI, []interface{}{sysUser}, true)
 
 	//返回用户信息
 	responseObj.Data = assembleToClient(sysUser)
