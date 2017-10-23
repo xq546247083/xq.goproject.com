@@ -8,11 +8,25 @@ import (
 
 	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/commonTools/fileTool"
+	"xq.goproject.com/commonTools/initTool"
 )
 
 var (
 	uploadPath = configTool.UploadPath
+
+	//用户的照片路径
+	fileNameMap = make(map[string][]string)
 )
+
+func init() {
+	initTool.RegisterInitFunc(initFileData, initTool.I_NeedInit)
+}
+
+// initFileData 初始化文件数据
+func initFileData() error {
+
+	return nil
+}
 
 //保存文件
 func saveFile(fileName string, fileReader multipart.File) error {

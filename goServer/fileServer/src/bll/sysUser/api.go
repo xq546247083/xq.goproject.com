@@ -2,11 +2,8 @@ package sysUser
 
 import (
 	"encoding/json"
-	"fmt"
 
-	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/goServer/fileServer/src/model"
-	"xq.goproject.com/goServer/fileServer/src/webClient"
 	"xq.goproject.com/goServer/fileServer/src/webServer"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
@@ -49,49 +46,19 @@ func checkRequest(requestObject *webServerObject.RequestObject) *webServerObject
 		userName := requestObject.HTTPRequest.FormValue("UserName")
 		token := requestObject.HTTPRequest.FormValue("Token")
 
-		//每次上传文件，获取用户数据，检测
-		// 获取用户数据
-		responseObj, err3 := webClient.PostDataToGoServer(webClient.GetUser, []interface{}{userName}, false)
-		if err3 != nil {
-			logTool.LogError(fmt.Sprintf("文件服务器，拉取用户数据失败，err:%s", err3))
-			responseObj.SetResultStatus(webServerObject.DataError)
-			return responseObj
-		}
+		// 如果不正确，先从业务服务器获取数据，再校验
+		if GetUserToken(userName) != token || CheckPwdExpiredTime(userName) {
+			//如果获取数据失败，直接返回
+			getUserResponse := getUserDataByGoServer(userName)
+			if getUserResponse.Status != webServerObject.Success {
+				return getUserResponse
+			}
 
-		if responseObj.Data == nil {
-			responseObj.SetResultStatus(webServerObject.ClientDataError)
-			return responseObj
-		}
-
-		//反序列化字典为byte
-		dataByte, err4 := json.Marshal(responseObj.Data)
-		if err4 != nil {
-			logTool.LogError(fmt.Sprintf("文件服务器，拉取用户数据，序列化失败，err:%s", err4))
-			responseObj.SetResultStatus(webServerObject.DataError)
-			return responseObj
-		}
-
-		getUser := &model.SysUser{}
-		//再序列化为对象
-		err5 := json.Unmarshal(dataByte, getUser)
-		if err5 != nil {
-			logTool.LogError(fmt.Sprintf("文件服务器，拉取用户数据，反序列化失败，err:%s", err5))
-			responseObj.SetResultStatus(webServerObject.DataError)
-			return responseObj
-		}
-
-		//更新玩家数据
-		sysUserMap[getUser.UserName] = getUser
-
-		if GetUserToken(userName) != token {
-			responseObj.SetResultStatus(webServerObject.ClientDataError)
-			return responseObj
-		}
-
-		// 如果过期，返回过期提示
-		if CheckPwdExpiredTime(userName) {
-			responseObj.SetResultStatus(webServerObject.ClientDataError)
-			return responseObj
+			//如果再校验失败，直接返回
+			if GetUserToken(userName) != token || CheckPwdExpiredTime(userName) {
+				responseObj.SetResultStatus(webServerObject.ClientDataError)
+				return responseObj
+			}
 		}
 	} else {
 		responseObj.SetResultStatus(webServerObject.ClientDataError)

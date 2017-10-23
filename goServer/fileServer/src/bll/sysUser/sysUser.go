@@ -2,14 +2,17 @@ package sysUser
 
 import (
 	"encoding/json"
+	"fmt"
 	"sync"
 	"time"
 
 	"xq.goproject.com/commonTools/EncrpytTool"
 	"xq.goproject.com/commonTools/initTool"
+	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/commonTools/stringTool"
 	"xq.goproject.com/goServer/fileServer/src/model"
 	"xq.goproject.com/goServer/fileServer/src/webClient"
+	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
 
 var (
@@ -107,4 +110,44 @@ func GetUserToken(userNameOrEmail string) string {
 	}
 
 	return ""
+}
+
+// getUserDataByGoServer 通过业务服务器获取业务数据
+func getUserDataByGoServer(userName string) *webServerObject.ResponseObject {
+	responseObj := webServerObject.NewResponseObject()
+
+	// 获取用户数据
+	responseObj, err3 := webClient.PostDataToGoServer(webClient.GetUser, []interface{}{userName}, false)
+	if err3 != nil {
+		logTool.LogError(fmt.Sprintf("文件服务器，拉取用户数据失败，err:%s", err3))
+		responseObj.SetResultStatus(webServerObject.DataError)
+		return responseObj
+	}
+
+	if responseObj.Data == nil {
+		responseObj.SetResultStatus(webServerObject.ClientDataError)
+		return responseObj
+	}
+
+	//反序列化字典为byte
+	dataByte, err4 := json.Marshal(responseObj.Data)
+	if err4 != nil {
+		logTool.LogError(fmt.Sprintf("文件服务器，拉取用户数据，序列化失败，err:%s", err4))
+		responseObj.SetResultStatus(webServerObject.DataError)
+		return responseObj
+	}
+
+	getUser := &model.SysUser{}
+	//再序列化为对象
+	err5 := json.Unmarshal(dataByte, getUser)
+	if err5 != nil {
+		logTool.LogError(fmt.Sprintf("文件服务器，拉取用户数据，反序列化失败，err:%s", err5))
+		responseObj.SetResultStatus(webServerObject.DataError)
+		return responseObj
+	}
+
+	//更新玩家数据
+	sysUserMap[getUser.UserName] = getUser
+
+	return responseObj
 }
