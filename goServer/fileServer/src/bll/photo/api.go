@@ -2,6 +2,7 @@ package photo
 
 import (
 	"fmt"
+	"time"
 
 	"xq.goproject.com/goServer/fileServer/src/webServer"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
@@ -44,7 +45,7 @@ func uploadPhoto(requestObj *webServerObject.RequestObject) *webServerObject.Res
 		return responseObj
 	}
 
-	addPhoto(userName, ablum, fileName)
+	addPhoto(userName, ablum, fileName, time.Now())
 
 	return responseObj
 }

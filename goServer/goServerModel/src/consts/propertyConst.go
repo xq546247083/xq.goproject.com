@@ -32,4 +32,5 @@ const (
 	ChatServerAddress = "ChatServerAddress"
 	Online            = "Online"
 	FileName          = "FileName"
+	ModTime          = "ModTime"
 )
