@@ -23,11 +23,11 @@
     Post: function(className, methodName, data, callback, floorCount) {
         return ajax.call(this, className, methodName, data, 'Post', callback, floorCount, WebMain.WebServerConfig);
     },
-    Cookie: function(userName, pwdExpiredTime, fullName, email, sex, loginCount, lastLoginTime, lastLoginIP) {
-        return cookie.call(this, userName, pwdExpiredTime, fullName, email, sex, loginCount, lastLoginTime, lastLoginIP);
+    Cookie: function(cookName, cookValue) {
+        return cookie.call(this, cookName, cookValue);
     },
-    CookieOneKey: function(cookName, cookValue) {
-        return cookieOneKey.call(this, cookName, cookValue);
+    ClearAllCookie: function() {
+        return clearAllCookie.call(this);
     },
     SaveLocalData: function(cookName, cookValue) {
         return saveLocalData.call(this, cookName, cookValue);
@@ -300,7 +300,7 @@ function getLocalData(cookName) {
 }
 
 //设置cookie
-function cookieOneKey(cookName, cookValue) {
+function cookie(cookName, cookValue) {
     if (typeof(cookValue) != "undefined") {
         if (cookValue == null) {
             $.cookie(cookName, '', { expires: -1, path: '/' });
@@ -310,68 +310,12 @@ function cookieOneKey(cookName, cookValue) {
     }
 }
 
-//设置cookie
-function cookie(userName, pwdExpiredTime, fullName, email, sex, loginCount, lastLoginTime, lastLoginIP) {
-    if (typeof(userName) != "undefined") {
-        if (userName == null) {
-            $.cookie('UserName', '', { expires: -1, path: '/' });
-        } else {
-            $.cookie("UserName", userName, { expires: 30, path: '/' });
-        }
-    }
-
-    if (typeof(pwdExpiredTime) != "undefined") {
-        if (pwdExpiredTime == null) {
-            $.cookie('PwdExpiredTime', '', { expires: -1, path: '/' });
-        } else {
-            $.cookie("PwdExpiredTime", pwdExpiredTime, { expires: 30, path: '/' });
-        }
-    }
-
-    if (typeof(fullName) != "undefined") {
-        if (fullName == null) {
-            $.cookie('FullName', '', { expires: -1, path: '/' });
-        } else {
-            $.cookie("FullName", fullName, { expires: 30, path: '/' });
-        }
-    }
-
-    if (typeof(email) != "undefined") {
-        if (email == null) {
-            $.cookie('Email', '', { expires: -1, path: '/' });
-        } else {
-            $.cookie("Email", email, { expires: 30, path: '/' });
-        }
-    }
-
-    if (typeof(sex) != "undefined") {
-        if (sex == null) {
-            $.cookie('Sex', '', { expires: -1, path: '/' });
-        } else {
-            $.cookie("Sex", sex, { expires: 30, path: '/' });
-        }
-    }
-
-    if (typeof(loginCount) != "undefined") {
-        if (loginCount == null) {
-            $.cookie('LoginCount', '', { expires: -1, path: '/' });
-        } else {
-            $.cookie("LoginCount", loginCount, { expires: 30, path: '/' });
-        }
-    }
-
-    if (typeof(lastLoginTime) != "undefined") {
-        if (lastLoginTime == null) {
-            $.cookie('LastLoginTime', '', { expires: -1, path: '/' });
-        } else {
-            $.cookie("LastLoginTime", lastLoginTime, { expires: 30, path: '/' });
-        }
-    }
-    if (typeof(lastLoginIP) != "undefined") {
-        if (pwdExpiredTime == null) {
-            $.cookie('LastLoginIP', '', { expires: -1, path: '/' });
-        } else {
-            $.cookie("LastLoginIP", lastLoginIP, { expires: 30, path: '/' });
+//清空cookie
+function clearAllCookie() {
+    var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
+    if (keys) {
+        for (var i = keys.length; i--;) {
+            document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString();
         }
     }
 }

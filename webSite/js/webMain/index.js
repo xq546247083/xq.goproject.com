@@ -45,7 +45,8 @@ function LockScreen() {
     //先退出聊天服务器
     ChatMain.SendMessage("Logout", "", "");
     WebMain.Post("SysUser", "LoginOut", data, function(returnInfo) {
-        WebMain.Cookie(userName, null, null, null, null, null, null, null);
+        WebMain.ClearAllCookie();
+        WebMain.Cookie("UserName", userName);
         window.location.href = 'lockscreen.html';
     });
 }
@@ -65,7 +66,7 @@ function LoginOut() {
     //先退出聊天服务器
     ChatMain.SendMessage("Logout", "", "");
     WebMain.Post("SysUser", "LoginOut", data, function(returnInfo) {
-        WebMain.Cookie(null, null, null, null, null, null, null, null);
+        WebMain.ClearAllCookie();
         window.location.href = 'login.html';
     });
 }

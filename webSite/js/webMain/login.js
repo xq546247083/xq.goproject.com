@@ -14,7 +14,7 @@ $(function() {
 //获取接口文档
 function Login() {
     //清空cookie
-    WebMain.Cookie(null, null);
+    WebMain.ClearAllCookie();
 
     var userName = $("#userName").val();
     var userPassword = $("#userPassword").val();
@@ -29,17 +29,16 @@ function Login() {
         if (returnInfo == {}) return;
 
         if (returnInfo.Status == 0) {
-            WebMain.Cookie(
-                returnInfo.Data.UserName,
-                returnInfo.Data.PwdExpiredTime,
-                returnInfo.Data.FullName,
-                returnInfo.Data.Email,
-                returnInfo.Data.Sex,
-                returnInfo.Data.LoginCount,
-                returnInfo.Data.LastLoginTime,
-                returnInfo.Data.LastLoginIP
-            );
-            WebMain.CookieOneKey("Token", returnInfo.Data.Token);
+            WebMain.Cookie("UserName", returnInfo.Data.UserName);
+            WebMain.Cookie("PwdExpiredTime", returnInfo.Data.PwdExpiredTime);
+            WebMain.Cookie("FullName", returnInfo.Data.FullName);
+            WebMain.Cookie("Email", returnInfo.Data.Email);
+            WebMain.Cookie("Sex", returnInfo.Data.Sex);
+            WebMain.Cookie("LoginCount", returnInfo.Data.LoginCount);
+            WebMain.Cookie("LastLoginTime", returnInfo.Data.LastLoginTime);
+            WebMain.Cookie("LastLoginIP", returnInfo.Data.LastLoginIP);
+            WebMain.Cookie("HeadImgage", returnInfo.Data.HeadImgage);
+            WebMain.Cookie("Token", returnInfo.Data.Token);
             window.location.href = 'index.html';
         } else {
             toastr.error("提示", returnInfo.StatusValue);
