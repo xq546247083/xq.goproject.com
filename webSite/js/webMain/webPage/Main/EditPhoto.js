@@ -32,7 +32,7 @@ function GetPhotoList() {
         data: paramStr,
         success: function(returnInfo) {
             layer.close(layerIndex);
-            handle(returnInfo);
+            editPhotoHandle(returnInfo);
         },
         error: function(request) {
             layer.close(layerIndex);
@@ -40,7 +40,7 @@ function GetPhotoList() {
     });
 }
 
-function handle(returnInfo) {
+function editPhotoHandle(returnInfo) {
     $("#imgList").html("");
     var returnData = JSON.parse(returnInfo);
     //遍历返回的元素
