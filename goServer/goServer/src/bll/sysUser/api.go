@@ -116,19 +116,7 @@ func login(requestObj *webServerObject.RequestObject) *webServerObject.ResponseO
 	webClient.PostDataToChatServer([]webClient.ServerType{webClient.ChatWebServer, webClient.FileWebServer}, webClient.UpdateUserAPI, []interface{}{sysUser}, true)
 
 	//返回用户信息
-	clientInfo := make(map[string]interface{})
-
-	clientInfo[consts.UserName] = sysUser.UserName
-	clientInfo[consts.FullName] = sysUser.FullName
-	clientInfo[consts.Sex] = sysUser.Sex
-	clientInfo[consts.Phone] = sysUser.Phone
-	clientInfo[consts.Email] = sysUser.Email
-	clientInfo[consts.LastLoginTime] = sysUser.LastLoginTime
-	clientInfo[consts.LastLoginIP] = sysUser.LastLoginIP
-	clientInfo[consts.LoginCount] = sysUser.LoginCount
-	clientInfo[consts.Status] = sysUser.Status
-	clientInfo[consts.CreateTime] = sysUser.CreateTime
-	clientInfo[consts.PwdExpiredTime] = sysUser.PwdExpiredTime.UnixNano() / 1e6
+	clientInfo := assembleToClient(sysUser)
 	clientInfo[consts.Token] = GetUserToken(userName)
 
 	responseObj.Data = clientInfo

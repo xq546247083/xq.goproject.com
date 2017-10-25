@@ -1,10 +1,15 @@
 ﻿$(document).ready(function() {
     WebMain.Init(2);
 
-    //进入这个页面，直接判定为过期
     var userName = $.cookie("UserName");
-    $("#UserName").html(userName);
+    var headImgage = $.cookie("HeadImgage");
 
+    $("#UserName").html(userName);
+    if (headImgage != null && headImgage != "") {
+        $("#HeadImg").attr("src", WebMain.FileServerConfig + headImgage);
+    }
+
+    //进入这个页面，直接判定为过期
     WebMain.ClearAllCookie();
     WebMain.Cookie("UserName", userName);
 

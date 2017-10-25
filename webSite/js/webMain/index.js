@@ -4,10 +4,14 @@
     var fullName = $.cookie("FullName");
     var email = $.cookie("Email");
     var sex = $.cookie("Sex");
+    var headImgage = $.cookie("HeadImgage");
 
     //设置页面信息
     $("#userNameSpan").html(fullName);
     $(document).attr("title", fullName + "的主页");
+    if (headImgage != null && headImgage != "") {
+        $("#HeadImg").attr("src", WebMain.FileServerConfig + headImgage);
+    }
 
     GetMenu()
 });
