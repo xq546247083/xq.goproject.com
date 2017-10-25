@@ -31,7 +31,7 @@ CREATE TABLE `sys_menu` (
 
 /*Data for the table `sys_menu` */
 
-insert  into `sys_menu`(`MenuID`,`ParentMenuID`,`MenuName`,`MenuUrl`,`SortOrder`,`MenuIcon`,`BigMenuIcon`,`ShortCut`,`IsShow`) values (1100,0,'菜单管理','/WebPage/Menu/menu.html',2,'',NULL,NULL,1),(1200,0,'博客','',1,'fa fa-bolt',NULL,NULL,1),(1201,1200,'博客主页','/WebPage/Blog/BlogMain.html',1,NULL,NULL,NULL,1),(1202,1200,'浏览','/WebPage/Blog/BlogBrowse.html',2,NULL,NULL,NULL,1),(1203,0,'测试页面','/WebPage/Test/test.html',3,NULL,NULL,NULL,1);
+insert  into `sys_menu`(`MenuID`,`ParentMenuID`,`MenuName`,`MenuUrl`,`SortOrder`,`MenuIcon`,`BigMenuIcon`,`ShortCut`,`IsShow`) values (1100,0,'相册','WebPage/Main/EditPhoto.html',2,'fa fa-file-image-o',NULL,NULL,1),(1200,0,'博客','',1,'fa fa-bolt',NULL,NULL,1),(1201,1200,'博客主页','/WebPage/Blog/BlogMain.html',1,NULL,NULL,NULL,1),(1202,1200,'浏览','/WebPage/Blog/BlogBrowse.html',2,NULL,NULL,NULL,1),(1203,0,'测试页面','/WebPage/Test/test.html',3,NULL,NULL,NULL,1);
 
 /*Table structure for table `sys_role` */
 
@@ -76,7 +76,7 @@ CREATE TABLE `sys_user` (
 
 /*Data for the table `sys_user` */
 
-insert  into `sys_user`(`UserID`,`UserName`,`FullName`,`Password`,`PwdExpiredTime`,`Sex`,`Phone`,`Email`,`HeadImgage`,`Status`,`LoginCount`,`LastLoginTime`,`LastLoginIP`,`RoleIDs`,`CreateTime`) values ('70b22a06d4be8f5f6cadf25b21220702','xiaohe','xiaohe','061f480584ff1242d3b5c101f91e7e42','2017-10-24 02:08:00',1,'','546247083@qq.com',NULL,1,77,'2017-10-23 21:08:00','','1','2017-10-15 08:21:17'),('cd78f4d758cf147b2a24ace2e33a876b','xiaohea','xiaohea','2eadaadfa940205cacc2be67434e77aa','2017-10-20 16:26:36',1,'','295787943@qq.com',NULL,1,15,'2017-10-20 14:26:36','','1','2017-10-17 18:15:48');
+insert  into `sys_user`(`UserID`,`UserName`,`FullName`,`Password`,`PwdExpiredTime`,`Sex`,`Phone`,`Email`,`HeadImgage`,`Status`,`LoginCount`,`LastLoginTime`,`LastLoginIP`,`RoleIDs`,`CreateTime`) values ('70b22a06d4be8f5f6cadf25b21220702','xiaohe','xiaohe','061f480584ff1242d3b5c101f91e7e42','2017-10-26 14:54:37',1,'','546247083@qq.com','upload/xiaohe_Album_1508757589308_u=4045168581,660991028&fm=27&gp=0.jpg',1,103,'2017-10-25 10:54:37','','1','2017-10-15 08:21:17'),('cd78f4d758cf147b2a24ace2e33a876b','xiaohea','xiaohea','2eadaadfa940205cacc2be67434e77aa','2017-10-20 16:26:36',1,'','295787943@qq.com','upload/xiaohe_Album_1508757589308_u=4045168581,660991028&fm=27&gp=0.jpg',1,15,'2017-10-20 14:26:36','','1','2017-10-17 18:15:48');
 
 /*Table structure for table `u_blog` */
 
