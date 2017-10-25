@@ -1,3 +1,8 @@
+.lightBoxGallery img {
+    margin: 10px;
+    height: 200px;
+}
+
 #container {
     color: #838383;
     font-size: 12px

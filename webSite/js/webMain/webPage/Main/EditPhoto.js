@@ -48,7 +48,7 @@ function handle(returnInfo) {
         var photoName = "照片" + (n + 1);
         var imgUrl = (WebMain.FileServerConfig + value.DirName + value.FileName).replace("./", "");
         var modTimeStr = value.ModName.substr(0, 16).replace("T", " ");
-        var imgStr = "<div class=\"file-box\"><div class=\"file\"><a href=\"#\"><span class=\"corner\"></span><div class=\"image\"><img alt=\"image\" class=\"img-responsive\" src=\"" + imgUrl + "\"></div><div class=\"file-name\">" + photoName + "<br/><small>" + modTimeStr + "</small></div></a></div></div>"
+        var imgStr = "<a href=\"" + imgUrl + "\" title=\"" + photoName + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + modTimeStr + "\" data-gallery=\"\"><img  src=\"" + imgUrl + "\"></a>"
         $("#imgList").append(imgStr);
     });
 }
