@@ -12,10 +12,6 @@ MySQL - 5.7.12-log : Database - webserver
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`webserver` /*!40100 DEFAULT CHARACTER SET utf8 */;
-
-USE `webserver`;
-
 /*Table structure for table `sys_menu` */
 
 DROP TABLE IF EXISTS `sys_menu`;
@@ -68,6 +64,7 @@ CREATE TABLE `sys_user` (
   `Sex` tinyint(1) DEFAULT NULL COMMENT '性别 1男0女',
   `Phone` varchar(36) DEFAULT NULL COMMENT '工作电话',
   `Email` varchar(36) DEFAULT NULL COMMENT '电子邮箱',
+  `HeadImgage` varchar(256) DEFAULT NULL COMMENT '头像',
   `Status` int(10) DEFAULT NULL COMMENT '状态 1 启用 2禁用 3已删',
   `LoginCount` int(20) DEFAULT '0' COMMENT '登录次数',
   `LastLoginTime` datetime DEFAULT NULL COMMENT '最后登录时间',
@@ -79,7 +76,7 @@ CREATE TABLE `sys_user` (
 
 /*Data for the table `sys_user` */
 
-insert  into `sys_user`(`UserID`,`UserName`,`FullName`,`Password`,`PwdExpiredTime`,`Sex`,`Phone`,`Email`,`Status`,`LoginCount`,`LastLoginTime`,`LastLoginIP`,`RoleIDs`,`CreateTime`) values ('70b22a06d4be8f5f6cadf25b21220702','xiaohe','xiaohe','061f480584ff1242d3b5c101f91e7e42','2017-10-21 13:47:32',1,'','546247083@qq.com',1,42,'2017-10-17 22:47:31','','1','2017-10-15 08:21:17'),('cd78f4d758cf147b2a24ace2e33a876b','xiaohea','xiaohea','2eadaadfa940205cacc2be67434e77aa','2017-10-18 20:10:07',1,'','295787943@qq.com',1,6,'2017-10-18 11:10:07','','1','2017-10-17 18:15:48');
+insert  into `sys_user`(`UserID`,`UserName`,`FullName`,`Password`,`PwdExpiredTime`,`Sex`,`Phone`,`Email`,`HeadImgage`,`Status`,`LoginCount`,`LastLoginTime`,`LastLoginIP`,`RoleIDs`,`CreateTime`) values ('70b22a06d4be8f5f6cadf25b21220702','xiaohe','xiaohe','061f480584ff1242d3b5c101f91e7e42','2017-10-24 02:08:00',1,'','546247083@qq.com',NULL,1,77,'2017-10-23 21:08:00','','1','2017-10-15 08:21:17'),('cd78f4d758cf147b2a24ace2e33a876b','xiaohea','xiaohea','2eadaadfa940205cacc2be67434e77aa','2017-10-20 16:26:36',1,'','295787943@qq.com',NULL,1,15,'2017-10-20 14:26:36','','1','2017-10-17 18:15:48');
 
 /*Table structure for table `u_blog` */
 
