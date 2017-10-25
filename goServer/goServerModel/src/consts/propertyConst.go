@@ -34,4 +34,5 @@ const (
 	FileName          = "FileName"
 	ModTime           = "ModTime"
 	HeadImgage        = "HeadImgage"
+	DirName           = "DirName"
 )

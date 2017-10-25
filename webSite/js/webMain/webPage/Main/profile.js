@@ -24,6 +24,7 @@ $(document).ready(function() {
 
 //上传代码
 $(document).ready(function() {
+    var uploadFlag = false;
     var uploader = WebUploader.create({
         pick: {
             id: "#filePicker",
@@ -79,24 +80,46 @@ $(document).ready(function() {
         },
     });
 
-    uploader.on("click", function() {
-        return true;
-    });
-
     uploader.on('uploadBeforeSend', function(obj, data, headers) {
         //赋值
         data.UploadTime = new Date().getTime();
         data.PicName = "Album";
         data.UserName = $.cookie("UserName");
         data.Token = $.cookie("Token");
+        $("#filePicker").hide();
     });
 
     uploader.on('uploadError', function(e) {
-        toastr.error("提示", e);
+        toastr.error("提示", "上传失败");
     });
 
-    uploader.on('uploadComplete', function(file) {
+    uploader.on('uploadComplete', function(file, returnInfo) {
         toastr.success("提示", "上传完成");
-        $("#filePicker").hide();
+    });
+
+    uploader.on('uploadAccept', function(file, returnInfo) {
+        //如果没修改过用户的头像，则更新头像
+        if (!uploadFlag) {
+            var photoUrl = returnInfo.Data.DirName + returnInfo.Data.FileName;
+            if (photoUrl != null && photoUrl != "") {
+                //方法参数
+                var data = new Array();
+                data[0] = $.cookie("UserName");;
+                data[1] = photoUrl;
+
+                WebMain.Post("SysUser", "UpdatePhoto", data, function(returnInfo) {
+                    if (returnInfo == {}) return;
+                    if (returnInfo.Status == 0) {
+                        $("#HeadImg").attr("src", WebMain.FileServerConfig + returnInfo.Data.HeadImgage);
+                        WebMain.Cookie("HeadImgage", returnInfo.Data.HeadImgage);
+                    } else {
+                        toastr.error("提示", returnInfo.StatusValue);
+                    }
+                });
+
+            }
+
+            uploadFlag = true;
+        }
     });
 });

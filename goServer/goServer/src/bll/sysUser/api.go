@@ -29,6 +29,7 @@ func init() {
 	webServer.RegisterHandler("/API/SysUser/Register", register)
 	webServer.RegisterHandler("/API/SysUser/Retrieve", retrieve)
 	webServer.RegisterHandler("/API/SysUser/Identify", identify)
+	webServer.RegisterHandler("/API/SysUser/UpdatePhoto", updatePhoto)
 
 	webServer.RegisterHandler("/Func/SysUser/GetUser", getUser)
 	webServer.RegisterHandler("/Func/SysUser/GetAllUser", getAllUser)
@@ -334,6 +335,40 @@ func retrieve(requestObj *webServerObject.RequestObject) *webServerObject.Respon
 		duration := time.Duration(int(time.Hour) * configTool.PwdExpiredTime)
 		sysUser.PwdExpiredTime = time.Now().Add(duration)
 		sysUser.Password = EncrpytTool.Encrypt(userPwd)
+
+		if err := dal.SysUserDALObj.SaveInfo(sysUser, tempDB); err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	//返回用户信息
+	responseObj.Data = assembleToClient(sysUser)
+
+	return responseObj
+}
+
+// updatePhoto 更新头像
+func updatePhoto(requestObj *webServerObject.RequestObject) *webServerObject.ResponseObject {
+	responseObj := webServerObject.NewResponseObject()
+	userName, err := requestObj.GetStringData(1)
+	photoURL, err2 := requestObj.GetStringData(2)
+	if err != nil || err2 != nil {
+		responseObj.SetResultStatus(webServerObject.APIDataError)
+		return responseObj
+	}
+
+	//获取用户
+	sysUser := GetItemByUserNameOrEmail(userName)
+	if sysUser == nil {
+		responseObj.SetResultStatus(webServerObject.UserIsNotExist)
+		return responseObj
+	}
+
+	//事务处理数据
+	transaction.Handle(func(tempDB *gorm.DB) error {
+		sysUser.HeadImgage = photoURL
 
 		if err := dal.SysUserDALObj.SaveInfo(sysUser, tempDB); err != nil {
 			return err

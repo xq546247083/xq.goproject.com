@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"xq.goproject.com/goServer/fileServer/src/webServer"
+	"xq.goproject.com/goServer/goServerModel/src/consts"
 	"xq.goproject.com/goServer/goServerModel/src/webServerObject"
 )
 
@@ -47,6 +48,13 @@ func uploadPhoto(requestObj *webServerObject.RequestObject) *webServerObject.Res
 
 	addPhoto(userName, ablum, fileName, time.Now())
 
+	//返会结果
+	clientInfo := make(map[string]interface{})
+
+	clientInfo[consts.DirName] = uploadPath
+	clientInfo[consts.FileName] = fileName
+
+	responseObj.Data = clientInfo
 	return responseObj
 }
 
