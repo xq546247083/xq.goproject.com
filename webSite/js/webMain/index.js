@@ -38,6 +38,7 @@ function GetMenu() {
 //锁屏
 function LockScreen() {
     var userName = $.cookie("UserName");
+    var headImgage = $.cookie("HeadImgage");
     if (userName == null || userName == "") {
         window.location.href = 'lockscreen.html';
     }
@@ -51,6 +52,7 @@ function LockScreen() {
     WebMain.Post("SysUser", "LoginOut", data, function(returnInfo) {
         WebMain.ClearAllCookie();
         WebMain.Cookie("UserName", userName);
+        WebMain.Cookie("HeadImgage", headImgage);
         window.location.href = 'lockscreen.html';
     });
 }
