@@ -8,7 +8,7 @@
 	<!--服务器配置-->
 	<ServerConfig>
 		<!--FileServerAddress的地址-->
-		<FileServerAddress>http://107.151.172.51:8882/</FileServerAddress>
+		<FileServerAddress>http://localhost:8882/</FileServerAddress>
 		<!--GoServerAddress的地址-->
 		<GoServerAddress>http://localhost:8883/</GoServerAddress>
 		<!--ChatServerAddress的地址-->
