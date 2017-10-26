@@ -4,13 +4,13 @@
     var fullName = $.cookie("FullName");
     var email = $.cookie("Email");
     var sex = $.cookie("Sex");
-    var headImgage = $.cookie("HeadImgage");
+    var headImage = $.cookie("HeadImage");
 
     //设置页面信息
     $("#userNameSpan").html(fullName);
     $(document).attr("title", fullName + "的主页");
-    if (headImgage != null && headImgage != "") {
-        $("#HeadImg").attr("src", WebMain.FileServerConfig + headImgage);
+    if (headImage != null && headImage != "") {
+        $("#HeadImg").attr("src", WebMain.FileServerConfig + headImage);
     }
 
     GetMenu()
@@ -38,7 +38,7 @@ function GetMenu() {
 //锁屏
 function LockScreen() {
     var userName = $.cookie("UserName");
-    var headImgage = $.cookie("HeadImgage");
+    var headImage = $.cookie("HeadImage");
     if (userName == null || userName == "") {
         window.location.href = 'lockscreen.html';
     }
@@ -52,7 +52,7 @@ function LockScreen() {
     WebMain.Post("SysUser", "LoginOut", data, function(returnInfo) {
         WebMain.ClearAllCookie();
         WebMain.Cookie("UserName", userName);
-        WebMain.Cookie("HeadImgage", headImgage);
+        WebMain.Cookie("HeadImage", headImage);
         window.location.href = 'lockscreen.html';
     });
 }

@@ -4,14 +4,14 @@ $(document).ready(function() {
     var fullName = $.cookie("FullName");
     var email = $.cookie("Email");
     var sex = $.cookie("Sex");
-    var headImgage = $.cookie("HeadImgage");
+    var headImage = $.cookie("HeadImage");
     var loginCount = $.cookie("LoginCount");
     var lastLoginTime = $.cookie("LastLoginTime");
 
     //设置页面信息
     $("#hName").html(fullName);
-    if (headImgage != null && headImgage != "") {
-        $("#HeadImg").attr("src", WebMain.FileServerConfig + headImgage);
+    if (headImage != null && headImage != "") {
+        $("#HeadImg").attr("src", WebMain.FileServerConfig + headImage);
     }
 
     var curLastLoginTime = lastLoginTime.substr(0, 16).replace("T", " ");
@@ -110,8 +110,8 @@ $(document).ready(function() {
                 WebMain.Post("SysUser", "UpdatePhoto", data, function(returnInfo) {
                     if (returnInfo == {}) return;
                     if (returnInfo.Status == 0) {
-                        $("#HeadImg").attr("src", WebMain.FileServerConfig + returnInfo.Data.HeadImgage);
-                        WebMain.Cookie("HeadImgage", returnInfo.Data.HeadImgage);
+                        $("#HeadImg").attr("src", WebMain.FileServerConfig + returnInfo.Data.HeadImage);
+                        WebMain.Cookie("HeadImage", returnInfo.Data.HeadImage);
                     } else {
                         toastr.error("提示", returnInfo.StatusValue);
                     }

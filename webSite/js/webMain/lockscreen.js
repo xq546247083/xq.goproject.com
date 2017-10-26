@@ -2,16 +2,17 @@
     WebMain.Init(2);
 
     var userName = $.cookie("UserName");
-    var headImgage = $.cookie("HeadImgage");
+    var headImage = $.cookie("HeadImage");
 
     $("#UserName").html(userName);
-    if (headImgage != null && headImgage != "") {
-        $("#HeadImg").attr("src", WebMain.FileServerConfig + headImgage);
+    if (headImage != null && headImage != "") {
+        $("#HeadImg").attr("src", WebMain.FileServerConfig + headImage);
     }
 
     //进入这个页面，直接判定为过期
     WebMain.ClearAllCookie();
     WebMain.Cookie("UserName", userName);
+    WebMain.Cookie("HeadImage", headImage);
 
     //回车提交
     $(document).keydown(function(e) {
@@ -48,7 +49,7 @@ function ReLogin() {
             WebMain.Cookie("LoginCount", returnInfo.Data.LoginCount);
             WebMain.Cookie("LastLoginTime", returnInfo.Data.LastLoginTime);
             WebMain.Cookie("LastLoginIP", returnInfo.Data.LastLoginIP);
-            WebMain.Cookie("HeadImgage", returnInfo.Data.HeadImgage);
+            WebMain.Cookie("HeadImage", returnInfo.Data.HeadImage);
             WebMain.Cookie("Token", returnInfo.Data.Token);
             window.location.href = 'index.html';
         } else {

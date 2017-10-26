@@ -37,7 +37,7 @@ function Login() {
             WebMain.Cookie("LoginCount", returnInfo.Data.LoginCount);
             WebMain.Cookie("LastLoginTime", returnInfo.Data.LastLoginTime);
             WebMain.Cookie("LastLoginIP", returnInfo.Data.LastLoginIP);
-            WebMain.Cookie("HeadImgage", returnInfo.Data.HeadImgage);
+            WebMain.Cookie("HeadImage", returnInfo.Data.HeadImage);
             WebMain.Cookie("Token", returnInfo.Data.Token);
             window.location.href = 'index.html';
         } else {
