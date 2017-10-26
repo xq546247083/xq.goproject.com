@@ -126,7 +126,7 @@ func assembleToClientAllUser() map[string]map[string]interface{} {
 		clientInfo[consts.Sex] = sysUser.Sex
 		clientInfo[consts.Phone] = sysUser.Phone
 		clientInfo[consts.Email] = sysUser.Email
-		clientInfo[consts.HeadImgage] = sysUser.HeadImgage
+		clientInfo[consts.HeadImage] = sysUser.HeadImage
 		clientInfo[consts.LastLoginTime] = sysUser.LastLoginTime
 		clientInfo[consts.LastLoginIP] = sysUser.LastLoginIP
 		clientInfo[consts.LoginCount] = sysUser.LoginCount
