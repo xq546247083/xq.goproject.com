@@ -31,7 +31,7 @@ type SysUser struct {
 	Email string `gorm:"column:Email"`
 
 	// 头像
-	HeadImgage string `gorm:"column:HeadImgage"`
+	HeadImage string `gorm:"column:HeadImage"`
 
 	// 状态 1 启用 2禁用 3已删
 	Status int32 `gorm:"column:Status"`

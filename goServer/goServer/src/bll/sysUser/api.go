@@ -368,7 +368,7 @@ func updatePhoto(requestObj *webServerObject.RequestObject) *webServerObject.Res
 
 	//事务处理数据
 	transaction.Handle(func(tempDB *gorm.DB) error {
-		sysUser.HeadImgage = photoURL
+		sysUser.HeadImage = photoURL
 
 		if err := dal.SysUserDALObj.SaveInfo(sysUser, tempDB); err != nil {
 			return err

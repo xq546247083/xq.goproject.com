@@ -33,6 +33,6 @@ const (
 	Online            = "Online"
 	FileName          = "FileName"
 	ModTime           = "ModTime"
-	HeadImgage        = "HeadImgage"
+	HeadImage         = "HeadImage"
 	DirName           = "DirName"
 )
