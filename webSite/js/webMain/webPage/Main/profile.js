@@ -39,8 +39,8 @@ $(document).ready(function() {
         },
         // compress: false,
         compress: {
-            width: 600,
-            height: 400,
+            width: 320,
+            height: 320,
 
             // 图片质量，只有type为`image/jpeg`的时候才有效。
             quality: 90,
@@ -49,7 +49,7 @@ $(document).ready(function() {
             allowMagnify: false,
 
             // 是否允许裁剪。
-            crop: false,
+            crop: true,
 
             // 是否保留头部meta信息。
             preserveHeaders: true,
