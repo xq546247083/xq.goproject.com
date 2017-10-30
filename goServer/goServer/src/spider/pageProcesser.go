@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"strings"
 
-	"xq.goproject.com/commonTools/logTool"
-
 	"github.com/PuerkitoBio/goquery"
 	"github.com/hu17889/go_spider/core/common/page"
+	"github.com/hu17889/go_spider/core/common/request"
+	"xq.goproject.com/commonTools/stringTool"
 )
 
 // MyPageProcesser 页面处理结构
@@ -22,32 +22,48 @@ func NewMyPageProcesser() *MyPageProcesser {
 // Process Process 处理爬到的页面
 func (thisObj *MyPageProcesser) Process(p *page.Page) {
 	query := p.GetHtmlParser()
-	var urls []string
-	query.Find("h3[class='repo-list-name'] a").Each(func(i int, s *goquery.Selection) {
+	var reqs []*request.Request
+
+	//如果是章节页面，继续爬
+	query.Find("li[class='ptm-list-view-cell'] a").Each(func(i int, s *goquery.Selection) {
 		href, _ := s.Attr("href")
-		urls = append(urls, "http://github.com/"+href)
+		req := request.NewRequest(stringTool.GetURLDomainName(p.GetRequest().GetUrl())+href, "html", p.GetUrlTag(), "GET", "", nil, nil, nil, nil)
+		reqs = append(reqs, req)
 	})
-	// these urls will be saved and crawed by other coroutines.
-	p.AddTargetRequests(urls, "html")
 
-	name := query.Find(".entry-title .author").Text()
-	name = strings.Trim(name, " \t\n")
-	repository := query.Find(".entry-title .js-current-repository").Text()
-	repository = strings.Trim(repository, " \t\n")
-	//readme, _ := query.Find("#readme").Html()
-	if name == "" {
+	//如果是下一页，继续爬
+	query.Find("a[class='ptm-btn ptm-btn-primary ptm-btn-block ptm-btn-outlined']").Each(func(i int, s *goquery.Selection) {
+		if s.Text() == "下一页" {
+			href, _ := s.Attr("href")
+			req := request.NewRequest(stringTool.GetURLDomainName(p.GetRequest().GetUrl())+href, "html", p.GetUrlTag(), "GET", "", nil, nil, nil, nil)
+			reqs = append(reqs, req)
+		}
+	})
+
+	//如果是换源页面，继续爬
+	query.Find("div[class='pt-name'] a[class='ptm-text-grey']").Each(func(i int, s *goquery.Selection) {
+		href, _ := s.Attr("href")
+		req := request.NewRequest(stringTool.GetURLDomainName(p.GetRequest().GetUrl())+href, "html", p.GetUrlTag(), "GET", "", nil, nil, nil, nil)
+		reqs = append(reqs, req)
+	})
+
+	p.AddTargetRequestsWithParams(reqs)
+
+	//处理页面数据
+	htmlStr, errHTML := query.Find("div[class='articlecon']").Html()
+	title := strings.Trim(query.Find("h1[class='title']").Text(), " \t\n")
+	source := strings.Trim(query.Find("div[class='d_out'] div[class='d_menu']").Text(), " \t\n")
+	if htmlStr == "" || title == "" || errHTML != nil {
 		p.SetSkip(true)
+	} else {
+		p.AddField("name", p.GetUrlTag())
+		p.AddField("title", title)
+		p.AddField("source", source)
+		p.AddField("content", htmlStr)
 	}
-	// the entity we want to save by Pipeline
-	p.AddField("author", name)
-	p.AddField("project", repository)
-	//p.AddField("readme", readme)
-
-	logTool.LogDebug(p.GetBodyStr())
 }
 
 // Finish 完成爬虫任务
 func (thisObj *MyPageProcesser) Finish() {
 	fmt.Println("任务完成")
-	logTool.LogDebug("任务完成")
 }

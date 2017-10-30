@@ -20,3 +20,11 @@ func TestIsLetterOrDigit(t *testing.T) {
 
 	panic(fmt.Errorf("s"))
 }
+
+func TestGetUrlDomainName(t *testing.T) {
+	url := "https://zhidao.baidu.com/question/1383064514452961660.html"
+	flag := GetURLDomainName(url)
+	fmt.Println(fmt.Sprintf("TestGetUrlDomainName Success.Got %s", flag))
+
+	panic(fmt.Errorf("s"))
+}

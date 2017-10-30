@@ -81,3 +81,15 @@ func SplitToInt32List(str string) []int32 {
 
 	return result
 }
+
+// GetURLDomainName 获取地址的域名
+func GetURLDomainName(url string) string {
+	if IsURL(url) {
+		strs := strings.Split(url, "/")
+		if len(strs) >= 3 {
+			return strs[0] + "//" + strs[2]
+		}
+	}
+
+	return ""
+}

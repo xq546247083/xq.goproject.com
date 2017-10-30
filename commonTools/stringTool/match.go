@@ -26,6 +26,19 @@ func IsImg(val string) bool {
 	return result
 }
 
+// IsURL 是否Url
+func IsURL(val string) bool {
+	//((http|https|ftp):(\/\/|\\\\)((\w)+[.]){1,}(net|com|cn|org|cc|tv|[0-9]{1,3})(((\/[\~]*|\\[\~]*)(\w)+)|[.](\w)+)*(((([?](\w)+){1}[=]*))*((\w)+){1}([\&](\w)+[\=](\w)+)*)*)
+	pattern := "((http|https|ftp):(\\/\\/|\\\\)((\\w)+[.]){1,}(net|com|cn|org|cc|tv|[0-9]{1,3})(((\\/[\\~]*|\\[\\~]*)(\\w)+)|[.](\\w)+)*(((([?](\\w)+){1}[=]*))*((\\w)+){1}([\\&](\\w)+[\\=](\\w)+)*)*)"
+
+	result, err := regexp.MatchString(pattern, val)
+	if err != nil {
+		return false
+	}
+
+	return result
+}
+
 // IsLetter 单个字符是否字母(val必须为单个字符)
 func IsLetter(val string) bool {
 	pattern := "[a-zA-Z]"
