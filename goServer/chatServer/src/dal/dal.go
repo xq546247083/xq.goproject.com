@@ -3,7 +3,7 @@ package dal
 import (
 	"fmt"
 
-	"xq.goproject.com/Vendor/github.com/jinzhu/gorm"
+	"github.com/jinzhu/gorm"
 	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/commonTools/stringTool"

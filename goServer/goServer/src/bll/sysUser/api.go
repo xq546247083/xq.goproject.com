@@ -8,7 +8,7 @@ import (
 
 	"xq.goproject.com/commonTools/intTool"
 
-	"xq.goproject.com/Vendor/github.com/jinzhu/gorm"
+	"github.com/jinzhu/gorm"
 	"xq.goproject.com/commonTools/EncrpytTool"
 	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/commonTools/emailTool"

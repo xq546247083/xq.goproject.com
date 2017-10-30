@@ -12,7 +12,7 @@ import (
 	"net/http"
 	"time"
 
-	"xq.goproject.com/Vendor/github.com/gorilla/websocket"
+	"github.com/gorilla/websocket"
 	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/goServer/goServerModel/src/webSocketServerObject"
 )
