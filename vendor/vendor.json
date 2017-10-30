@@ -1,0 +1,31 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "an3W1+gd6oXcbZzf7Ru/4EuTmIU=",
+			"path": "github.com/go-sql-driver/mysql",
+			"revision": "7785c74297136c027fdf2fd6f8931c0e19be8aa7",
+			"revisionTime": "2017-09-21T06:28:06Z"
+		},
+		{
+			"checksumSHA1": "77oYL9wt3ZKAUDgXGFVkYztcy3Y=",
+			"path": "github.com/gorilla/websocket",
+			"revision": "71fa72d4842364bc5f74185f4161e0099ea3624a",
+			"revisionTime": "2017-10-11T16:07:11Z"
+		},
+		{
+			"checksumSHA1": "BamUjeoJiinINyEjpv1AzKaTue4=",
+			"path": "github.com/jinzhu/gorm",
+			"revision": "c3bb6aaa828867eec72dd8571d111e442688f85f",
+			"revisionTime": "2017-08-11T15:24:00Z"
+		},
+		{
+			"checksumSHA1": "VIp1lZm6joWhlNdwhady8u//qRw=",
+			"path": "github.com/jinzhu/inflection",
+			"revision": "1c35d901db3da928c72a72d8458480cc9ade058f",
+			"revisionTime": "2017-01-02T12:52:26Z"
+		}
+	],
+	"rootPath": "xq.goproject.com"
+}
