@@ -3,7 +3,7 @@ package dal
 import (
 	"fmt"
 
-	"github.com/jinzhu/gorm"
+	"xq.goproject.com/Vendor/github.com/jinzhu/gorm"
 	"xq.goproject.com/goServer/chatServer/src/model"
 )
 

@@ -11,7 +11,7 @@ import (
 	"xq.goproject.com/goServer/chatServer/src/webServer"
 	"xq.goproject.com/goServer/chatServer/src/webSocketServer"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "xq.goproject.com/Vendor/github.com/go-sql-driver/mysql"
 	_ "xq.goproject.com/goServer/chatServer/src/bll"
 )
 

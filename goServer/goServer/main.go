@@ -9,7 +9,7 @@ import (
 	"xq.goproject.com/commonTools/logTool"
 	"xq.goproject.com/goServer/goServer/src/webServer"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "xq.goproject.com/Vendor/github.com/go-sql-driver/mysql"
 	_ "xq.goproject.com/goServer/goServer/src/bll"
 )
 

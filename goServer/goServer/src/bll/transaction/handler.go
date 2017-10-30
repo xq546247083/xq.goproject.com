@@ -1,7 +1,7 @@
 package transaction
 
 import (
-	"github.com/jinzhu/gorm"
+	"xq.goproject.com/Vendor/github.com/jinzhu/gorm"
 	"xq.goproject.com/goServer/goServer/src/dal"
 )
 
