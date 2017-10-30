@@ -20,22 +20,22 @@ var (
 	ChatDBConnection string
 
 	// IsDebug 是否测试模式
-	IsDebug = false
+	IsDebug = true
 
 	// LogInfoFlag 是否记录消息
-	LogInfoFlag = false
+	LogInfoFlag = true
 
 	// LogDebugFlag 是否记录Debug消息
-	LogDebugFlag = false
+	LogDebugFlag = true
 
 	// LogWarnFlag 是否记录警告消息
-	LogWarnFlag = false
+	LogWarnFlag = true
 
 	// LogErrorFlag 是否记录错误消息
-	LogErrorFlag = false
+	LogErrorFlag = true
 
 	// LogFatalFlag 是否记录致命错误消息消息
-	LogFatalFlag = false
+	LogFatalFlag = true
 
 	// WebMainPath 网站路径
 	WebMainPath = "WebMain"
@@ -102,7 +102,10 @@ func init() {
 	// 读取配置文件
 	xmlConfig = NewXmlConfig()
 	err = xmlConfig.LoadFromFile("config.xml")
-	checkError(err, true)
+	checkError(err, false)
+	if err != nil {
+		return
+	}
 
 	// 读取服务器配置端口
 	RPCListenAddress, err = xmlConfig.String("root/BaseConfig/RPCListenAddress", "")

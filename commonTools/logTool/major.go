@@ -180,6 +180,31 @@ func LogFatal(contentStr ...string) {
 	Log(Fatal, contentStr...)
 }
 
+//LogObjectInfo 记录消息日志
+func LogObjectInfo(objects ...interface{}) {
+	LogObject(Info, objects...)
+}
+
+//LogObjectDebug 记录调试日志
+func LogObjectDebug(objects ...interface{}) {
+	LogObject(Debug, objects...)
+}
+
+//LogObjectWarn 记录警告日志
+func LogObjectWarn(objects ...interface{}) {
+	LogObject(Warn, objects...)
+}
+
+//LogObjectError 记录错误日志
+func LogObjectError(objects ...interface{}) {
+	LogObject(Error, objects...)
+}
+
+//LogObjectFatal 记录致命错误日志
+func LogObjectFatal(objects ...interface{}) {
+	LogObject(Fatal, objects...)
+}
+
 //记录未知错误日志（不需要的方式，暂时保留）
 // r：recover对象
 // 返回值：无
