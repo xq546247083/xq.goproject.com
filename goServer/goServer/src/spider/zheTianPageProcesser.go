@@ -60,7 +60,7 @@ func (thisObj *MyPageProcesser) Process(p *page.Page) {
 	title := strings.Trim(query.Find("h1[class='title']").Text(), " \t\n")
 	source := strings.Trim(query.Find("div[class='d_out'] div[class='d_menu']").Text(), " \t\n")
 	htmlStr, errHTML := query.Find("div[class='articlecon']").Html()
-	if htmlStr == "" || title == "" || errHTML != nil {
+	if title == "" || errHTML != nil || htmlStr == "<p></p>" || htmlStr == "" {
 		p.SetSkip(true)
 	} else {
 		p.AddField("name", novelName)
@@ -75,6 +75,6 @@ func (thisObj *MyPageProcesser) Finish() {
 	fmt.Println("遮天网站抓取完成")
 
 	//6个小时候，继续抓取
-	time.Sleep(time.Hour * 6)
+	time.Sleep(time.Second * 6)
 	go startZheTianSpider()
 }

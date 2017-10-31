@@ -20,7 +20,7 @@ func (thisObj *Novel) TableName() string {
 	return "novel"
 }
 
-// NewNovel 新建用户
+// NewNovel 新建小说
 func NewNovel(name, title, source, content string) *Novel {
 	return &Novel{
 		Name:    name,
