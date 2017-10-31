@@ -18,6 +18,26 @@ var (
 	novelDALName = "NovelDALObj"
 )
 
+// GetItems 获取数据
+func (thisObj *novelDAL) GetItems(name, title string) (novelList []*model.Novel, err error) {
+	if err = DB.Where("name = ? and title =? ", name, title).Find(&novelList).Error; err != nil {
+		writeErrorLog(err, fmt.Sprintf("%s.GetItems", novelDALName))
+		return
+	}
+
+	return
+}
+
+// GetItem 获取数据
+func (thisObj *novelDAL) GetItem(name, title, source string) (novel *model.Novel, err error) {
+	if err = DB.Where("name = ? and title =? and source=? ", name, title, source).First(&novel).Error; err != nil {
+		writeErrorLog(err, fmt.Sprintf("%s.GetItem", novelDALName))
+		return
+	}
+
+	return
+}
+
 // GetAllList 获取数据
 func (thisObj *novelDAL) GetAllList() (novelList []*model.Novel, err error) {
 	if err = DB.Find(&novelList).Error; err != nil {
