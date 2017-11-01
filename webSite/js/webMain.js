@@ -194,12 +194,6 @@ function ajaxPure(className, methodName, data, type, callback, floorCount, serve
         },
         error: function(request) {
             layer.close(layerIndex);
-
-            if (request.status == 404) {
-                window.location.href = rootPath + '404.html';
-            } else {
-                window.location.href = rootPath + '500.html';
-            }
         }
     });
 
