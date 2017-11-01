@@ -118,7 +118,9 @@ function ajax(className, methodName, data, type, callback, floorCount, serverAdd
 
     var userName = $.cookie("UserName");
     var asyncFlag = !callback ? false : true;
+    var rootPath = GetRootPath(floorCount);
     var urlStr = serverAddress + "API/" + className + "/" + methodName;
+    var token = $.cookie("Token");
 
     //调用参数
     var params = {
