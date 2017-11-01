@@ -45,7 +45,6 @@ function MovePage(flag) {
     if (chapterName == null || chapterName == "") {
         window.location.href = 'chapterList.html';
     } else {
-        $("#NovelTitle").html(chapterName);
         $("title").html(chapterName);
     }
 
@@ -77,7 +76,6 @@ function GetNovelInfo(novelName, chapterName, flag) {
                 if (n == returnInfo.Data.length - 1) {
                     $("#SourceDiv").append("<button class=\"label-success btn btn-white btn-xs\" type=\"button\" onclick=\"ModifySource(this)\">" + value.Source + "</button>&nbsp;&nbsp;");
                     $("#NovelContent").html(value.Content);
-                    $("#NovelTitle").html(value.Title);
                     $("title").html(value.Title);
                     $('html,body').animate({ scrollTop: 0 }, 'fast');
                     WebMain.Cookie("ChapterName", value.Title);

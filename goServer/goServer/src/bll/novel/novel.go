@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 
+	"xq.goproject.com/commonTools/logTool"
+
 	"xq.goproject.com/goServer/goServer/src/dal"
 	"xq.goproject.com/goServer/goServer/src/model"
 )
@@ -31,7 +33,7 @@ func GetChapterItems(name string) []*model.Novel {
 
 // GetNovelInfos 获取小说信息
 func GetNovelInfos(name, title string, flag int32) []*model.Novel {
-	novelList, err := dal.NovelDALObj.GetAllList()
+	novelList, err := dal.NovelDALObj.GetChapterItems(name)
 	if err != nil {
 		return nil
 	}
@@ -57,6 +59,7 @@ func GetNovelInfos(name, title string, flag int32) []*model.Novel {
 		}
 	}
 
+	logTool.LogInfo(strconv.Itoa(curenNum))
 	if int32(curenNum)+flag < 0 {
 		return nil
 	} else if curenNum+int(flag) >= len(novelList) {
