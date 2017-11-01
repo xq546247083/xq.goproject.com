@@ -23,6 +23,9 @@
     Post: function(className, methodName, data, callback, floorCount) {
         return ajax.call(this, className, methodName, data, 'Post', callback, floorCount, WebMain.WebServerConfig);
     },
+    PostPureData: function(className, methodName, data, callback, floorCount) {
+        return ajaxPure.call(this, className, methodName, data, 'Post', callback, floorCount, WebMain.WebServerConfig);
+    },
     Cookie: function(cookName, cookValue) {
         return cookie.call(this, cookName, cookValue);
     },
@@ -115,9 +118,7 @@ function ajax(className, methodName, data, type, callback, floorCount, serverAdd
 
     var userName = $.cookie("UserName");
     var asyncFlag = !callback ? false : true;
-    var rootPath = GetRootPath(floorCount);
     var urlStr = serverAddress + "API/" + className + "/" + methodName;
-    var token = $.cookie("Token");
 
     //调用参数
     var params = {
@@ -148,6 +149,50 @@ function ajax(className, methodName, data, type, callback, floorCount, serverAdd
         error: function(request) {
             layer.close(layerIndex);
 
+            toastr.error("提示", "获取数据失败！");
+        }
+    });
+
+    //如果没有回调函数，则处理数据
+    if (!callback)
+        return handle(result, floorCount);
+}
+
+//ajaxPure请求
+function ajaxPure(className, methodName, data, type, callback, floorCount, serverAddress) {
+    var result = {}
+
+    var asyncFlag = !callback ? false : true;
+    var rootPath = GetRootPath(floorCount);
+    var urlStr = serverAddress + "API/" + className + "/" + methodName;
+
+    //调用参数
+    var params = {
+        Data: data
+    };
+
+    //获取字符串
+    var paramStr = JSON.stringify(params);
+
+    var layerIndex = layer.load();
+    $.ajax({
+        dataType: "text",
+        type: type,
+        async: asyncFlag,
+        url: urlStr,
+        data: paramStr,
+        success: function(returnInfo) {
+            layer.close(layerIndex);
+
+            //如果有回调函数，则调用回调函数来处理数据
+            var result = JSON.parse(returnInfo);
+            if (callback) {
+                callback(result)
+            }
+        },
+        error: function(request) {
+            layer.close(layerIndex);
+
             if (request.status == 404) {
                 window.location.href = rootPath + '404.html';
             } else {
@@ -158,7 +203,7 @@ function ajax(className, methodName, data, type, callback, floorCount, serverAdd
 
     //如果没有回调函数，则处理数据
     if (!callback)
-        return handle(result, floorCount);
+        return result;
 }
 
 //处理回调函数的数据

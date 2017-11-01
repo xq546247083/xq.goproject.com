@@ -13,7 +13,7 @@
         $("#HeadImg").attr("src", WebMain.FileServerConfig + headImage);
     }
 
-    GetMenu()
+    GetMenu();
 });
 
 //获取菜单信息

@@ -24,7 +24,7 @@ func NewMyPageProcesser() *MyPageProcesser {
 
 // Process Process 处理爬到的页面
 func (thisObj *MyPageProcesser) Process(p *page.Page) {
-	novelName := p.GetUrlTag()
+	urlTag := p.GetUrlTag()
 	query := p.GetHtmlParser()
 	var reqs []*request.Request
 
@@ -40,9 +40,9 @@ func (thisObj *MyPageProcesser) Process(p *page.Page) {
 	//如果是章节页面，继续爬
 	query.Find("li[class='ptm-list-view-cell'] a").Each(func(i int, s *goquery.Selection) {
 		//如果数据库不存在该章节
-		if !novel.IsExisItems(novelName, s.Text()) {
+		if !novel.IsExisItems(urlTag, s.Text()) {
 			href, _ := s.Attr("href")
-			req := request.NewRequest(stringTool.GetURLDomainName(p.GetRequest().GetUrl())+href, "html", p.GetUrlTag(), "GET", "", nil, nil, nil, nil)
+			req := request.NewRequest(stringTool.GetURLDomainName(p.GetRequest().GetUrl())+href, "html", fmt.Sprintf("%s,%s", p.GetUrlTag(), s.Text()), "GET", "", nil, nil, nil, nil)
 			reqs = append(reqs, req)
 		}
 	})
@@ -57,14 +57,20 @@ func (thisObj *MyPageProcesser) Process(p *page.Page) {
 	p.AddTargetRequestsWithParams(reqs)
 
 	//处理页面数据
-	title := strings.Trim(query.Find("h1[class='title']").Text(), " \t\n")
+	urlTags := strings.Split(urlTag, ",")
+	if len(urlTags) != 2 {
+		p.SetSkip(true)
+		return
+	}
+
+	//title := strings.Trim(query.Find("h1[class='title']").Text(), " \t\n")
 	source := strings.Trim(query.Find("div[class='d_out'] div[class='d_menu']").Text(), " \t\n")
 	htmlStr, errHTML := query.Find("div[class='articlecon']").Html()
-	if title == "" || errHTML != nil || htmlStr == "<p></p>" || htmlStr == "" {
+	if urlTags[0] == "" || urlTags[1] == "" || errHTML != nil || htmlStr == "<p></p>" || htmlStr == "" {
 		p.SetSkip(true)
 	} else {
-		p.AddField("name", novelName)
-		p.AddField("title", title)
+		p.AddField("name", urlTags[0])
+		p.AddField("title", urlTags[1])
 		p.AddField("source", source)
 		p.AddField("content", htmlStr)
 	}
@@ -75,6 +81,6 @@ func (thisObj *MyPageProcesser) Finish() {
 	fmt.Println("遮天网站抓取完成")
 
 	//6个小时候，继续抓取
-	time.Sleep(time.Second * 6)
+	time.Sleep(time.Hour * 6)
 	go startZheTianSpider()
 }

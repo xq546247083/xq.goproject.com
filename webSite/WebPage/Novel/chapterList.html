@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title id="title">小说</title>
+
+    <link href="../../img/favicon.ico" rel="shortcut icon">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../css/animate.min.css" rel="stylesheet">
+    <link href="../../css/style.min.css" rel="stylesheet">
+    <link href="../../css/plugins/toastr/toastr.min.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content  animated  article">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div class="text-center external-event navy-bg ui-draggable">
+                            <h2 id="chapterTitle">&nbsp;</h2>
+                        </div>
+                        <br/>
+                        <ul class="sortable-list connectList agile-list" id="content">
+                        </ul>
+                        <br/>
+                        <div class="text-center">
+                            <div class="btn-group">
+                                <button class="btn btn-white" type="button" onclick="MovePage(false)"><i class="fa fa-chevron-left"></i>上一页</button>
+                                <button class="btn btn-white" id="pageNum" type="button">1</button>
+                                <button class="btn btn-white" type="button" onclick="MovePage(true)"><i class="fa fa-chevron-right"></i>下一页</button>
+                            </div>
+                        </div>
+                        <div class="pull-right">
+                            <button class="btn btn-white btn-xs" type="button">背景颜色</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/jquery.cookie.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/content.min.js"></script>
+    <script src="../../js/plugins/layer/layer.min.js"></script>
+    <script src="../../js/plugins/toastr/toastr.min.js"></script>
+    <script src="../../js/webMain.js"></script>
+    <script src="../../js/webMain/webPage/Novel/chapterList.js"></script>
+</body>
+
+</html>

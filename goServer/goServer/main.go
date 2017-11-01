@@ -2,17 +2,14 @@ package main
 
 //导入额外包
 import (
-	_ "github.com/go-sql-driver/mysql"
-	_ "xq.goproject.com/goServer/goServer/src/bll"
-)
-
-import (
 	"sync"
 
+	_ "github.com/go-sql-driver/mysql"
 	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/commonTools/emailTool"
 	"xq.goproject.com/commonTools/initTool"
 	"xq.goproject.com/commonTools/logTool"
+	_ "xq.goproject.com/goServer/goServer/src/bll"
 	"xq.goproject.com/goServer/goServer/src/spider"
 	"xq.goproject.com/goServer/goServer/src/webServer"
 )

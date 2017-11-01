@@ -452,7 +452,9 @@ func checkRequest(requestObject *webServerObject.RequestObject) *webServerObject
 
 	//如果不是这几个方法，则要检测用户数据
 	if requestObject.HTTPRequest.RequestURI != "/API/SysUser/Login" && requestObject.HTTPRequest.RequestURI != "/API/SysUser/Register" &&
-		requestObject.HTTPRequest.RequestURI != "/API/SysUser/Identify" && requestObject.HTTPRequest.RequestURI != "/API/SysUser/Retrieve" {
+		requestObject.HTTPRequest.RequestURI != "/API/SysUser/Identify" && requestObject.HTTPRequest.RequestURI != "/API/SysUser/Retrieve" &&
+		requestObject.HTTPRequest.RequestURI != "/API/Novel/GetNovelList" && requestObject.HTTPRequest.RequestURI != "/API/Novel/GetChapterList" &&
+		requestObject.HTTPRequest.RequestURI != "/API/Novel/GetNovelInfo" {
 		//根据用户名字判断过期时间
 		userName, err := requestObject.GetStringVal("UserName")
 		token, err2 := requestObject.GetStringVal("Token")

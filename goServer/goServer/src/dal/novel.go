@@ -18,6 +18,26 @@ var (
 	novelDALName = "NovelDALObj"
 )
 
+// GetChapterItems 获取小说列表
+func (thisObj *novelDAL) GetNovelItems() (novelList []*model.Novel, err error) {
+	if err = DB.Raw("SELECT Name FROM novel GROUP BY NAME").Scan(&novelList).Error; err != nil {
+		writeErrorLog(err, fmt.Sprintf("%s.GetNovelItems", novelDALName))
+		return
+	}
+
+	return
+}
+
+// GetChapterItems 获取章节列表
+func (thisObj *novelDAL) GetChapterItems(name string) (novelList []*model.Novel, err error) {
+	if err = DB.Raw("SELECT Name,Title FROM novel  WHERE NAME =? GROUP BY Title;", name).Scan(&novelList).Error; err != nil {
+		writeErrorLog(err, fmt.Sprintf("%s.GetChapterItems", novelDALName))
+		return
+	}
+
+	return
+}
+
 // GetItems 获取数据
 func (thisObj *novelDAL) GetItems(name, title string) (novelList []*model.Novel, err error) {
 	if err = DB.Where("name = ? and title =? ", name, title).Find(&novelList).Error; err != nil {
@@ -40,7 +60,7 @@ func (thisObj *novelDAL) GetItem(name, title, source string) (novel *model.Novel
 
 // GetAllList 获取数据
 func (thisObj *novelDAL) GetAllList() (novelList []*model.Novel, err error) {
-	if err = DB.Find(&novelList).Error; err != nil {
+	if err = DB.Raw("SELECT Name,Title FROM novel ;").Scan(&novelList).Error; err != nil {
 		writeErrorLog(err, fmt.Sprintf("%s.GetAllList", novelDALName))
 		return
 	}
