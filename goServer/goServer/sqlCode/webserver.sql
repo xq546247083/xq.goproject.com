@@ -2,7 +2,8 @@
 SQLyog Ultimate v12.09 (64 bit)
 MySQL - 5.7.12-log : Database - webserver
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -15,6 +16,50 @@ MySQL - 5.7.12-log : Database - webserver
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`webserver` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
 USE `webserver`;
+
+/*Table structure for table `novel` */
+
+DROP TABLE IF EXISTS `novel`;
+
+CREATE TABLE `novel` (
+  `Name` varchar(128) NOT NULL COMMENT '小说名',
+  `Title` varchar(128) NOT NULL COMMENT '标题名',
+  `Source` varchar(128) NOT NULL COMMENT '源网站',
+  `Content` longtext NOT NULL COMMENT '内容',
+  PRIMARY KEY (`Name`,`Title`,`Source`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='小说表';
+
+/*Data for the table `novel` */
+
+/*Table structure for table `novel_config` */
+
+DROP TABLE IF EXISTS `novel_config`;
+
+CREATE TABLE `novel_config` (
+  `SiteName` varchar(64) NOT NULL COMMENT '网址名称',
+  `NovelName` varchar(64) NOT NULL COMMENT '小说名字',
+  `NovelAddress` varchar(128) NOT NULL COMMENT '小说地址',
+  PRIMARY KEY (`SiteName`,`NovelName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='扫描小说名字';
+
+/*Data for the table `novel_config` */
+
+insert  into `novel_config`(`SiteName`,`NovelName`,`NovelAddress`) values ('遮天小说网','圣墟','http://m.zhetian.org/1361/list/'),('遮天小说网','武炼巅峰','http://m.zhetian.org/94/list/');
+
+/*Table structure for table `sys_config` */
+
+DROP TABLE IF EXISTS `sys_config`;
+
+CREATE TABLE `sys_config` (
+  `ConfigKey` varchar(64) NOT NULL COMMENT '配置Key',
+  `ConfigValue` varchar(128) NOT NULL COMMENT '配置值',
+  `ConfigDesc` varchar(64) DEFAULT NULL COMMENT '配置描述',
+  PRIMARY KEY (`ConfigKey`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `sys_config` */
+
+insert  into `sys_config`(`ConfigKey`,`ConfigValue`,`ConfigDesc`) values ('NovelUrls','','小说爬虫地址');
 
 /*Table structure for table `sys_menu` */
 
@@ -68,7 +113,7 @@ CREATE TABLE `sys_user` (
   `Sex` tinyint(1) DEFAULT NULL COMMENT '性别 1男0女',
   `Phone` varchar(36) DEFAULT NULL COMMENT '工作电话',
   `Email` varchar(36) DEFAULT NULL COMMENT '电子邮箱',
-  `HeadImgage` varchar(256) DEFAULT NULL COMMENT '头像',
+  `HeadImage` varchar(256) DEFAULT NULL COMMENT '头像',
   `Status` int(10) DEFAULT NULL COMMENT '状态 1 启用 2禁用 3已删',
   `LoginCount` int(20) DEFAULT '0' COMMENT '登录次数',
   `LastLoginTime` datetime DEFAULT NULL COMMENT '最后登录时间',
@@ -80,7 +125,7 @@ CREATE TABLE `sys_user` (
 
 /*Data for the table `sys_user` */
 
-insert  into `sys_user`(`UserID`,`UserName`,`FullName`,`Password`,`PwdExpiredTime`,`Sex`,`Phone`,`Email`,`HeadImgage`,`Status`,`LoginCount`,`LastLoginTime`,`LastLoginIP`,`RoleIDs`,`CreateTime`) values ('70b22a06d4be8f5f6cadf25b21220702','xiaohe','xiaohe','061f480584ff1242d3b5c101f91e7e42','2017-10-25 21:25:18',1,'','546247083@qq.com','./upload/xiaohe_Album_1508923540241_u=996503075,3768564257&fm=200&gp=0.jpg',1,111,'2017-10-25 17:25:18','','1','2017-10-15 08:21:17'),('cd78f4d758cf147b2a24ace2e33a876b','xiaohea','xiaohea','2eadaadfa940205cacc2be67434e77aa','2017-10-20 16:26:36',1,'','295787943@qq.com','upload/xiaohe_Album_1508757589308_u=4045168581,660991028&fm=27&gp=0.jpg',1,15,'2017-10-20 14:26:36','','1','2017-10-17 18:15:48');
+insert  into `sys_user`(`UserID`,`UserName`,`FullName`,`Password`,`PwdExpiredTime`,`Sex`,`Phone`,`Email`,`HeadImage`,`Status`,`LoginCount`,`LastLoginTime`,`LastLoginIP`,`RoleIDs`,`CreateTime`) values ('70b22a06d4be8f5f6cadf25b21220702','xiaohe','xiaohe','061f480584ff1242d3b5c101f91e7e42','2017-10-25 21:25:18',1,'','546247083@qq.com','./upload/xiaohe_Album_1508923540241_u=996503075,3768564257&fm=200&gp=0.jpg',1,111,'2017-10-25 17:25:18','','1','2017-10-15 08:21:17'),('cd78f4d758cf147b2a24ace2e33a876b','xiaohea','xiaohea','2eadaadfa940205cacc2be67434e77aa','2017-10-20 16:26:36',1,'','295787943@qq.com','upload/xiaohe_Album_1508757589308_u=4045168581,660991028&fm=27&gp=0.jpg',1,15,'2017-10-20 14:26:36','','1','2017-10-17 18:15:48');
 
 /*Table structure for table `u_blog` */
 
