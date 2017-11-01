@@ -5,8 +5,6 @@ import (
 	"strconv"
 	"strings"
 
-	"xq.goproject.com/commonTools/logTool"
-
 	"xq.goproject.com/goServer/goServer/src/dal"
 	"xq.goproject.com/goServer/goServer/src/model"
 )
@@ -52,6 +50,7 @@ func GetNovelInfos(name, title string, flag int32) []*model.Novel {
 		return beforeInt < afterInt
 	})
 
+	//获取当前页面的顺序
 	curenNum := 0
 	for index, novel := range novelList {
 		if novel.Title == title {
@@ -59,13 +58,14 @@ func GetNovelInfos(name, title string, flag int32) []*model.Novel {
 		}
 	}
 
-	logTool.LogInfo(strconv.Itoa(curenNum))
+	//判断上下页
 	if int32(curenNum)+flag < 0 {
 		return nil
 	} else if curenNum+int(flag) >= len(novelList) {
 		return nil
 	}
 
+	//获取上下页
 	returnList, err2 := dal.NovelDALObj.GetItems(name, novelList[int32(curenNum)+flag].Title)
 	if err2 != nil {
 		return nil
