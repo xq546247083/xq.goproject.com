@@ -25,6 +25,7 @@
         window.location.href = 'novelList.html';
     } else {
         $("#chapterTitle").html(novelName);
+        $("title").html(novelName);
     }
 
     //小说列表点击

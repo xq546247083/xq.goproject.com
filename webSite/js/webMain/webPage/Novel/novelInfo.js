@@ -18,6 +18,9 @@
 
     //修改首页
     $(".gohome").html('<a class="animated bounceInUp" href="novelList.html" title="返回首页"><i class="fa fa-home"></i></a>');
+    $("#NovelContent").css("background-color", "");
+
+    $("#NovelContent").css("color", $.cookie("FontColor"));
 
     //左右键按钮作用
     $(document).keydown(function(e) {
@@ -43,6 +46,7 @@ function MovePage(flag) {
         window.location.href = 'chapterList.html';
     } else {
         $("#NovelTitle").html(chapterName);
+        $("title").html(chapterName);
     }
 
     GetNovelInfo(novelName, chapterName, flag);
@@ -65,29 +69,34 @@ function GetNovelInfo(novelName, chapterName, flag) {
                 return
             }
 
-            WebMain.SaveLocalData("NovelInfo", returnInfo.Data);
+            WebMain.SaveLocalData("NovelInfo", JSON.stringify(returnInfo.Data));
 
             $("#NovelContent").html("");
             $("#SourceDiv").html("");
             $.each(returnInfo.Data, function(n, value) {
-                $("#SourceDiv").append("<button class=\"label-success btn btn-white btn-xs\" type=\"button\" onclick=\"ModifySource()\">" + value.Source + "</button>");
-
                 if (n == returnInfo.Data.length - 1) {
+                    $("#SourceDiv").append("<button class=\"label-success btn btn-white btn-xs\" type=\"button\" onclick=\"ModifySource(this)\">" + value.Source + "</button>&nbsp;&nbsp;");
                     $("#NovelContent").html(value.Content);
                     $("#NovelTitle").html(value.Title);
+                    $("title").html(value.Title);
                     $('html,body').animate({ scrollTop: 0 }, 'fast');
                     WebMain.Cookie("ChapterName", value.Title);
+                } else {
+                    $("#SourceDiv").append("<button class=\" btn btn-white btn-xs\" type=\"button\" onclick=\"ModifySource(this)\">" + value.Source + "</button>&nbsp;&nbsp;");
                 }
             });
+            var fontSize = $.cookie("FontSize");
+            $("#NovelContent p").css("font-size", fontSize);
         } else {
             toastr.error("提示", returnInfo.StatusValue);
         }
     }, 2);
 }
 
-function ModifySource() {
-    var sourceText = $(this).Text();
-    var novelInfos = WebMain.GetLocalData("NovelInfo");
+//修改源
+function ModifySource(e) {
+    var sourceText = $(e).text();
+    var novelInfos = JSON.parse(WebMain.GetLocalData("NovelInfo"));
 
     $("#SourceDiv button").each(function() {
         $(this).removeClass("label-success");
@@ -95,8 +104,23 @@ function ModifySource() {
 
     $.each(novelInfos, function(n, value) {
         if (value.Source == sourceText) {
-            $(this).addClass("label-success");
+            $(e).addClass("label-success");
             $("#NovelContent").html(value.Content);
         }
     });
+}
+
+//修改字体大小
+function ChangeFont(flag) {
+    var originalFontSizeStr = $("#NovelContent p").css("font-size").replace(/[^0-9]/ig, "");;
+
+    var originalFontSize = parseInt(originalFontSizeStr);
+    if (flag) {
+        originalFontSize += 2;
+    } else {
+        originalFontSize -= 2;
+    }
+
+    $("#NovelContent p").css("font-size", originalFontSize + "px");
+    WebMain.Cookie("FontSize", originalFontSize + "px");
 }
