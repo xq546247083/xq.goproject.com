@@ -104,8 +104,12 @@ function ModifySource(e) {
         if (value.Source == sourceText) {
             $(e).addClass("label-success");
             $("#NovelContent").html(value.Content);
+            return
         }
     });
+
+    var fontSize = $.cookie("FontSize");
+    $("#NovelContent p").css("font-size", fontSize);
 }
 
 //修改字体大小
