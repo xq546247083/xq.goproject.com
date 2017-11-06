@@ -3,7 +3,6 @@ package spider
 import (
 	"fmt"
 	"strings"
-	"time"
 
 	"xq.goproject.com/goServer/goServer/src/bll/novel"
 
@@ -79,8 +78,4 @@ func (thisObj *MyPageProcesser) Process(p *page.Page) {
 // Finish 完成爬虫任务
 func (thisObj *MyPageProcesser) Finish() {
 	fmt.Println("遮天网站抓取完成")
-
-	//6个小时候，继续抓取
-	time.Sleep(time.Hour * 6)
-	go startZheTianSpider()
 }
