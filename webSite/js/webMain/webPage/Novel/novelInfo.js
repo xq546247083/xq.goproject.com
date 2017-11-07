@@ -28,6 +28,8 @@
             MovePage(-1)
         } else if (e.keyCode == '39') {
             MovePage(1)
+        } else if (e.keyCode == '13') {
+            window.location.href = 'chapterList.html';
         }
     });
 

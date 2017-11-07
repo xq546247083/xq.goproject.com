@@ -25,13 +25,6 @@
         window.location.href = 'chapterList.html';
     });
 
-    //左右键按钮作用
-    $(document).keydown(function(e) {
-        if (e.keyCode == '13') {
-
-        }
-    });
-
     GetNovelList();
 });
 

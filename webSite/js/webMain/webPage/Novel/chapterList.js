@@ -40,6 +40,8 @@
             MovePage(false)
         } else if (e.keyCode == '39') {
             MovePage(true)
+        } else if (e.keyCode == '13') {
+            window.location.href = 'novelList.html';
         }
     });
 
