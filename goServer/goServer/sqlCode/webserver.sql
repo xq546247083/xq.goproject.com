@@ -2,8 +2,7 @@
 SQLyog Ultimate v12.09 (64 bit)
 MySQL - 5.7.12-log : Database - webserver
 *********************************************************************
-*/
-
+*/
 
 /*!40101 SET NAMES utf8 */;
 
@@ -125,8 +124,6 @@ CREATE TABLE `sys_user` (
 
 /*Data for the table `sys_user` */
 
-insert  into `sys_user`(`UserID`,`UserName`,`FullName`,`Password`,`PwdExpiredTime`,`Sex`,`Phone`,`Email`,`HeadImage`,`Status`,`LoginCount`,`LastLoginTime`,`LastLoginIP`,`RoleIDs`,`CreateTime`) values ('70b22a06d4be8f5f6cadf25b21220702','xiaohe','xiaohe','061f480584ff1242d3b5c101f91e7e42','2017-10-25 21:25:18',1,'','546247083@qq.com','./upload/xiaohe_Album_1508923540241_u=996503075,3768564257&fm=200&gp=0.jpg',1,111,'2017-10-25 17:25:18','','1','2017-10-15 08:21:17'),('cd78f4d758cf147b2a24ace2e33a876b','xiaohea','xiaohea','2eadaadfa940205cacc2be67434e77aa','2017-10-20 16:26:36',1,'','295787943@qq.com','upload/xiaohe_Album_1508757589308_u=4045168581,660991028&fm=27&gp=0.jpg',1,15,'2017-10-20 14:26:36','','1','2017-10-17 18:15:48');
-
 /*Table structure for table `u_blog` */
 
 DROP TABLE IF EXISTS `u_blog`;
@@ -146,8 +143,6 @@ CREATE TABLE `u_blog` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `u_blog` */
-
-insert  into `u_blog`(`ID`,`UserId`,`Title`,`Content`,`Tag`,`ATUsers`,`BlogType`,`Status`,`CrDate`,`ReDate`) values ('e0441084-a620-4328-9fea-a2a2ea050d6b','448cfeb6-37a2-40c4-84e9-72599fd3722f','你好','测试内容',NULL,NULL,2,1,'2017-09-09 23:57:20','2017-09-09 00:00:00');
 
 /*Table structure for table `u_blog_type` */
 
