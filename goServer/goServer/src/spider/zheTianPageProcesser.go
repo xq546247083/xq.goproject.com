@@ -47,7 +47,7 @@ func (thisObj *MyPageProcesser) Process(p *page.Page) {
 	})
 
 	//如果是换源页面，继续爬
-	query.Find("div[class='pt-name'] a[class='ptm-text-grey']").Each(func(i int, s *goquery.Selection) {
+	query.Find("span[class='pt-name'] a[class='ptm-text-grey']").Each(func(i int, s *goquery.Selection) {
 		href, _ := s.Attr("href")
 		req := request.NewRequest(stringTool.GetURLDomainName(p.GetRequest().GetUrl())+href, "html", p.GetUrlTag(), "GET", "", nil, nil, nil, nil)
 		reqs = append(reqs, req)
