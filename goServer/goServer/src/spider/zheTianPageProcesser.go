@@ -31,6 +31,10 @@ func (thisObj *MyPageProcesser) Process(p *page.Page) {
 	query.Find("a[class='ptm-btn ptm-btn-primary ptm-btn-block ptm-btn-outlined']").Each(func(i int, s *goquery.Selection) {
 		if s.Text() == "下一页" {
 			href, _ := s.Attr("href")
+			if strings.Contains(href, ";") {
+				return
+			}
+
 			req := request.NewRequest(stringTool.GetURLDomainName(p.GetRequest().GetUrl())+href, "html", p.GetUrlTag(), "GET", "", nil, nil, nil, nil)
 			reqs = append(reqs, req)
 		}
@@ -41,6 +45,10 @@ func (thisObj *MyPageProcesser) Process(p *page.Page) {
 		//如果数据库不存在该章节
 		if !novel.IsExisItems(urlTag, s.Text()) {
 			href, _ := s.Attr("href")
+			if strings.Contains(href, ";") {
+				return
+			}
+
 			req := request.NewRequest(stringTool.GetURLDomainName(p.GetRequest().GetUrl())+href, "html", fmt.Sprintf("%s,%s", p.GetUrlTag(), s.Text()), "GET", "", nil, nil, nil, nil)
 			reqs = append(reqs, req)
 		}
@@ -49,6 +57,10 @@ func (thisObj *MyPageProcesser) Process(p *page.Page) {
 	//如果是换源页面，继续爬
 	query.Find("span[class='pt-name'] a[class='ptm-text-grey']").Each(func(i int, s *goquery.Selection) {
 		href, _ := s.Attr("href")
+		if strings.Contains(href, ";") {
+			return
+		}
+
 		req := request.NewRequest(stringTool.GetURLDomainName(p.GetRequest().GetUrl())+href, "html", p.GetUrlTag(), "GET", "", nil, nil, nil, nil)
 		reqs = append(reqs, req)
 	})
