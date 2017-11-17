@@ -22,7 +22,7 @@ func startZheTianSpider() {
 	zhetianSpider.AddPipeline(NewPipelineMysql())
 
 	//设置线程数
-	zhetianSpider.SetThreadnum(3)
+	zhetianSpider.SetThreadnum(1)
 
 	zhetianSpider.Run()
 }
