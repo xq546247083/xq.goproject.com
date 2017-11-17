@@ -58,8 +58,6 @@ CREATE TABLE `sys_config` (
 
 /*Data for the table `sys_config` */
 
-insert  into `sys_config`(`ConfigKey`,`ConfigValue`,`ConfigDesc`) values ('NovelUrls','','小说爬虫地址');
-
 /*Table structure for table `sys_menu` */
 
 DROP TABLE IF EXISTS `sys_menu`;
