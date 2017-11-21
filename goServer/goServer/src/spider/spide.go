@@ -9,7 +9,7 @@ func Start() {
 		// 获取当前时间的日期
 		now := time.Now()
 		if (now.Hour() == 5 || now.Hour() == 11 || now.Hour() == 17 || now.Hour() == 22) && now.Minute() == 0 {
-			go startZheTianSpider()
+			// go startZheTianSpider()
 		}
 
 		remainTime := time.Duration(60 - time.Now().Second())
