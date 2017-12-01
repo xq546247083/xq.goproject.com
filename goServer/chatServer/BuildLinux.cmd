@@ -2,4 +2,7 @@ set GOOS=linux
 set GOARCH=amd64
 set CGO_ENABLED=0 
 go build -o chatServer.linux
-pause
+
+if %ERRORLEVEL% gtr 0 (
+    pause
+)
