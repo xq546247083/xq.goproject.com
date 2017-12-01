@@ -10,9 +10,9 @@ import (
 	"strings"
 	"sync"
 
-	"moqikaka.com/goutil/intAndBytesUtil"
-	"moqikaka.com/goutil/logUtil"
 	"xq.goproject.com/commonTools/fileTool"
+	"xq.goproject.com/commonTools/logTool"
+	"xq.goproject.com/commonTools/intTool"
 )
 
 const (
@@ -33,7 +33,7 @@ func newFileName(prefix, path string) string {
 	curFileName_int, err := strconv.Atoi(curFileName)
 	if err != nil {
 		err = fmt.Errorf("%s-Convert newFileName:%s to int failed:%s", prefix, curFileName, err)
-		logUtil.ErrorLog(err.Error())
+		logTool.LogError(err.Error())
 		panic(err)
 	}
 
@@ -54,7 +54,7 @@ func getDataFileList(dirPath string) []string {
 		if os.IsNotExist(err) {
 		} else {
 			err = fmt.Errorf("%s/*.%s-Get file list failed:%s", dirPath, con_Suffix, err)
-			logUtil.ErrorLog(err.Error())
+			logTool.LogError(err.Error())
 			panic(err)
 		}
 	}
@@ -90,7 +90,7 @@ func (this *syncDataObject) write(data string) {
 	dataLength := len(data)
 
 	// 将长度转化为字节数组
-	header := intAndBytesUtil.Int32ToBytes(int32(dataLength), byterOrder)
+	header := intTool.Int32ToByte(int32(dataLength), byterOrder)
 
 	// 将头部与内容组合在一起
 	message := append(header, data...)
@@ -100,7 +100,7 @@ func (this *syncDataObject) write(data string) {
 	if err != nil {
 		prefix := fmt.Sprintf("%s-%s", this.identifier, "syncDataObject.write.bigFileObj.WriteMessage")
 		err = fmt.Errorf("%s-Write message to big file object failed:%s", prefix, err)
-		logUtil.ErrorLog(err.Error())
+		logTool.LogError(err.Error())
 		panic(err)
 	}
 }
@@ -130,7 +130,7 @@ func newSyncDataObject(dirPath, identifier, fileName string, maxFileSize int) *s
 	if err != nil {
 		prefix := fmt.Sprintf("%s-%s", this.identifier, "syncDataObject.newSyncDataObject.fileTool.NewBigFileWithNewFileNameFunc")
 		err = fmt.Errorf("%s-Create big file object failed:%s", prefix, err)
-		logUtil.ErrorLog(err.Error())
+		logTool.LogError(err.Error())
 		panic(err)
 	}
 	this.bigFileObj = bigFileObj
