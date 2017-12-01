@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"sync"
 )
 
@@ -74,6 +75,48 @@ func GetFileInfoList(path string) ([]os.FileInfo, error) {
 	})
 
 	return files, nil
+}
+
+// 获取目标文件列表（完整路径）
+// path：文件夹路径
+// prefix：文件前缀
+// suffix：文件后缀
+// 返回值：文件列表（完整路径）
+func GetFileList2(path, prefix, suffix string) (fileList []string, err error) {
+	if exists, err1 := IsDirectoryExists(path); err1 != nil {
+		err = err1
+		return
+	} else if !exists {
+		return
+	}
+
+	// 遍历目录，获取所有文件列表
+	err = filepath.Walk(path, func(fileName string, fi os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// 忽略目录
+		if fi.IsDir() {
+			return nil
+		}
+
+		// 添加到列表
+		baseName := filepath.Base(fileName)
+		if prefix != "" && strings.HasPrefix(baseName, prefix) == false {
+			return nil
+		}
+
+		if suffix != "" && strings.HasSuffix(baseName, suffix) == false {
+			return nil
+		}
+
+		fileList = append(fileList, fileName)
+
+		return nil
+	})
+
+	return
 }
 
 // 文件夹是否存在
