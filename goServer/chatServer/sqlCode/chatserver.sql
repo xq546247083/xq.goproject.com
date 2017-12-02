@@ -58,7 +58,7 @@ CREATE TABLE `history_private` (
   `Crtime` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`ID`,`SysUserID`),
   KEY `IX_PlayerId` (`SysUserID`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `history_private` */
 
@@ -74,7 +74,7 @@ CREATE TABLE `history_world` (
   `FromSysUserName` varchar(128) NOT NULL COMMENT '源用户Name',
   `Crtime` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=173 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `history_world` */
 
