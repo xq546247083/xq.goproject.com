@@ -22,11 +22,15 @@ func startWowShopSpider() {
 
 	//添加请求地址
 	header := make(http.Header)
-	// header.Set("Content-Type", "application/x-www-form-urlencoded")
-	header.Set("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.137 Safari/537.36 LBBROWSER 1.1")
+	header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+	header.Set("Accept-Encoding", "gzip, deflate, br")
+	header.Set("Accept-Language", "zh-CN,zh;q=0.8")
+	header.Set("Cookie", "web.id=CN-8385fe60-d079-46b4-af24-956b02fa9a4a; __utma=124133273.462908016.1513412632.1513412821.1513738956.2; __utmz=124133273.1513738956.2.2.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; XSRF-TOKEN=10bf4390-29bd-497c-aa54-7ffd9f100c6c; loc=zh-cn; _ga=GA1.4.462908016.1513412632; _gid=GA1.4.1119770171.1513738955; _gat_UA-50249600-1=1; _ga=GA1.3.462908016.1513412632; _gid=GA1.3.1119770171.1513738955")
+	header.Set("Host", "shop.battlenet.com.cn")
+	header.Set("Upgrade-Insecure-Requests", "1")
+	header.Set("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
 
-	req := request.NewRequest("https://shop.battlenet.com.cn/zh-cn/family/world-of-warcraft", "html", "WowShopSpider", "GET", "", header, nil, nil, nil)
-	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.137 Safari/537.36 LBBROWSER 1.1")
+	req := request.NewRequest("https://shop.battlenet.com.cn/zh-cn/product/world-of-warcraft-service-faction-change", "html", "WowShopSpider", "GET", "", header, nil, nil, nil)
 	wowShopSpider.AddRequest(req)
 
 	//添加输出
