@@ -4,6 +4,8 @@ import "time"
 
 // Start 开始抓取数据
 func Start() {
+	go startWowShopSpider()
+
 	//  每分钟执行一次
 	for {
 		// 获取当前时间的日期
