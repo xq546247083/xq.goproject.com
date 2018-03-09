@@ -37,7 +37,6 @@ func main(){
 				sigChan<-syscall.SIGKILL
 			}()
 
-			
 			// os.Exit(0)
 		}
 	}
