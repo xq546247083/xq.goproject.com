@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"fmt"
 	
 )
@@ -18,6 +19,13 @@ func main(){
 	for a := 0; a < 100; a++ {
 		fmt.Println(x)
 	}	
+
+
+	pid := os.Getpid()
+	fmt.Println(pid)
+
+	ppid := os.Getppid()
+	fmt.Println(ppid)
 }
 
 type Encipher func(plaintext string) []byte
