@@ -10,7 +10,10 @@ var (
 	// WebListenAddress 监听地址
 	WebListenAddress string
 
-	// WebSockectListenAddress 监听地址
+	// WebListenAddresss https监听地址
+	WebListenAddresss string
+
+	// WebSockectListenAddress  https监听地址
 	WebSockectListenAddress string
 
 	// DBConnection 数据库地址
@@ -91,6 +94,12 @@ var (
 	// Referer web客户端的Referer
 	Referer = "http://localhost/"
 
+	// 证书
+	Crt=""
+
+	// key
+	Key=""
+
 	// 读取的配置
 	xmlConfig *XmlConfig
 
@@ -114,6 +123,9 @@ func init() {
 	WebListenAddress, err = xmlConfig.String("root/BaseConfig/WebListenAddress", "")
 	checkError(err, false)
 
+	WebListenAddresss, err = xmlConfig.String("root/BaseConfig/WebListenAddresss", "")
+	checkError(err, false)
+	
 	WebSockectListenAddress, err = xmlConfig.String("root/BaseConfig/WebSockectListenAddress", "")
 	checkError(err, false)
 
@@ -196,6 +208,12 @@ func init() {
 	checkError(err, false)
 
 	GoServerWebAddress, err = xmlConfig.String("root/ServerConfig/GoServerWebAddress", "")
+	checkError(err, false)
+
+	Crt, err = xmlConfig.String("root/CrtConfig/Crt", "")
+	checkError(err, false)
+
+	Key, err = xmlConfig.String("root/CrtConfig/Key", "")
 	checkError(err, false)
 
 	//web客户端的配置

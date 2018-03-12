@@ -3,6 +3,9 @@
 	<BaseConfig>
 		<!--WebServer监听的地址-->
 		<WebListenAddress>:8881</WebListenAddress>
+
+		<!--WebServer  https监听的地址-->
+		<WebListenAddresss>:8882</WebListenAddresss>
 	</BaseConfig>
 
 	<!--服务器配置-->
@@ -44,4 +47,9 @@
 		<!--500错误页面-->
 		<Error500Page>/500.html</Error500Page>
 	</WebConfig>
+	<!--https证书配置-->
+	<CrtConfig>
+		<Crt>xiaohe.info_ca.crt</Crt>
+		<Key>xiaohe.info.key</Key>
+	</CrtConfig>
 </root>
