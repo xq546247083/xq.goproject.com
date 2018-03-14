@@ -7,7 +7,10 @@ import (
 	"fmt"
 )
 
-func main(){	
+
+// 管道是基于os.Pipe()
+// os.Pipe()
+func main(){
 	// 创建cmd，命令
 	cmd1 := exec.Command("go", "env")
 

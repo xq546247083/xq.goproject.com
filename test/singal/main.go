@@ -1,13 +1,25 @@
 package main
 
 import (
-	"syscall"
 	"fmt"
-	"os/signal"
 	"os"
+	"os/signal"
+	"runtime/debug"
+	"syscall"
+	"time"
 )
 
-func main(){	
+func main(){
+	go func() {
+		time.Sleep(3 * time.Second)
+		sendSignal()
+	}()	
+
+	handleSignal()
+}
+
+// 处理信号
+func handleSignal(){
 	// 构造一个信号通道
 	sigChan:=make(chan os.Signal,1)
 	// 注册通道
@@ -39,5 +51,30 @@ func main(){
 
 			// os.Exit(0)
 		}
+	}
+}
+
+// 发送信号
+func sendSignal() {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Printf("Fatal Error: %s\n", err)
+			debug.PrintStack()
+		}
+	}()
+	
+	// 找到自己的pid
+	proc, err := os.FindProcess(os.Getpid())
+	if err != nil {
+		fmt.Printf("Process Finding Error: %s\n", err)
+		return
+	}
+	
+	// 发送信号
+	sig := syscall.SIGKILL
+	err = proc.Signal(sig)
+	if err != nil {
+		fmt.Printf("Signal Sending Error: %s\n", err)
+		return
 	}
 }
