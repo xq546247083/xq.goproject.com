@@ -7,6 +7,8 @@ import (
 	"fmt"
 )
 
+// 测试type的用法
+
 // 学生类型
 type Student struct{
     Name string

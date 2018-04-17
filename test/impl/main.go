@@ -5,6 +5,7 @@ import (
     "encoding/json"
 )
 
+// 测试了继承相关的一些东西
 func main() {
     a:=new(Person)
     a.Base.Name="1"

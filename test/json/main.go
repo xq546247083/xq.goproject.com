@@ -5,6 +5,7 @@ import (
     "encoding/json"
 )
 
+// 测试json的tag的使用
 func main() {
     a:=new(Base)
     a.Name="xxx"

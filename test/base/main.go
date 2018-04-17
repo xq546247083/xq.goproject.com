@@ -6,10 +6,11 @@ import (
 )
 
 func main() {
-    testNewInterface();
+    testNewStruct();
 }
 
-func testNewInterface(){
+// 各种初始化struct的方法
+func testNewStruct(){
     x:=&Person{Name:"xx"}
     x1:=new(Person)
 
@@ -26,11 +27,17 @@ func testNewInterface(){
     x2.printHello()
 }
 
+func (this *Person)printHello(){
+    fmt.Println("hello")
+}
+
+// 打印一个rune的默认值
 func testRune(){
     var a rune
     fmt.Println(a)
 }
 
+// var 初始化的原则
 func testVar(){
     // var一个值类型会自动初始化默认值
     var a Person
@@ -40,10 +47,6 @@ func testVar(){
 
     fmt.Println("xxx",a.Name);
     fmt.Println("xxx",a1.Name);
-}
-
-func (this *Person)printHello(){
-    fmt.Println("hello")
 }
 
 type Person struct{

@@ -7,6 +7,7 @@ import (
 	"fmt"
 )
 
+// 测试输入cmd命令，输出对应的结果
 
 // 管道是基于os.Pipe()
 // os.Pipe()
@@ -15,20 +16,26 @@ func main(){
 	cmd1 := exec.Command("go", "env")
 
 	// 建立输出管道
-	cmdout1,err:=cmd1.StdoutPipe()
+	cmdout,err:=cmd1.StdoutPipe()
 	if err!=nil{
 		fmt.Println(err)
 	}
 
+	// 开始命令
 	if err:=cmd1.Start();err!=nil{
 		fmt.Println(err)
 	}
 
-	// 读取输出管道的信息
+	readCmd(cmdout)
+	fmt.Scanln()
+}
+
+// 读取输出管道的信息
+func readCmd(cmdOut io.ReadCloser){
 	var outputBuf bytes.Buffer
 	for{
 		tempOutPut:=make([]byte,5)
-		n,err:=cmdout1.Read(tempOutPut)
+		n,err:=cmdOut.Read(tempOutPut)
 		if err!=nil{
 			if err==io.EOF{
 				break
@@ -44,6 +51,4 @@ func main(){
 	}
 
 	fmt.Println(outputBuf.String());
-
-	fmt.Scanln()
 }

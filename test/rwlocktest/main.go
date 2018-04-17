@@ -4,15 +4,13 @@ import (
 	"time"
 	"fmt"
 	"sync"
-	
 )
 
-
+// 测试读写锁
 func main() {
     locktest()   
 }
 
-// 测试锁
 func locktest(){
     var locker sync.RWMutex
     locker.Lock()

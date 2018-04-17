@@ -5,8 +5,8 @@ import (
 	
 )
 
+// 测试断言以及字符串
 func main(){
-
 	// 转换，强制转换
 	var uintTemp uint32
 	uintTemp = 1

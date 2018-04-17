@@ -5,6 +5,7 @@ import (
 	
 )
 
+// 锁的使用
 var locker sync.Mutex
 var locker1 sync.Mutex
 

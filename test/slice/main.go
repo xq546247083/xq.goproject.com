@@ -5,6 +5,7 @@ import (
 	
 )
 
+// 切片测试
 func main(){
 	a:=[]int{}
 	a1:=make([]int,0)

@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// 测试获取传入的信号
 func main(){
 	go func() {
 		time.Sleep(3 * time.Second)

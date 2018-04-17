@@ -7,9 +7,11 @@ import (
 	
 )
 
-
+// 测试once以及锁，以及其异常
 func main() {
-    onectest()   
+    locktest() 
+
+    fmt.Scanln()
 }
 
 // 运行一次
@@ -25,13 +27,9 @@ func onectest(){
     locker.Do(func(){
         fmt.Println("xxx")
     })
-
-    for{
-
-    }
 }
 
-// 测试解锁(异常捕获，不能捕获到由解锁导致的错误)
+// 给已解锁的锁解锁，触发异常
 func unlocktest(){
     defer func(){
         if err:=recover();err!=nil{
@@ -54,14 +52,10 @@ func locktest(){
         go func(j int){
             fmt.Println("lock:",j)
             locker.Lock()
-            fmt.Println("locked:",j)
+            fmt.Println("unlock:",j)
         }(i)
     }
 
     time.Sleep(1*time.Second)
     locker.Unlock()
-
-    for{
-
-    }
 }

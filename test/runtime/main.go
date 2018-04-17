@@ -7,6 +7,7 @@ import (
 
 )
 
+// 测试程序退出
 func main(){	
 	go func(){
 		runtime.Goexit()
