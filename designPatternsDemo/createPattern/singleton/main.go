@@ -14,6 +14,7 @@ type person struct{}
 
 // 一个单例对象
 var instance *person
+
 // 运行一次的方法
 var once sync.Once
 
