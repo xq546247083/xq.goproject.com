@@ -11,7 +11,7 @@ func main() {
     a.Base.Name="1"
     a.Name="2"
 
-    // go的继承不是真正的继承，而是一个匿名的组合
+    // 匿名的组合表现
     fmt.Println(a.Base.Name,a.Name)
     a.Base.hello()
     a.hello()
@@ -26,7 +26,7 @@ type Base struct{
 }
 
 type Person struct{
-    Base
+    Base // 这种就是组合，只是是一个匿名的组合而已
     Name string 
     Age int32
 }
@@ -37,4 +37,15 @@ func (this *Base)hello(){
 
 func (this *Person)hello(){
     fmt.Println(this.Name)
+}
+
+// -------------接口才会继承-----------------
+// 基础接口
+type BaseImpl interface{
+    hello()
+}
+
+// 测试继承，person继承了BaseImpl接口，所以返回person不报错
+func testImpl() BaseImpl{
+    return new(Person)
 }
