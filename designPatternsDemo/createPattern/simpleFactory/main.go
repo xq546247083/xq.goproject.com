@@ -31,7 +31,6 @@ type Pizza interface{
 
 // 鸡腿的
 type ChickenPizza struct{
-	Size int32
 }
 
 func (this *ChickenPizza)Eat(){
@@ -40,7 +39,6 @@ func (this *ChickenPizza)Eat(){
 
 // 奶酪的
 type CheesePizza struct{
-	Size int32
 }
 
 func (this *CheesePizza) Eat(){
