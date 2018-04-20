@@ -10,22 +10,22 @@ func main(){
 	
 	// 在基本的咖啡上加牛奶
 	milkCoffeeTemp:=new(milkCoffee)
-	milkCoffeeTemp.Init(smipleCoffeeTemp)
+	milkCoffeeTemp.BaseCoffee=smipleCoffeeTemp
 	fmt.Println(milkCoffeeTemp.getDesc(),"----",milkCoffeeTemp.getPrice())
 
 	// 在基本的咖啡上加糖
 	sugarCoffeeTemp:=new(sugarCoffee)
-	sugarCoffeeTemp.Init(smipleCoffeeTemp)
+	sugarCoffeeTemp.BaseCoffee=smipleCoffeeTemp
 	fmt.Println(sugarCoffeeTemp.getDesc(),"----",sugarCoffeeTemp.getPrice())
 
 	// 在牛奶咖啡上加糖（装饰者模式的重点在于此处，在任何咖啡上，可以任意组装咖啡）
 	sugarMilkCoffeeTemp:=new(sugarCoffee)
-	sugarMilkCoffeeTemp.Init(milkCoffeeTemp)
+	sugarMilkCoffeeTemp.BaseCoffee=milkCoffeeTemp
 	fmt.Println(sugarMilkCoffeeTemp.getDesc(),"----",sugarMilkCoffeeTemp.getPrice())
 
 	// 在牛奶咖啡上加双倍糖
 	sugarSugarMilkCoffeeTemp:=new(sugarCoffee)
-	sugarSugarMilkCoffeeTemp.Init(sugarMilkCoffeeTemp)
+	sugarSugarMilkCoffeeTemp.BaseCoffee=sugarMilkCoffeeTemp
 	fmt.Println(sugarSugarMilkCoffeeTemp.getDesc(),"----",sugarSugarMilkCoffeeTemp.getPrice())
 }
 
@@ -52,20 +52,15 @@ func (this *smipleCoffee)getPrice()int32{
 
 // 装饰者
 type decorator struct{
-	coffee iCoffee 
-}
-
-// 初始化装饰者的咖啡
-func (this *decorator)Init(coffee iCoffee){
-	this.coffee=coffee
+	BaseCoffee iCoffee 
 }
 
 func (this *decorator)getDesc()string{
-	return this.coffee.getDesc()
+	return this.BaseCoffee.getDesc()
 }
 
 func (this *decorator)getPrice()int32{
-	return this.coffee.getPrice()
+	return this.BaseCoffee.getPrice()
 }
 
 
