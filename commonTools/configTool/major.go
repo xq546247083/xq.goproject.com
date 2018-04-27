@@ -100,6 +100,9 @@ var (
 	// key
 	Key=""
 
+	// 斗地主任务
+	DDZTask = ""
+
 	// 读取的配置
 	xmlConfig *XmlConfig
 
@@ -222,6 +225,10 @@ func init() {
 
 	//读取文件配置
 	UploadPath, err = xmlConfig.String("root/FileConfig/UploadPath", "")
+	checkError(err, false)
+
+	// 斗地主任务
+	DDZTask, err = xmlConfig.String("root/Task/DDZTask", "")
 	checkError(err, false)
 }
 

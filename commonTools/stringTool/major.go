@@ -82,6 +82,22 @@ func SplitToInt32List(str string) []int32 {
 	return result
 }
 
+// SplitToInt64List 切割字符串为int64数组
+func SplitToInt64List(str string) []int64 {
+	stringArray := strings.Split(str, ",")
+
+	result := make([]int64, 0, len(stringArray))
+	for _, item := range stringArray {
+		//如果转换成功，则添加，否则，忽略
+		num, err := strconv.ParseInt(item, 10, 64)
+		if err == nil {
+			result = append(result, num)
+		}
+	}
+
+	return result
+}
+
 // GetURLDomainName 获取地址的域名
 func GetURLDomainName(url string) string {
 	if IsURL(url) {
