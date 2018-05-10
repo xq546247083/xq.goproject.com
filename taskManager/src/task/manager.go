@@ -15,7 +15,7 @@ func Moniter(){
 		if now.Hour() == 1 && now.Minute() == 0{
 			ddzTask.CaclReward()
 		}
-		
+
 		remainTime := time.Duration(60 - time.Now().Second())
 		time.Sleep(remainTime * time.Second)
 	}

@@ -4,13 +4,16 @@ import (
 	"time"
 )
 
-// 斗地主任务model
+// 斗地主配置model
 type DDZTaskModel struct{
-	// SendQQ
-	SendQQ int64
+	// 接受邮箱
+	ReceiveEmail string
 
-	// qq
-	QQ int64
+	// 斗地主的账号类型（1：微信，2
+	AccountType string
+
+	// 账号
+	Account string
 
 	// 当前时间
 	CurTime time.Time
@@ -19,11 +22,12 @@ type DDZTaskModel struct{
 	RewardNum int32
 }
 
-// 新建斗地主model
-func NewDDZTaskModel(sendQQ int64,qq int64,curTime time.Time,rewardNum int32)*DDZTaskModel{
+// 新建斗地主配置model
+func NewDDZTaskModel(receiveEmail ,accountType,account string ,curTime time.Time,rewardNum int32)*DDZTaskModel{
 	ddzTaskModel:=&DDZTaskModel{
-		SendQQ:sendQQ,
-		QQ:qq,
+		ReceiveEmail:receiveEmail,
+		AccountType:accountType,
+		Account:account,
 		CurTime:curTime,
 		RewardNum:rewardNum,
 	}
