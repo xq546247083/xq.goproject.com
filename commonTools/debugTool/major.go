@@ -1,8 +1,9 @@
 package debugTool
 
 import (
-	"xq.goproject.com/commonTools/configTool"
 	"fmt"
+
+	"xq.goproject.com/commonTools/configTool"
 )
 
 var (

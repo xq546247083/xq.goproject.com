@@ -4,14 +4,14 @@ import (
 	"fmt"
 )
 
-func main(){
-	factoryProducerTemp:=new(factoryProducer)
-	pizzaFactory:=factoryProducerTemp.getFactory("Pizza")
-	pizza:= pizzaFactory.getPizza("ChickenPizza")
+func main() {
+	factoryProducerTemp := new(factoryProducer)
+	pizzaFactory := factoryProducerTemp.getFactory("Pizza")
+	pizza := pizzaFactory.getPizza("ChickenPizza")
 	pizza.Eat()
 
-	colorFactory:=factoryProducerTemp.getFactory("Color")
-	color:=colorFactory.getColor()
+	colorFactory := factoryProducerTemp.getFactory("Color")
+	color := colorFactory.getColor()
 	color.Set()
 }
 
@@ -19,8 +19,8 @@ func main(){
 type factoryProducer struct{}
 
 // 获取工厂
-func (this *factoryProducer) getFactory(name string)abstractFactory{
-	switch name{
+func (this *factoryProducer) getFactory(name string) abstractFactory {
+	switch name {
 	case "Pizza":
 		return new(pizzaFactory)
 	default:
@@ -30,9 +30,9 @@ func (this *factoryProducer) getFactory(name string)abstractFactory{
 
 //--------------------抽象工厂--------------------
 // 定义了一个抽象工厂
-type abstractFactory interface{
-	getPizza(name string )Pizza
-	getColor()Color
+type abstractFactory interface {
+	getPizza(name string) Pizza
+	getColor() Color
 }
 
 //--------------------披萨工厂--------------------
@@ -40,8 +40,8 @@ type abstractFactory interface{
 type pizzaFactory struct{}
 
 // 去披萨工厂获取披萨
-func (this *pizzaFactory) getPizza(name string)Pizza{
-	switch name{
+func (this *pizzaFactory) getPizza(name string) Pizza {
+	switch name {
 	case "ChickenPizza":
 		return new(ChickenPizza)
 	default:
@@ -50,7 +50,7 @@ func (this *pizzaFactory) getPizza(name string)Pizza{
 }
 
 // 去披萨工厂上色
-func (this *pizzaFactory) getColor()Color{
+func (this *pizzaFactory) getColor() Color {
 	return nil
 }
 
@@ -59,47 +59,46 @@ func (this *pizzaFactory) getColor()Color{
 type colorFactory struct{}
 
 // 去颜色工厂获取披萨
-func (this *colorFactory) getPizza(name string)Pizza{
+func (this *colorFactory) getPizza(name string) Pizza {
 	return nil
 }
 
 // 去披萨工厂上色
-func (this *colorFactory) getColor()Color{
+func (this *colorFactory) getColor() Color {
 	return new(Red)
 }
 
-
 //--------------------披萨--------------------
 // paizza接口
-type Pizza interface{
+type Pizza interface {
 	Eat()
 }
 
 // 鸡腿的
-type ChickenPizza struct{
+type ChickenPizza struct {
 }
 
-func (this *ChickenPizza)Eat(){
+func (this *ChickenPizza) Eat() {
 	fmt.Println("eat ChickenPizza")
 }
 
 // 奶酪的
-type CheesePizza struct{
+type CheesePizza struct {
 }
 
-func (this *CheesePizza) Eat(){
+func (this *CheesePizza) Eat() {
 	fmt.Println("eat CheesePizza")
 }
 
 //--------------------颜色--------------------
 // 颜色
-type Color interface{
+type Color interface {
 	Set()
 }
 
-type Red struct{
+type Red struct {
 }
 
-func (this *Red) Set(){
+func (this *Red) Set() {
 	fmt.Println("set Red")
 }

@@ -1,11 +1,11 @@
-package	ddzTask
+package ddzTask
 
 import (
 	"time"
 )
 
 // 斗地主配置model
-type DDZTaskModel struct{
+type DDZTaskModel struct {
 	// 接受邮箱
 	ReceiveEmail string
 
@@ -23,14 +23,14 @@ type DDZTaskModel struct{
 }
 
 // 新建斗地主配置model
-func NewDDZTaskModel(receiveEmail ,accountType,account string ,curTime time.Time,rewardNum int32)*DDZTaskModel{
-	ddzTaskModel:=&DDZTaskModel{
-		ReceiveEmail:receiveEmail,
-		AccountType:accountType,
-		Account:account,
-		CurTime:curTime,
-		RewardNum:rewardNum,
+func NewDDZTaskModel(receiveEmail, accountType, account string, curTime time.Time, rewardNum int32) *DDZTaskModel {
+	ddzTaskModel := &DDZTaskModel{
+		ReceiveEmail: receiveEmail,
+		AccountType:  accountType,
+		Account:      account,
+		CurTime:      curTime,
+		RewardNum:    rewardNum,
 	}
-		
+
 	return ddzTaskModel
 }

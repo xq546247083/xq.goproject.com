@@ -2,15 +2,16 @@
 
 package dup
 
-import(
-	"syscall"
+import (
 	"os"
+	"syscall"
 )
-func init(){
+
+func init() {
 	SetStderr()
 }
 
-func SetStderr(){
+func SetStderr() {
 	// 标准输出
 	stdoutFile, _ := os.OpenFile("LOG/Stdout.txt", os.O_WRONLY|os.O_CREATE|os.O_SYNC, 0644)
 	syscall.Dup2(int(stdoutFile.Fd()), 1)

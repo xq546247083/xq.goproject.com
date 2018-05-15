@@ -1,6 +1,5 @@
-
 package dup
 
-func Test2(){
+func Test2() {
 
 }

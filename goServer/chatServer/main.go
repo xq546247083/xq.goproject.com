@@ -11,8 +11,8 @@ import (
 	"xq.goproject.com/goServer/chatServer/src/webServer"
 	"xq.goproject.com/goServer/chatServer/src/webSocketServer"
 
-	_ "xq.goproject.com/goServer/chatServer/src/bll"
 	_ "github.com/go-sql-driver/mysql"
+	_ "xq.goproject.com/goServer/chatServer/src/bll"
 )
 
 var (

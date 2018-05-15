@@ -1,10 +1,9 @@
 package main
 
-import(
-	"xq.goproject.com/test/dupTest/dup"	
+import (
+	"xq.goproject.com/test/dupTest/dup"
 )
 
-func main(){
+func main() {
 	dup.SetStderr()
 }
-

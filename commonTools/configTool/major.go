@@ -95,10 +95,10 @@ var (
 	Referer = "http://localhost/"
 
 	// 证书
-	Crt=""
+	Crt = ""
 
 	// key
-	Key=""
+	Key = ""
 
 	// 斗地主任务
 	DDZTask = ""
@@ -128,7 +128,7 @@ func init() {
 
 	WebListenAddresss, err = xmlConfig.String("root/BaseConfig/WebListenAddresss", "")
 	checkError(err, false)
-	
+
 	WebSockectListenAddress, err = xmlConfig.String("root/BaseConfig/WebSockectListenAddress", "")
 	checkError(err, false)
 

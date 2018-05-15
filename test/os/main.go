@@ -6,7 +6,7 @@ import (
 )
 
 // 获取线程id
-func main(){
+func main() {
 	pid := os.Getpid()
 	fmt.Println(pid)
 

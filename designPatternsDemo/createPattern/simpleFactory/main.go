@@ -4,19 +4,19 @@ import (
 	"fmt"
 )
 
-func main(){
+func main() {
 	// 新建一个工厂
-	factory:=new(smipleFactory)
+	factory := new(smipleFactory)
 
-	temp:=factory.getPizza("ChickenPizza1")
+	temp := factory.getPizza("ChickenPizza1")
 	temp.Eat()
 }
 
 type smipleFactory struct{}
 
 // 获取披萨，这个方法就是简单工厂模式的关键点(让工厂去选择生成什么披萨)
-func (this *smipleFactory) getPizza(name string)Pizza{
-	switch name{
+func (this *smipleFactory) getPizza(name string) Pizza {
+	switch name {
 	case "ChickenPizza":
 		return new(ChickenPizza)
 	default:
@@ -25,22 +25,22 @@ func (this *smipleFactory) getPizza(name string)Pizza{
 }
 
 // paizza接口
-type Pizza interface{
+type Pizza interface {
 	Eat()
 }
 
 // 鸡腿的
-type ChickenPizza struct{
+type ChickenPizza struct {
 }
 
-func (this *ChickenPizza)Eat(){
+func (this *ChickenPizza) Eat() {
 	fmt.Println("eat ChickenPizza")
 }
 
 // 奶酪的
-type CheesePizza struct{
+type CheesePizza struct {
 }
 
-func (this *CheesePizza) Eat(){
+func (this *CheesePizza) Eat() {
 	fmt.Println("eat CheesePizza")
 }

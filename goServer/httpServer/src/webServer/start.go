@@ -24,7 +24,7 @@ func StartServer(wg *sync.WaitGroup, serverAddress string) {
 }
 
 //StartServer 开启https服务
-func StartServer2(wg *sync.WaitGroup, serverAddress,crt,key string) {
+func StartServer2(wg *sync.WaitGroup, serverAddress, crt, key string) {
 	defer func() {
 		wg.Done()
 	}()
@@ -33,7 +33,7 @@ func StartServer2(wg *sync.WaitGroup, serverAddress,crt,key string) {
 	logTool.Log(logTool.Info, fmt.Sprintf("Web服务器监听：%s", serverAddress))
 	fmt.Println(fmt.Sprintf("Web服务器监听：%s", serverAddress))
 
-	if err := http.ListenAndServeTLS(serverAddress,crt,key, new(handle)); err != nil {
+	if err := http.ListenAndServeTLS(serverAddress, crt, key, new(handle)); err != nil {
 		logTool.LogObject(logTool.Error, err)
 	}
 }

@@ -1,4 +1,4 @@
-package	task
+package task
 
 import (
 	"time"
@@ -7,12 +7,12 @@ import (
 )
 
 // 开启任务监控
-func Moniter(){
+func Moniter() {
 	//  每分钟执行一次
 	for {
 		// 获取当前时间的日期
 		now := time.Now()
-		if now.Hour() == 1 && now.Minute() == 0{
+		if now.Hour() == 1 && now.Minute() == 0 {
 			ddzTask.CaclReward()
 		}
 

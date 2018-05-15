@@ -2,11 +2,10 @@ package main
 
 import (
 	"fmt"
-	
 )
 
 // 测试断言以及字符串
-func main(){
+func main() {
 	// 转换，强制转换
 	var uintTemp uint32
 	uintTemp = 1
@@ -19,7 +18,7 @@ func main(){
 	numbers2 := "xx你好\r\n1xxx啊"
 
 	// 数组,...指{}内有多少元素，就有多长
-	numbers3 := [...]string{"xx你好1xxx啊","x"}
+	numbers3 := [...]string{"xx你好1xxx啊", "x"}
 
 	fmt.Println(numbers[0:6])
 
@@ -27,13 +26,13 @@ func main(){
 	fmt.Println(string(numbers2))
 	fmt.Println(numbers3)
 
-	r1,r2:=interface{}(uintTemp).(int32)
-	fmt.Println(r1,r2)
+	r1, r2 := interface{}(uintTemp).(int32)
+	fmt.Println(r1, r2)
 
 	// 断言，不同类型断言会失败
 	fmt.Println(interface{}(uintTemp).(uint32))
 	fmt.Println(interface{}(uintTemp).(int32))
 
-	var  intputStr string 
+	var intputStr string
 	fmt.Scanln(intputStr)
 }

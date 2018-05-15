@@ -4,10 +4,10 @@ package main
 import (
 	"sync"
 
-	"xq.goproject.com/taskManager/src/task"
 	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/commonTools/emailTool"
 	"xq.goproject.com/commonTools/logTool"
+	"xq.goproject.com/taskManager/src/task"
 )
 
 var (
@@ -22,7 +22,7 @@ func init() {
 func main() {
 	// 设置邮箱信息
 	emailTool.SetSenderInfo(configTool.EmailHost, configTool.EmailPort, configTool.EmailName, configTool.EmailAddress, configTool.EmailPass)
-	
+
 	go task.Moniter()
 	wg.Wait()
 }

@@ -31,7 +31,7 @@ func testCond() {
 	}()
 
 	// 等待消息方法
-	func(){
+	func() {
 		// 锁住
 		c.L.Lock()
 		defer c.L.Unlock()

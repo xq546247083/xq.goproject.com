@@ -20,7 +20,7 @@ func fileBasedPipe() {
 	}
 	go func() {
 		// 循环读取数据
-		for{
+		for {
 			output := make([]byte, 100)
 			n, err := reader.Read(output)
 			if err != nil {
@@ -36,7 +36,7 @@ func fileBasedPipe() {
 		input[i-65] = byte(i)
 	}
 	n, err := writer.Write(input)
-	
+
 	if err != nil {
 		fmt.Printf("Error: Couldn't write data to the named pipe: %s\n", err)
 	}
@@ -44,7 +44,8 @@ func fileBasedPipe() {
 	time.Sleep(200 * time.Millisecond)
 	n, err = writer.Write(input)
 	n, err = writer.Write(input)
-	for{}
+	for {
+	}
 }
 
 func inMemorySyncPipe() {

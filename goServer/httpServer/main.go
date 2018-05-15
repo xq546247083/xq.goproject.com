@@ -19,7 +19,7 @@ func main() {
 	//开启web服务
 	go webServer.StartServer(&wg, configTool.WebListenAddress)
 
-	go webServer.StartServer2(&wg, configTool.WebListenAddresss,configTool.Crt,configTool.Key)
+	go webServer.StartServer2(&wg, configTool.WebListenAddresss, configTool.Crt, configTool.Key)
 
 	wg.Wait()
 }
