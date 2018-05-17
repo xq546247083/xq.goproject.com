@@ -11,6 +11,16 @@ import (
 
 // 测试获取传入的信号
 func main() {
+	testSignal()
+
+	// 等待信号退出
+	sigCh := make(chan os.Signal, 1)
+	signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)
+	<-sigCh
+}
+
+// 开启测试信号
+func testSignal() {
 	go func() {
 		time.Sleep(3 * time.Second)
 		sendSignal()
