@@ -12,7 +12,7 @@ func main() {
 
 // ----------------图片----------------
 //  图片
-type image interface {
+type iImage interface {
 	display()
 	loadFromDisk()
 }

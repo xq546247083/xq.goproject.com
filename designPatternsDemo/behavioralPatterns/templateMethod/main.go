@@ -14,13 +14,13 @@ func main() {
 
 // ----------------游戏----------------
 //  游戏
-type IGame interface {
+type iGame interface {
 	init()
 	startPlay()
 	endPlay()
 }
 
-func play(game IGame) {
+func play(game iGame) {
 	game.init()
 	game.startPlay()
 	game.endPlay()
