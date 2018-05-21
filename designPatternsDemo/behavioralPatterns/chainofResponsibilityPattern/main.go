@@ -14,7 +14,7 @@ func main() {
 	// 错误日志器没有重写Log方法，导致调用的基类的Log
 	errorLoggerObj.Log("A")
 
-	//
+	// 设置下一个日志
 	errorLoggerObj.setNextLogger(debugLoggerObj)
 	errorLoggerObj.Log("B")
 
