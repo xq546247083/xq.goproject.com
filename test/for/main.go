@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+	TestGo()
 	printTestTwo()
 }
 
@@ -28,6 +29,15 @@ func TestGo() {
 	for _, v := range data {
 		fmt.Println(v)
 		fmt.Println(fmt.Sprintf("%p", &v))
+	}
+
+	// 输出v当时的值
+	for _, v := range data {
+		go func() {
+			fmt.Println(v)
+		}()
+
+		// time.Sleep(time.Second)
 	}
 
 	time.Sleep(3 * time.Second)
