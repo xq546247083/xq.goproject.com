@@ -6,6 +6,15 @@ import (
 
 // 切片测试
 func main() {
+
+	testF := make([]int, 7, 7)
+	fmt.Println(testF, len(testF), cap(testF))
+
+	testF = append(testF, 1)
+	fmt.Println(testF, len(testF), cap(testF))
+}
+
+func test() {
 	a := [3]int{1}
 	a1 := make([]int, 0)
 	a2 := make([]int, 0, 0)
