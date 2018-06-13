@@ -17,6 +17,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"xq.goproject.com/commonTools/logTool"
 )
 
 // A Dir implements FileSystem using the native file system restricted to a
@@ -520,7 +522,7 @@ func serveFile(w http.ResponseWriter, r *http.Request, fs http.FileSystem, name 
 	if err != nil {
 		_, err404 := fs.Open("../" + path.Base(error404Page))
 
-		toHTTPErrorPage(w, r, err, err404)
+		toHTTPErrorPage(w, r, name, err, err404)
 		return
 	}
 	defer f.Close()
@@ -529,7 +531,7 @@ func serveFile(w http.ResponseWriter, r *http.Request, fs http.FileSystem, name 
 	if err != nil {
 		_, err404 := fs.Open("../" + path.Base(error404Page))
 
-		toHTTPErrorPage(w, r, err, err404)
+		toHTTPErrorPage(w, r, name, err, err404)
 		return
 	}
 
@@ -570,14 +572,14 @@ func serveFileBak(w http.ResponseWriter, r *http.Request, fs http.FileSystem, na
 	f, err := fs.Open(name)
 	if err != nil {
 
-		toHTTPErrorPage(w, r, err, err404)
+		toHTTPErrorPage(w, r, name, err, err404)
 		return
 	}
 	defer f.Close()
 
 	d, err := f.Stat()
 	if err != nil {
-		toHTTPErrorPage(w, r, err, err404)
+		toHTTPErrorPage(w, r, name, err, err404)
 		return
 	}
 
@@ -654,7 +656,9 @@ func toHTTPError(err error) (msg string, httpStatus int) {
 	return "<h1 align=\"center\">500 Internal Server Error</h1>", StatusInternalServerError
 }
 
-func toHTTPErrorPage(w http.ResponseWriter, r *http.Request, err error, err2 error) {
+func toHTTPErrorPage(w http.ResponseWriter, r *http.Request, name string, err, err2 error) {
+	logTool.LogError(fmt.Sprintf("试图访问不存在的文件，路径为%s", name))
+
 	//如果要返回的页面找不到，则根据错误，返回错误字段
 	if err2 != nil {
 		msg, code := toHTTPError(err)
