@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"runtime"
 	"sync"
+	"time"
 )
 
 var (
@@ -10,7 +12,17 @@ var (
 )
 
 func main() {
-	test()
+	go say("world")
+	say("hello")
+}
+
+func say(s string) {
+	for i := 0; i < 5; i++ {
+		time.Sleep(100 * time.Millisecond)
+		fmt.Println(s)
+	}
+
+	fmt.Print(runtime.NumGoroutine())
 }
 
 func test() {
@@ -19,6 +31,7 @@ func test() {
 		x = 1                   // A1
 		fmt.Print("y:", y, " ") // A2
 	}()
+
 	go func() {
 		y = 1                   // B1
 		fmt.Print("x:", x, " ") // B2
