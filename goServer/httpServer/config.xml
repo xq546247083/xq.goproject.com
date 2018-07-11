@@ -1,11 +1,14 @@
 ﻿<root>
 	<!--基础配置-->
 	<BaseConfig>
-		<!--WebServer监听的地址-->
-		<WebListenAddress>:8881</WebListenAddress>
+		<!--通信协议/http/https/All【All情况:https监控的端口为配置的+1】-->
+		<Protocol>All</Protocol>
 
-		<!--WebServer  https监听的地址-->
-		<WebListenAddresss>:8882</WebListenAddresss>
+		<!--WebServer监听端口-->
+		<ListenPort>10011</ListenPort>
+
+		<!--更新包-->
+		<UpdatePackage>update.tar</UpdatePackage>
 	</BaseConfig>
 
 	<!--服务器配置-->

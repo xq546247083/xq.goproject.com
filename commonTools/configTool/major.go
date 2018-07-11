@@ -106,6 +106,15 @@ var (
 	// 读取的配置
 	xmlConfig *XmlConfig
 
+	// 通信协议
+	Protocol = "All"
+
+	// 监听端口
+	ListenPort = 8881
+
+	// 更新包
+	UpdatePackage = "update.tar"
+
 	// 错误
 	err error
 )
@@ -229,6 +238,18 @@ func init() {
 
 	// 斗地主任务
 	DDZTask, err = xmlConfig.String("root/Task/DDZTask", "")
+	checkError(err, false)
+
+	// 协议
+	Protocol, err = xmlConfig.String("root/BaseConfig/Protocol", "")
+	checkError(err, false)
+
+	// 监听端口
+	ListenPort, err = xmlConfig.Int("root/BaseConfig/ListenPort", "")
+	checkError(err, false)
+
+	// 更新包
+	UpdatePackage, err = xmlConfig.String("root/BaseConfig/UpdatePackage", "")
 	checkError(err, false)
 }
 

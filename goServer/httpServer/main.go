@@ -3,23 +3,27 @@ package main
 import (
 	"sync"
 
-	"xq.goproject.com/commonTools/configTool"
+	"xq.goproject.com/goServer/httpServer/src/updatePackage"
 	"xq.goproject.com/goServer/httpServer/src/webServer"
 )
 
 var (
+	// wg
 	wg sync.WaitGroup
+
+	// 监控服务通道
+	monitorServerChan = make(chan bool, 0)
 )
 
 func init() {
-	wg.Add(2)
+	wg.Add(1)
 }
 
 func main() {
-	//开启web服务
-	go webServer.StartServer(&wg, configTool.WebListenAddress)
+	go webServer.Monitor(monitorServerChan)
+	go updatePackage.Monitor(monitorServerChan)
 
-	go webServer.StartServer2(&wg, configTool.WebListenAddresss, configTool.Crt, configTool.Key)
-
+	// 开启服务
+	monitorServerChan <- true
 	wg.Wait()
 }

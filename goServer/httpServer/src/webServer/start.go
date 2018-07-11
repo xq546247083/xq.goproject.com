@@ -3,37 +3,57 @@ package webServer
 import (
 	"fmt"
 	"net/http"
-	"sync"
+	"strconv"
+	"time"
 
+	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/commonTools/logTool"
 )
 
-//StartServer 开启服务
-func StartServer(wg *sync.WaitGroup, serverAddress string) {
-	defer func() {
-		wg.Done()
-	}()
-
-	//开启服务
-	logTool.Log(logTool.Info, fmt.Sprintf("Web服务器监听：%s", serverAddress))
-	fmt.Println(fmt.Sprintf("Web服务器监听：%s", serverAddress))
-
-	if err := http.ListenAndServe(serverAddress, new(handle)); err != nil {
-		logTool.LogObject(logTool.Error, err)
+// 监视开启服务，关闭服务通道
+func Monitor(monitorServerChan <-chan bool) {
+	for {
+		select {
+		case flag := <-monitorServerChan:
+			if flag {
+				startAllServer()
+			} else {
+				closeAllServer()
+			}
+		default:
+			time.Sleep(time.Millisecond * 100)
+		}
 	}
 }
 
-//StartServer 开启https服务
-func StartServer2(wg *sync.WaitGroup, serverAddress, crt, key string) {
-	defer func() {
-		wg.Done()
-	}()
-
+// startServer 开启服务
+func startServer(serverPort int) {
 	//开启服务
-	logTool.Log(logTool.Info, fmt.Sprintf("Web服务器监听：%s", serverAddress))
-	fmt.Println(fmt.Sprintf("Web服务器监听：%s", serverAddress))
+	logTool.LogInfo(fmt.Sprintf("Web服务器监听：%d", serverPort))
+	fmt.Println(fmt.Sprintf("Web服务器监听：%d", serverPort))
 
-	if err := http.ListenAndServeTLS(serverAddress, crt, key, new(handle)); err != nil {
-		logTool.LogObject(logTool.Error, err)
+	// 添加服务
+	server := &http.Server{Addr: ":" + strconv.Itoa(serverPort), Handler: new(handle)}
+	addServer(server)
+
+	if err := server.ListenAndServe(); err != nil {
+		removeServer(server)
+		logTool.LogError(err.Error())
+	}
+}
+
+// startServerTLS 开启TLS服务
+func startServerTLS(serverPort int) {
+	//开启服务
+	logTool.LogInfo(fmt.Sprintf("Web https服务器监听：%d", serverPort))
+	fmt.Println(fmt.Sprintf("Web https服务器监听：%d", serverPort))
+
+	// 添加服务
+	server := &http.Server{Addr: ":" + strconv.Itoa(serverPort), Handler: new(handle)}
+	addServer(server)
+
+	if err := server.ListenAndServeTLS(configTool.Crt, configTool.Key); err != nil {
+		removeServer(server)
+		logTool.LogError(err.Error())
 	}
 }
