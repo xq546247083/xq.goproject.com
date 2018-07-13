@@ -2,20 +2,23 @@ package main
 
 import (
 	"sync"
+	"time"
 
 	"xq.goproject.com/test/kafka/consumer"
+	"xq.goproject.com/test/kafka/producer"
 )
 
-var Address = []string{"10.130.138.164:9092", "10.130.138.164:9093", "10.130.138.164:9094"}
+var address = []string{"127.0.0.1:9092"}
 
 func main() {
-	topic := []string{"test"}
 	var wg = &sync.WaitGroup{}
 	wg.Add(2)
-	//广播式消费：消费者1
-	go consumer.ClusterConsumer(wg, Address, topic, "group-1")
-	//广播式消费：消费者2
-	go consumer.ClusterConsumer(wg, Address, topic, "group-2")
+
+	// 启动消费者
+	topic := []string{"test"}
+	go producer.AsyncProducer(wg, address)
+	time.Sleep(5 * time.Second)
+	go consumer.ClusterConsumer(wg, address, topic, "Group1")
 
 	wg.Wait()
 }

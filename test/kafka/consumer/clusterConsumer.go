@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/signal"
 	"sync"
 
 	"github.com/Shopify/sarama"
@@ -27,10 +26,6 @@ func ClusterConsumer(wg *sync.WaitGroup, brokers, topics []string, groupId strin
 	}
 	defer consumer.Close()
 
-	// trap SIGINT to trigger a shutdown
-	signals := make(chan os.Signal, 1)
-	signal.Notify(signals, os.Interrupt)
-
 	// consume errors
 	go func() {
 		for err := range consumer.Errors() {
@@ -47,18 +42,49 @@ func ClusterConsumer(wg *sync.WaitGroup, brokers, topics []string, groupId strin
 
 	// consume messages, watch signals
 	var successes int
-Loop:
+
 	for {
 		select {
 		case msg, ok := <-consumer.Messages():
 			if ok {
-				fmt.Fprintf(os.Stdout, "%s:%s/%d/%d\t%s\t%s\n", groupId, msg.Topic, msg.Partition, msg.Offset, msg.Key, msg.Value)
+				fmt.Fprintf(os.Stdout, "消费者：%s:%s/%d/%d\t%s\t%s\n", groupId, msg.Topic, msg.Partition, msg.Offset, msg.Key, msg.Value)
 				consumer.MarkOffset(msg, "") // mark message as processed
 				successes++
 			}
-		case <-signals:
-			break Loop
 		}
 	}
-	fmt.Fprintf(os.Stdout, "%s consume %d messages \n", groupId, successes)
+}
+
+// 分片消费者
+func ClusterPartitionConsumer(wg *sync.WaitGroup, brokers, topics []string, groupId string) {
+	defer wg.Done()
+
+	// init (custom) config, set mode to ConsumerModePartitions
+	config := cluster.NewConfig()
+	config.Group.Mode = cluster.ConsumerModePartitions
+
+	// init consumer
+	consumer, err := cluster.NewConsumer(brokers, groupId, topics, config)
+	if err != nil {
+		panic(err)
+	}
+	defer consumer.Close()
+
+	// consume partitions
+	for {
+		select {
+		case part, ok := <-consumer.Partitions():
+			if !ok {
+				return
+			}
+
+			// start a separate goroutine to consume messages
+			go func(pc cluster.PartitionConsumer) {
+				for msg := range pc.Messages() {
+					fmt.Fprintf(os.Stdout, "%s/%d/%d\t%s\t%s\n", msg.Topic, msg.Partition, msg.Offset, msg.Key, msg.Value)
+					consumer.MarkOffset(msg, "") // mark message as processed
+				}
+			}(part)
+		}
+	}
 }
