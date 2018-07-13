@@ -12,6 +12,23 @@ func main() {
 
 	testF = append(testF, 1)
 	fmt.Println(testF, len(testF), cap(testF))
+
+	testCap()
+}
+
+func testCap() {
+	a := make([]int, 3, 5)
+	b := a[1:3:3]
+	c := append(b, 1)
+
+	// 扩展时，重新创建了一个底层数据，地址变化
+	fmt.Println(fmt.Sprintf("%p----%p--------%v", b, c, c))
+
+	d := make([]int, 3, 5)
+	e := d[1:3:5]
+	f := append(e, 1)
+
+	fmt.Println(fmt.Sprintf("%p----%p--------%v", e, f, f))
 }
 
 func test() {
