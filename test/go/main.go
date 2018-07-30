@@ -12,8 +12,27 @@ var (
 )
 
 func main() {
-	go say("world")
-	say("hello")
+	// go say("world")
+	// say("hello")
+
+	testSelect()
+}
+
+func testSelect() {
+	chan1 := make(chan int)
+	chan2 := make(chan int)
+
+	go func(chanInt chan<- int) {
+		time.Sleep(500 * time.Second)
+		chanInt <- 1
+	}(chan1)
+
+	select {
+	case a := <-chan1:
+		fmt.Println("a", a)
+	case b := <-chan2:
+		fmt.Println("b", b)
+	}
 }
 
 func say(s string) {
