@@ -6,6 +6,7 @@ import (
 
 // 切片测试
 func main() {
+	testPtr()
 
 	testF := make([]int, 7, 7)
 	fmt.Println(testF, len(testF), cap(testF))
@@ -14,6 +15,23 @@ func main() {
 	fmt.Println(testF, len(testF), cap(testF))
 
 	testCap()
+}
+
+// 测试数组的指针
+func testPtr() {
+	a1 := make([]int, 0, 1)
+	a1 = append(a1, 1)
+	ptr := &a1[0]
+
+	// 这里改值是改到了
+	*ptr = 5
+	fmt.Println(a1)
+
+	// 这里数组扩容后，现在数组的地址发生了改变
+	a1 = append(a1, 1)
+	*ptr = 6
+	fmt.Println(a1)
+	fmt.Println(ptr, &a1[0])
 }
 
 func testCap() {
