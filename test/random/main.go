@@ -3,22 +3,17 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"time"
 )
 
 func main() {
-	for i := 1; i <= 5; i++ {
-		fmt.Println(Generate_Randnum())
+	dtNow := time.Now()
+
+	rand.Seed(time.Now().Unix())
+	for i := 1; i <= 100000; i++ {
+		// rand.Seed(time.Now().Unix())
+		rand.Intn(100)
 	}
-}
 
-func Generate_Randnum() int {
-	//  rand.Seed(time.Now().Unix())
-	rnd := rand.Intn(100)
-
-	fmt.Printf("rand is %v\n", rnd)
-
-	rnds := rand.Float64()
-	fmt.Printf("rnds is %v\n", rnds)
-
-	return rnd
+	fmt.Println(time.Now().Sub(dtNow).Seconds())
 }
