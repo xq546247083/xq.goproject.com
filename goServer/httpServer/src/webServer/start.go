@@ -6,6 +6,10 @@ import (
 	"strconv"
 	"time"
 
+	"crypto/x509"
+
+	"crypto/tls"
+	"io/ioutil"
 	"xq.goproject.com/commonTools/configTool"
 	"xq.goproject.com/commonTools/logTool"
 )
@@ -48,12 +52,34 @@ func startServerTLS(serverPort int) {
 	logTool.LogInfo(fmt.Sprintf("Web https服务器监听：%d", serverPort))
 	fmt.Println(fmt.Sprintf("Web https服务器监听：%d", serverPort))
 
+	// 创建证书池子
+	pool := x509.NewCertPool()
+	addTrust(pool, configTool.Crt)
+
+	server := &http.Server{
+		Addr:    ":" + strconv.Itoa(serverPort),
+		Handler: new(handle),
+		TLSConfig: &tls.Config{
+			ClientCAs:  pool,
+			ClientAuth: tls.RequireAndVerifyClientCert,
+		}}
+
 	// 添加服务
-	server := &http.Server{Addr: ":" + strconv.Itoa(serverPort), Handler: new(handle)}
 	addServer(server)
 
 	if err := server.ListenAndServeTLS(configTool.Crt, configTool.Key); err != nil {
 		removeServer(server)
 		logTool.LogError(err.Error())
 	}
+}
+
+// 添加信任
+func addTrust(pool *x509.CertPool, path string) {
+	aCrt, err := ioutil.ReadFile(path)
+	if err != nil {
+		fmt.Println("ReadFile err:", err)
+		return
+	}
+
+	pool.AppendCertsFromPEM(aCrt)
 }
