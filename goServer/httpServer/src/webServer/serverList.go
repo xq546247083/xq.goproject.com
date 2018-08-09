@@ -45,7 +45,13 @@ func startAllServer() {
 		go startServerTLS(configTool.ListenPort)
 	} else {
 		go startServer(configTool.ListenPort)
-		go startServerTLS(configTool.ListenPort + 1)
+
+		// 端口判定
+		httpsPort := 443
+		if configTool.ListenPort != 80 {
+			httpsPort = configTool.ListenPort + 1
+		}
+		go startServerTLS(httpsPort)
 	}
 }
 
