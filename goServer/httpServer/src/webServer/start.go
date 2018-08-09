@@ -54,14 +54,14 @@ func startServerTLS(serverPort int) {
 
 	// 创建证书池子
 	pool := x509.NewCertPool()
-	addTrust(pool, configTool.Crt)
+	addTrust(pool, configTool.Ca)
 
 	server := &http.Server{
 		Addr:    ":" + strconv.Itoa(serverPort),
 		Handler: new(handle),
 		TLSConfig: &tls.Config{
 			ClientCAs:  pool,
-			ClientAuth: tls.RequireAndVerifyClientCert,
+			ClientAuth: tls.NoClientCert,
 		}}
 
 	// 添加服务
@@ -69,6 +69,7 @@ func startServerTLS(serverPort int) {
 
 	if err := server.ListenAndServeTLS(configTool.Crt, configTool.Key); err != nil {
 		removeServer(server)
+		fmt.Println(err.Error())
 		logTool.LogError(err.Error())
 	}
 }

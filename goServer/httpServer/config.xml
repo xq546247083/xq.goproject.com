@@ -52,7 +52,8 @@
 	</WebConfig>
 	<!--https证书配置-->
 	<CrtConfig>
-		<Crt>xiaohe.info_ca.crt</Crt>
-		<Key>xiaohe.info.key</Key>
+		<Crt>server.crt</Crt>
+		<Key>server.key</Key>
+		<Ca>ca.crt</Ca>
 	</CrtConfig>
 </root>

@@ -100,6 +100,9 @@ var (
 	// key
 	Key = ""
 
+	// Ca
+	Ca = ""
+
 	// 斗地主任务
 	DDZTask = ""
 
@@ -226,6 +229,9 @@ func init() {
 	checkError(err, false)
 
 	Key, err = xmlConfig.String("root/CrtConfig/Key", "")
+	checkError(err, false)
+
+	Ca, err = xmlConfig.String("root/CrtConfig/Ca", "")
 	checkError(err, false)
 
 	//web客户端的配置
