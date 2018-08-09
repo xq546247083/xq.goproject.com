@@ -61,7 +61,7 @@ func startServerTLS(serverPort int) {
 		Handler: new(handle),
 		TLSConfig: &tls.Config{
 			ClientCAs:  pool,
-			ClientAuth: tls.RequireAndVerifyClientCert,
+			ClientAuth: tls.RequestClientCert,
 		}}
 
 	// 添加服务
