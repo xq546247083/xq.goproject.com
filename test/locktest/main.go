@@ -4,13 +4,26 @@ import (
 	"fmt"
 	"sync"
 	"time"
+
+	"xq.goproject.com/test/locktest/lockUtilTest"
 )
 
 // 测试锁，以及其异常
 func main() {
-	locktest()
+	locklocktest()
+	locklocktest2()
 
 	fmt.Scanln()
+}
+
+func locklocktest() {
+	userLock := lockUtilTest.GetLock(1)
+	userLock.Lock()
+}
+
+func locklocktest2() {
+	userLock := lockUtilTest.GetLock(1)
+	userLock.Lock()
 }
 
 // 测试锁
