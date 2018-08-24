@@ -1,11 +1,39 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 // 测试断言以及字符串
 func main() {
+	var ti testInterface
+	ti = new(chlidStruct)
+
+	_, ok := ti.(*baseStruct)
+	fmt.Println(ok)
+
+	_, ok = ti.(*chlidStruct)
+	fmt.Println(ok)
+}
+
+type testInterface interface {
+	GetName()
+}
+
+type baseStruct struct {
+}
+
+func (this *baseStruct) GetName() {
+
+}
+
+type chlidStruct struct {
+	baseStruct
+}
+
+func testFunc(temp *baseStruct) {
+
+}
+
+func testBase() {
 	// 转换，强制转换
 	var uintTemp uint32
 	uintTemp = 1
