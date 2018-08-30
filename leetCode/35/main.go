@@ -3,17 +3,20 @@ package main
 import "fmt"
 
 func main() {
-
-	a := []int{}
-	b := 1
+	a := []int{1, 3, 5, 6}
+	b := 0
 	fmt.Println(searchInsert(a, b))
-	fmt.Println(a)
 }
 
 func searchInsert(nums []int, target int) int {
 	length := len(nums)
 	if length == 0 {
 		nums = append(nums, target)
+		return 0
+	}
+
+	if target < nums[0] {
+		nums = append([]int{target}, nums...)
 		return 0
 	}
 

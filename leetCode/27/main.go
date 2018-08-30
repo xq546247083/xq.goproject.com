@@ -3,8 +3,9 @@ package main
 import "fmt"
 
 func main() {
-
-	fmt.Println(removeElement([]int{1, 1, 3, 2, 2}, 2))
+	nums := []int{1, 1, 3, 2, 2}
+	fmt.Println(removeElement(nums, 2))
+	fmt.Println(nums)
 }
 
 func removeElement(nums []int, val int) int {
