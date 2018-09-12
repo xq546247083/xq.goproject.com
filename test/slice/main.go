@@ -6,6 +6,9 @@ import (
 
 // 切片测试
 func main() {
+	testDel()
+	return
+
 	testPtr()
 
 	testF := make([]int, 7, 7)
@@ -73,4 +76,23 @@ func TestSet(intArray [3]int) {
 // 传递数组的地址
 func TestSet2(intArray *[3]int) {
 	(*intArray)[0] = 3
+}
+
+func testDel() {
+	data := make([]int, 5, 5)
+	data[0] = 1
+	data[1] = 2
+	data[2] = 3
+	data[3] = 4
+	data[4] = 5
+
+	for index, item := range data {
+		fmt.Println(index, data[index])
+		if item == 2 || item == 4 {
+			data = append(data[:index], data[index+1:]...)
+
+		}
+
+		fmt.Println(data)
+	}
 }
