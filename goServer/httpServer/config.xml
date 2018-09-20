@@ -2,7 +2,7 @@
 	<!--基础配置-->
 	<BaseConfig>
 		<!--通信协议/http/https/All【All情况:https监控的端口为配置的+1】-->
-		<Protocol>All</Protocol>
+		<Protocol>http</Protocol>
 
 		<!--WebServer监听端口-->
 		<ListenPort>10011</ListenPort>
@@ -50,10 +50,4 @@
 		<!--500错误页面-->
 		<Error500Page>/500.html</Error500Page>
 	</WebConfig>
-	<!--https证书配置-->
-	<CrtConfig>
-		<Crt>server.crt</Crt>
-		<Key>server.key</Key>
-		<Ca>ca.crt</Ca>
-	</CrtConfig>
 </root>
