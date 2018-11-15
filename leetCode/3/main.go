@@ -5,23 +5,34 @@ import (
 )
 
 func main() {
-	fmt.Println(isPalindrome(313))
+	fmt.Println(lengthOfLongestSubstring("ababccb"))
 }
 
-func isPalindrome(x int) bool {
-	if x < 0 || (x%10 == 0 && x != 0) {
-		return false
-	}
+func lengthOfLongestSubstring(s string) int {
+	result := 0
+	sLen := len(s)
+	tempMap := make(map[uint8]int, sLen)
 
-	var revertedNumber int = 0
-	for {
-		if x <= revertedNumber {
-			break
+	// i为标记子串的起始位置
+	for j, i := 0, 0; j < sLen; j++ {
+		// 当发现重复字符时，重置子串的起始位置
+		if index, ok := tempMap[s[j]]; ok {
+			i = max(index, i)
 		}
 
-		revertedNumber = revertedNumber*10 + x%10
-		x /= 10
+		fmt.Println("a", i)
+		// 计算当前子序列的长度
+		result = max(result, j-i+1)
+		tempMap[s[j]] = j + 1
 	}
 
-	return x == revertedNumber || x == revertedNumber/10
+	return result
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+
+	return b
 }
