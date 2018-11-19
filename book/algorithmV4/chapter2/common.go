@@ -10,6 +10,15 @@ func less(a, b int) bool {
 	return a < b
 }
 
+// 比较大小
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+
+	return b
+}
+
 // 交换数组元素
 func exch(nums []int, a, b int) []int {
 	nums[a], nums[b] = nums[b], nums[a]
@@ -22,7 +31,7 @@ func getRandomList(len int) []int {
 
 	i := 0
 	for {
-		randomInt := r.Intn(1000)
+		randomInt := r.Intn(10000)
 		nums = append(nums, randomInt)
 
 		i++
