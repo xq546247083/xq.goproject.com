@@ -1,3 +1,5 @@
+// 从第一个元素开始，把当前元素插入到当前元素左侧合适的位置，使当前元素的左侧一直有序。
+// 以实现排序。
 package chapter1
 
 import "testing"
@@ -13,7 +15,7 @@ func insertSort(nums []int) []int {
 	return nums
 }
 
-// TestInsertSortt 测试
-func TestInsertSortt(t *testing.T) {
+// TestInsertSort 测试
+func TestInsertSort(t *testing.T) {
 	t.Errorf("%v", selectSort([]int{2, 7, 5, 1, 4, 66, 3, 3, 2}))
 }
