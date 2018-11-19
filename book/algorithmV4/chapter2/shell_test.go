@@ -5,6 +5,11 @@ package chapter1
 
 import "testing"
 
+// TestShellSort 测试
+func TestShellSort(t *testing.T) {
+	t.Errorf("%v", shellSort([]int{2, 7, 5, 1, 4, 66, 3, 3, 2}))
+}
+
 // 希尔排序
 func shellSort(nums []int) []int {
 	lenNum := len(nums)
@@ -36,9 +41,4 @@ func shellSort(nums []int) []int {
 	}
 
 	return nums
-}
-
-// TestShellSort 测试
-func TestShellSort(t *testing.T) {
-	t.Errorf("%v", selectSort([]int{2, 7, 5, 1, 4, 66, 3, 3, 2}))
 }
