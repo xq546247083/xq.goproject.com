@@ -6,14 +6,15 @@ import (
 	"testing"
 )
 
-// TestMergelSort 测试
-func TestMergelSort(t *testing.T) {
+// TestMergeSort 测试
+func TestMergeSort(t *testing.T) {
 	nums := getRandomList(10000000)
 	t.Errorf("%v", mergeSort(nums, 0, len(nums)-1))
 }
 
 // 归并排序
 func mergeSort(nums []int, min, max int) []int {
+	// 只有一个元素的时候，因为只有一个，那么它是肯定有序的，所以直接返回数组
 	if min >= max {
 		return nums
 	}

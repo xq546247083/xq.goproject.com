@@ -6,14 +6,15 @@ import (
 	"testing"
 )
 
-// TestMergelSort2 测试
-func TestMergelSort2(t *testing.T) {
+// TestMergeSort2 测试
+func TestMergeSort2(t *testing.T) {
 	nums := getRandomList(10000000)
 	t.Errorf("%v", mergeSort2(nums, 0, len(nums)-1))
 }
 
 // 优化的归并排序，在数据量大时，使用归并排序，其他时候，使用插入排序
 func mergeSort2(nums []int, min, max int) []int {
+	// 只有一个元素的时候，因为只有一个，那么它是肯定有序的，所以直接返回数组
 	if min >= max {
 		return nums
 	}

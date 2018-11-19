@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-// TestMergelSort3 测试
-func TestMergelSort3(t *testing.T) {
+// TestMergeSort3 测试
+func TestMergeSort3(t *testing.T) {
 	nums := getRandomList(10000)
 	t.Errorf("%v", mergeSort3(nums))
 }
