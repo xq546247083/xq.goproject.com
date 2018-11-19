@@ -1,4 +1,4 @@
-package Chapter1
+package chapter1
 
 //二分法查找
 //切片s是升序的
