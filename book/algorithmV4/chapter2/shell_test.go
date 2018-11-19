@@ -7,7 +7,8 @@ import "testing"
 
 // TestShellSort 测试
 func TestShellSort(t *testing.T) {
-	t.Errorf("%v", shellSort([]int{2, 7, 5, 1, 4, 66, 3, 3, 2}))
+	nums := getRandomList(10000)
+	t.Errorf("%v", shellSort(nums))
 }
 
 // 希尔排序

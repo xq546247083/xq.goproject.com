@@ -4,6 +4,12 @@ package chapter1
 
 import "testing"
 
+// TestInsertSort 测试
+func TestInsertSort(t *testing.T) {
+	nums := getRandomList(10000)
+	t.Errorf("%v", insertSort(nums))
+}
+
 // 插入排序
 func insertSort(nums []int) []int {
 	for i := 0; i < len(nums); i++ {
@@ -13,9 +19,4 @@ func insertSort(nums []int) []int {
 	}
 
 	return nums
-}
-
-// TestInsertSort 测试
-func TestInsertSort(t *testing.T) {
-	t.Errorf("%v", insertSort([]int{2, 7, 5, 1, 4, 66, 3, 3, 2}))
 }

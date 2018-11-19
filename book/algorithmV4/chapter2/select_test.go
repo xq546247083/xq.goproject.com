@@ -7,7 +7,8 @@ import "testing"
 
 // TestSelectSort 测试选择排序
 func TestSelectSort(t *testing.T) {
-	t.Errorf("%v", selectSort([]int{2, 7, 5, 1, 4, 66, 3, 3, 2}))
+	nums := getRandomList(10000)
+	t.Errorf("%v", selectSort(nums))
 }
 
 // 选择排序
