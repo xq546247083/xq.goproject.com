@@ -69,7 +69,7 @@ func updateTableColumnList(tables []*tableInfo) {
 func doToMd(tables []*tableInfo) {
 	// 创建文件
 	filename := DataBaseName + "数据库.md"
-	file, err := os.OpenFile(filename, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
+	file, err := os.OpenFile(filename, os.O_CREATE|os.O_RDWR, 0666)
 	if err != nil {
 		log.Println("创建文件失败,错误:", err.Error())
 		os.Exit(1)

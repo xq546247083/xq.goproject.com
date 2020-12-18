@@ -1,7 +1,9 @@
 package core
 
 import (
+	"bytes"
 	"database/sql"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -11,9 +13,11 @@ import (
 
 // 转换为mysql语句
 func ToMysql() {
-	getTableInfoFromFile()
+	tables := getTableInfoFromFile()
+	tableToSql(tables)
 }
 
+// 从md文件获取表信息
 func getTableInfoFromFile() []*tableInfo {
 	// 拼凑文件路径
 	filePath, err := filepath.Abs(ToMysqlMdFilePath)
@@ -89,4 +93,61 @@ func getTableInfoFromFile() []*tableInfo {
 	}
 
 	return tableInfoList
+}
+
+// 表信息转sql
+func tableToSql(tables []*tableInfo) {
+	// 创建文件
+	filename := "数据库.sql"
+	file, err := os.OpenFile(filename, os.O_CREATE|os.O_RDWR, 0666)
+	if err != nil {
+		log.Println("创建文件失败,错误:", err.Error())
+		os.Exit(1)
+	}
+	defer file.Close()
+
+	// 字节流
+	buf := bytes.Buffer{}
+
+	// 循环表，组装sql
+	for _, tableObj := range tables {
+		tableStartSql := fmt.Sprintf("CREATE TABLE IF NOT EXISTS `%s`(\n", tableObj.Name)
+		buf.WriteString(tableStartSql)
+
+		// 循环列，组装sql
+		var priKeyList []string
+		for _, columnObj := range tableObj.ColumnList {
+			if columnObj.Key.String == "PRI" {
+				priKeyList = append(priKeyList, columnObj.Name)
+			}
+
+			// 获取空字符串
+			nullStr := "NOT NULL"
+			if strings.ToLower(columnObj.IsNullAble) == "yes" {
+				nullStr = "NULL"
+			}
+
+			// 获取默认字符串
+			defaultStr := "NULL"
+			if columnObj.Default.Valid {
+				defaultStr = fmt.Sprintf("'%s'", columnObj.Default.String)
+			}
+
+			columnSql := fmt.Sprintf("`%s` %s %s DEFAULT %s COMMENT '%s',\n", columnObj.Name, columnObj.Type, nullStr, defaultStr, columnObj.Desc.String)
+			buf.WriteString(columnSql)
+		}
+
+		// 主键sql
+		tablePriSql := fmt.Sprintf("PRIMARY KEY(`%s`)\n", strings.Join(priKeyList, "`,`"))
+		buf.WriteString(tablePriSql)
+		tableEndSql := fmt.Sprintf(")\nCOMMENT='%s';\n", tableObj.Desc.String)
+		buf.WriteString(tableEndSql)
+		buf.WriteString("\n")
+	}
+
+	if _, err := file.Write(buf.Bytes()); err != nil {
+		log.Println("file write fail,err:", err.Error())
+		os.Exit(1)
+	}
+	fmt.Println("导出成功 ==>", filename)
 }

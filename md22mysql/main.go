@@ -23,7 +23,7 @@ func init() {
 		os.Exit(0)
 	}
 
-	flag.StringVar(&core.ToMysqlMdFilePath, "f", "test数据库.md", "toMysql的MD文件路径")
+	flag.StringVar(&core.ToMysqlMdFilePath, "f", "", "toMysql的MD文件路径")
 	flag.StringVar(&core.MysqlNetAddress, "h", "127.0.0.1:3306", "数据库地址")
 	flag.StringVar(&core.MysqlUserName, "u", "root", "数据库用户名")
 	flag.StringVar(&core.MysqlPwd, "p", "12345678", "数据库密码")
