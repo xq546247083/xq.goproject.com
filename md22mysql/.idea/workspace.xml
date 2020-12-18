@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="be777562-44b1-4f4b-aa6f-8866fd75dae0" name="Default Changelist" comment="tomd完成">
+    <list default="true" id="be777562-44b1-4f4b-aa6f-8866fd75dae0" name="Default Changelist" comment="toMysql完成">
       <change afterPath="$PROJECT_DIR$/数据库.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/tomd.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/tomd.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/tomysql.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/tomysql.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test数据库.md" beforeDir="false" afterPath="$PROJECT_DIR$/test数据库.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

@@ -78,9 +78,6 @@ func doToMd(tables []*tableInfo) {
 
 	// 字节流
 	buf := bytes.Buffer{}
-	//写标题
-	buf.WriteString(fmt.Sprintf("# %s\n", DataBaseName))
-	buf.WriteString("\n")
 
 	// 循环表，写信息
 	for _, tableObj := range tables {
@@ -95,7 +92,12 @@ func doToMd(tables []*tableInfo) {
 			if !j.Default.Valid {
 				defaultStr = "null"
 			} else {
-				defaultStr = fmt.Sprintf("\"%s\"", j.Default.String)
+				if strings.Contains(j.Type, "char") {
+					defaultStr = fmt.Sprintf("\"%s\"", j.Default.String)
+				} else {
+					defaultStr = fmt.Sprintf("%s", j.Default.String)
+				}
+
 			}
 
 			// 获取类型
@@ -106,7 +108,8 @@ func doToMd(tables []*tableInfo) {
 
 			buf.WriteString(fmt.Sprintf("|%s|%s|%s|%s|%s|\"%s\"|\n", j.Name, j.Type, keyStr, j.IsNullAble, defaultStr, j.Desc.String))
 		}
-		buf.WriteString("\n")
+
+		buf.WriteString("\n<br>\n\n")
 	}
 	if _, err := file.Write(buf.Bytes()); err != nil {
 		log.Println("file write fail,err:", err.Error())
