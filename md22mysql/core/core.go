@@ -7,6 +7,12 @@ import (
 	"os"
 )
 
+// 列title
+const columnTitle = "|字段|类型|主键|是否为空|默认|注释|"
+
+// 列分割线
+const columnSeparator = "| :--: | :--: | :--: | :--: | :--: | :--: |"
+
 var (
 	// 数据库用户名
 	MysqlUserName string
@@ -19,6 +25,9 @@ var (
 
 	// 数据库名字
 	DataBaseName string
+
+	// toMysql的MD文件路径
+	ToMysqlMdFilePath string
 
 	// 数据库连接
 	mysqlConn *sql.DB

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 // 获取表列表
@@ -36,11 +37,12 @@ func updateTableColumnList(tables []*tableInfo) {
 	// 获取表字符串
 	var tableListStr string
 	for _, tableObj := range tables {
-		tableListStr = tableListStr + tableObj.Name
+		tableListStr = tableListStr + ",'" + tableObj.Name + "'"
 	}
+	tableListStr = strings.Trim(tableListStr, ",")
 
 	// 查询表下面的列信息
-	queryRowInfo, err := mysqlConn.Query(fmt.Sprintf("select TABLE_NAME,COLUMN_NAME,IS_NULLABLE, COLUMN_TYPE,COLUMN_DEFAULT,COLUMN_COMMENT,COLUMN_Key from information_schema.`COLUMNS` where TABLE_SCHEMA ='%s' and TABLE_NAME IN (%s)", DataBaseName, "'"+tableListStr+"'"))
+	queryRowInfo, err := mysqlConn.Query(fmt.Sprintf("select TABLE_NAME,COLUMN_NAME,IS_NULLABLE, COLUMN_TYPE,COLUMN_DEFAULT,COLUMN_COMMENT,COLUMN_Key from information_schema.`COLUMNS` where TABLE_SCHEMA ='%s' and TABLE_NAME IN (%s)", DataBaseName, tableListStr))
 	if err != nil {
 		log.Println("select table info failed,err :", err.Error())
 		os.Exit(1)
@@ -81,21 +83,19 @@ func doToMd(tables []*tableInfo) {
 	buf.WriteString("\n")
 
 	// 循环表，写信息
-	for i, tableObj := range tables {
+	for _, tableObj := range tables {
 		//表名
-		buf.WriteString(fmt.Sprintf("### %d. %s：%s\n", i+1, tableObj.Name, tableObj.Desc.String))
+		buf.WriteString(fmt.Sprintf("### %s:%s\n", tableObj.Name, tableObj.Desc.String))
 		//表内容
-		buf.WriteString("|字段|类型|键|空|默认|注释|\n")
-		buf.WriteString("| :--: | :--: | :--: | :--: | :--: | :--: |\n")
+		buf.WriteString(columnTitle + "\n")
+		buf.WriteString(columnSeparator + "\n")
 		for _, j := range tableObj.ColumnList {
 			// 获取默认字符串
 			var defaultStr string
 			if !j.Default.Valid {
-				defaultStr = "Null"
-			} else if j.Default.String == "" {
-				defaultStr = "\"\""
+				defaultStr = "null"
 			} else {
-				defaultStr = j.Default.String
+				defaultStr = fmt.Sprintf("\"%s\"", j.Default.String)
 			}
 
 			// 获取类型
@@ -104,8 +104,9 @@ func doToMd(tables []*tableInfo) {
 				keyStr = "PK"
 			}
 
-			buf.WriteString(fmt.Sprintf("|%s|%s|%s|%s|%s|%s|\n", j.Name, j.Type, keyStr, j.IsNullAble, defaultStr, j.Desc.String))
+			buf.WriteString(fmt.Sprintf("|%s|%s|%s|%s|%s|\"%s\"|\n", j.Name, j.Type, keyStr, j.IsNullAble, defaultStr, j.Desc.String))
 		}
+		buf.WriteString("\n")
 	}
 	if _, err := file.Write(buf.Bytes()); err != nil {
 		log.Println("file write fail,err:", err.Error())
