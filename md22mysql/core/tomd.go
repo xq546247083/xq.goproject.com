@@ -42,7 +42,7 @@ func updateTableColumnList(tables []*tableInfo) {
 	tableListStr = strings.Trim(tableListStr, ",")
 
 	// 查询表下面的列信息
-	queryRowInfo, err := mysqlConn.Query(fmt.Sprintf("select TABLE_NAME,COLUMN_NAME,IS_NULLABLE, COLUMN_TYPE,COLUMN_DEFAULT,COLUMN_COMMENT,COLUMN_Key from information_schema.`COLUMNS` where TABLE_SCHEMA ='%s' and TABLE_NAME IN (%s)", DataBaseName, tableListStr))
+	queryRowInfo, err := mysqlConn.Query(fmt.Sprintf("select TABLE_NAME,COLUMN_NAME,IS_NULLABLE, COLUMN_TYPE,COLUMN_DEFAULT,COLUMN_COMMENT,COLUMN_Key,Extra from information_schema.`COLUMNS` where TABLE_SCHEMA ='%s' and TABLE_NAME IN (%s)", DataBaseName, tableListStr))
 	if err != nil {
 		log.Println("select table info failed,err :", err.Error())
 		os.Exit(1)
@@ -53,7 +53,7 @@ func updateTableColumnList(tables []*tableInfo) {
 	for queryRowInfo.Next() {
 		var tableName string
 		columnObj := new(columnInfo)
-		if err := queryRowInfo.Scan(&tableName, &columnObj.Name, &columnObj.IsNullAble, &columnObj.Type, &columnObj.Default, &columnObj.Desc, &columnObj.Key); err != nil {
+		if err := queryRowInfo.Scan(&tableName, &columnObj.Name, &columnObj.IsNullAble, &columnObj.Type, &columnObj.Default, &columnObj.Desc, &columnObj.Key, &columnObj.Extra); err != nil {
 			log.Println("scan table failed,err:", err.Error())
 			os.Exit(1)
 		}
@@ -104,6 +104,15 @@ func doToMd(tables []*tableInfo) {
 			var keyStr string
 			if j.Key.Valid && j.Key.String == "PRI" {
 				keyStr = "PK"
+			}
+
+			// 获取自动递增类型
+			if j.Extra.Valid && strings.Contains(j.Extra.String, "auto_increment") {
+				if keyStr == "" {
+					keyStr = "AI"
+				} else {
+					keyStr = keyStr + ",AI"
+				}
 			}
 
 			buf.WriteString(fmt.Sprintf("|%s|%s|%s|%s|%s|\"%s\"|\n", j.Name, j.Type, keyStr, j.IsNullAble, defaultStr, j.Desc.String))

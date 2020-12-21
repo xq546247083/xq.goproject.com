@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="be777562-44b1-4f4b-aa6f-8866fd75dae0" name="Default Changelist" comment="优化了一波代码">
+      <change afterPath="$PROJECT_DIR$/md22mysql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/core.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/core.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/model.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/tomd.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/tomd.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/tomysql.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/tomysql.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test数据库.md" beforeDir="false" afterPath="$PROJECT_DIR$/test数据库.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/数据库.sql" beforeDir="false" afterPath="$PROJECT_DIR$/数据库.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +54,7 @@
     <configuration name="md22mysql" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="md22mysql" />
       <working_directory value="$PROJECT_DIR$" />
-      <parameters value="-h 127.0.0.1:3306 -u root -p 12345678 -d test" />
+      <parameters value="-f test数据库.md" />
       <kind value="FILE" />
       <filePath value="$PROJECT_DIR$/main.go" />
       <package value="xq.goproject.com/md22mysql" />
@@ -85,9 +88,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/core/tomd.go</url>
-          <line>44</line>
-          <option name="timeStamp" value="16" />
+          <url>file://$PROJECT_DIR$/core/tomysql.go</url>
+          <line>149</line>
+          <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

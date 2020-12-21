@@ -21,6 +21,9 @@ type columnInfo struct {
 
 	// 列上的索引类型 主键-->PRI  | 唯一索引 -->UNI  一般索引 -->MUL
 	Key sql.NullString
+
+	// auto_increment为自动递增
+	Extra sql.NullString
 }
 
 // 表信息

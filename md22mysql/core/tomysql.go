@@ -62,8 +62,14 @@ func getTableInfoFromFile() []*tableInfo {
 			if len(columnInfoSplitList) >= 6 {
 				// 读取类型
 				keyObj := sql.NullString{Valid: true}
-				if columnInfoSplitList[2] == "PK" {
+				if strings.Contains(columnInfoSplitList[2], "PK") {
 					keyObj.String = "PRI"
+				}
+
+				// 读取是否递增
+				extraObj := sql.NullString{Valid: true}
+				if strings.Contains(columnInfoSplitList[2], "AI") {
+					extraObj.String = "auto_increment"
 				}
 
 				// 读取默认值
@@ -83,6 +89,7 @@ func getTableInfoFromFile() []*tableInfo {
 					IsNullAble: columnInfoSplitList[3],
 					Default:    defaultObj,
 					Desc:       sql.NullString{Valid: true, String: strings.Trim(columnInfoSplitList[5], "\"")},
+					Extra:      extraObj,
 				}
 
 				currentTableObj.ColumnList = append(currentTableObj.ColumnList, columnObj)
@@ -128,16 +135,23 @@ func tableToSql(tables []*tableInfo) {
 			}
 
 			// 获取默认字符串
-			defaultStr := "NULL"
+			defaultStr := "DEFAULT NULL"
 			if columnObj.Default.Valid {
 				if isStringByColumnType(columnObj.Type) {
-					defaultStr = fmt.Sprintf("'%s'", columnObj.Default.String)
+					defaultStr = fmt.Sprintf("DEFAULT '%s'", columnObj.Default.String)
 				} else {
-					defaultStr = fmt.Sprintf("%s", columnObj.Default.String)
+					defaultStr = fmt.Sprintf("DEFAULT %s", columnObj.Default.String)
 				}
 			}
 
-			columnSql := fmt.Sprintf("`%s` %s %s DEFAULT %s COMMENT '%s',\n", columnObj.Name, columnObj.Type, nullStr, defaultStr, columnObj.Desc.String)
+			// 获取自动递增的字符串
+			autoIncrementStr := ""
+			if columnObj.Extra.Valid && strings.Contains(columnObj.Extra.String, "auto_increment") {
+				autoIncrementStr = "AUTO_INCREMENT"
+				defaultStr = ""
+			}
+
+			columnSql := fmt.Sprintf("`%s` %s %s %s %s COMMENT '%s',\n", columnObj.Name, columnObj.Type, nullStr, defaultStr, autoIncrementStr, columnObj.Desc.String)
 			buf.WriteString(columnSql)
 		}
 
