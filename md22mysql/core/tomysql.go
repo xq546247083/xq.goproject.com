@@ -137,6 +137,8 @@ func tableToSql(tables []*tableInfo) {
 			// 获取默认字符串
 			defaultStr := "DEFAULT NULL"
 			if columnObj.Default.Valid {
+				columnObj.Default.String = strings.ReplaceAll(columnObj.Default.String, "'", "")
+				columnObj.Default.String = strings.ReplaceAll(columnObj.Default.String, "\"", "")
 				if isStringByColumnType(columnObj.Type) {
 					defaultStr = fmt.Sprintf("DEFAULT '%s'", columnObj.Default.String)
 				} else {

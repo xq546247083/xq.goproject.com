@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="be777562-44b1-4f4b-aa6f-8866fd75dae0" name="Default Changelist" comment="优化了一波代码">
-      <change afterPath="$PROJECT_DIR$/md22mysql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/model.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/tomd.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/tomd.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/tomysql.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/tomysql.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test数据库.md" beforeDir="false" afterPath="$PROJECT_DIR$/test数据库.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/数据库.sql" beforeDir="false" afterPath="$PROJECT_DIR$/数据库.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,17 +78,6 @@
     <MESSAGE value="tomd完成" />
     <MESSAGE value="优化了一波代码" />
     <option name="LAST_COMMIT_MESSAGE" value="优化了一波代码" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/core/tomysql.go</url>
-          <line>149</line>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/md22mysql$go_test_md22mysql.out" NAME="go test md22mysql Coverage Results" MODIFIED="1608271292904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
