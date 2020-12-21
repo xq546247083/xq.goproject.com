@@ -137,8 +137,6 @@ func tableToSql(tables []*tableInfo) {
 			// 获取默认字符串
 			defaultStr := "DEFAULT NULL"
 			if columnObj.Default.Valid {
-				columnObj.Default.String = strings.ReplaceAll(columnObj.Default.String, "'", "")
-				columnObj.Default.String = strings.ReplaceAll(columnObj.Default.String, "\"", "")
 				if isStringByColumnType(columnObj.Type) {
 					defaultStr = fmt.Sprintf("DEFAULT '%s'", columnObj.Default.String)
 				} else {
@@ -152,6 +150,10 @@ func tableToSql(tables []*tableInfo) {
 				autoIncrementStr = "AUTO_INCREMENT"
 				defaultStr = ""
 			}
+
+			// 删除描述中的特殊字符
+			columnObj.Desc.String = strings.ReplaceAll(columnObj.Desc.String, "'", "")
+			columnObj.Desc.String = strings.ReplaceAll(columnObj.Desc.String, "\"", "")
 
 			columnSql := fmt.Sprintf("`%s` %s %s %s %s COMMENT '%s',\n", columnObj.Name, columnObj.Type, nullStr, defaultStr, autoIncrementStr, columnObj.Desc.String)
 			buf.WriteString(columnSql)
