@@ -130,7 +130,7 @@ func tableToSql(tables []*tableInfo) {
 			// 获取默认字符串
 			defaultStr := "NULL"
 			if columnObj.Default.Valid {
-				if strings.Contains(columnObj.Type, "char") {
+				if isStringByColumnType(columnObj.Type) {
 					defaultStr = fmt.Sprintf("'%s'", columnObj.Default.String)
 				} else {
 					defaultStr = fmt.Sprintf("%s", columnObj.Default.String)

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 // 列title
@@ -43,4 +44,17 @@ func connectMysql() {
 		log.Println("数据库连接失败,错误:", err.Error())
 		os.Exit(1)
 	}
+}
+
+// 通过行，获取默认值是否是字符串
+func isStringByColumnType(columnType string) bool {
+	columnType = strings.ToLower(columnType)
+	if strings.Contains(columnType, "char") ||
+		strings.Contains(columnType, "text") ||
+		strings.Contains(columnType, "date") ||
+		strings.Contains(columnType, "string") {
+		return true
+	}
+
+	return false
 }

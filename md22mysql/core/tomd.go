@@ -92,7 +92,7 @@ func doToMd(tables []*tableInfo) {
 			if !j.Default.Valid {
 				defaultStr = "null"
 			} else {
-				if strings.Contains(j.Type, "char") {
+				if isStringByColumnType(j.Type) {
 					defaultStr = fmt.Sprintf("\"%s\"", j.Default.String)
 				} else {
 					defaultStr = fmt.Sprintf("%s", j.Default.String)
